@@ -1,0 +1,36 @@
+@import "tailwindcss";
+@layer base {
+  :root {
+    /* Light Mode Colors */
+    --bg: #18181B;
+    --card: #27272A;
+    --text: #F4F4F5;
+    --muted: A1A1AA;
+    --primary: #06B6D4;
+    --primary-hover: #22D3EE;
+    --primary-dark: #0891B2;
+
+    color-scheme: dark only !important;
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--text-primary);
+    transition:
+      background-color 0.3s ease,
+      color 0.3s ease;
+  }
+}
+
+@theme {
+  --color-main-bg: var(--bg);
+  --color-card-bg: var(--card);
+  --color-vibe-cyan: var(--primary);
+  --color-txt-main: var(--text);
+  --color-txt-muted: var(--muted);
+}
+
+
+.glow {
+  box-shadow: 0 0 10px rgba(34, 211, 238, 0.5);
+}
