@@ -10,6 +10,7 @@ import HollywoodContent from "./pages/HollywoodContent.tsx";
 import IndianContent from "./pages/IndianContent.tsx";
 import IndianMovies from "./pages/IndianMovies.tsx";
 import IndianShows from "./pages/IndianShows.tsx";
+import Home from "./pages/Home.tsx";
 const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
@@ -17,6 +18,12 @@ const router = createBrowserRouter([
     path: "/",
     element: <App />,
     children: [
+      {
+        path: "/",
+        element: <Home />,
+        // home page
+      
+      },
       {
         path: "/anime",
         element: <AnimeContent />,
