@@ -25,5 +25,7 @@ export type MovieCardProps = {
     original_language: string,
     adult: boolean,
     original_title: string,
-
+    poster_path: string,
+    media_type: string,
+    genre_ids: number[]
 }
