@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { fetchTrendingMovies } from "../servcies/moviesApi";
+import { fetchTrendingMovies } from "../services/tmdb.service";
 import { type MovieProps } from "../utils/types/card.type";
 
 export const useTrendingMovies = () => {

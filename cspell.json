@@ -3,7 +3,8 @@
     "language": "en",
     "words": [
        "geners",
-       
+       "tmdb",
+       "imdb",
     ],
     "ignorePaths": [
         "**/node_modules/**",

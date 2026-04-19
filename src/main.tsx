@@ -11,6 +11,7 @@ import IndianContent from "./pages/IndianContent.tsx";
 import IndianMovies from "./pages/IndianMovies.tsx";
 import IndianShows from "./pages/IndianShows.tsx";
 import Home from "./pages/Home.tsx";
+import MovieDetails from "./pages/MovieDetails.tsx";
 const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
@@ -43,6 +44,10 @@ const router = createBrowserRouter([
       {
         path: "/indian-shows",
         element: <IndianShows />,
+      },
+      {
+        path: "/watch/:type/:id",
+        element: <MovieDetails />,
       },
       {
         path: "*",
