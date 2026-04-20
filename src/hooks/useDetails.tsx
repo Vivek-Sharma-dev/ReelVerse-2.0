@@ -7,6 +7,7 @@ import {
 import type {
   CreditsResponse,
   ContentDetailsProps,
+  MovieProps,
 } from "../utils/types/card.type";
 
 export const useMovieDetails = (movieId: number, type: string) => {
@@ -16,7 +17,7 @@ export const useMovieDetails = (movieId: number, type: string) => {
       const [details, credits, similarMovies]: [
         details: ContentDetailsProps,
         credits: CreditsResponse,
-        similarMovies: { results: ContentDetailsProps[] },
+        similarMovies: { results: MovieProps[] },
       ] = await Promise.all([
         fetchMovieDetails(movieId, type), // fetch movie details
         fetchMovieCredits(movieId, type), // fetch credits first to get director and main cast

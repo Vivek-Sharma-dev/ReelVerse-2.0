@@ -4,6 +4,7 @@ import Loading from "../components/common/Loading";
 import Error from "../components/common/Error";
 import Banner from "../components/layout/DetailsPage/Banner";
 import MovieInfoCard from "../components/common/MovieInfoCard";
+import MovieCard from "../components/common/MovieCard";
 
 const MovieDetails = () => {
   const { id, type } = useParams();
@@ -15,8 +16,9 @@ const MovieDetails = () => {
   if (isPending) return <Loading />;
   if (isError) return <Error />;
   const { details, credits, similarMovies } = data || {};
-  console.log("Movie Details:", details);
-  const title = details?.original_title || details?.name || "Untitled";
+
+  console.log(credits.cast[1]);
+
   return (
     <>
       <section id="movie-details">
@@ -38,12 +40,12 @@ const MovieDetails = () => {
 
                 {/* Horizontal Scroll for Cast */}
                 <div className="flex gap-6 overflow-x-auto pb-6 no-scrollbar">
-                  {credits?.cast?.slice(0, 15).map((person: any) => (
+                  {credits?.cast?.slice(0, 15).map((person) => (
                     <div
                       key={person.id}
-                      className="flex-shrink-0 w-32 md:w-40 group text-center"
+                      className="shrink-0 w-32 md:w-40 group text-center"
                     >
-                      <div className="relative aspect-square overflow-hidden rounded-full border-2 border-zinc-800 group-hover:border-vibe-cyan transition-colors mb-3 shadow-xl">
+                      <div className="relative  overflow-hidden rounded-full border-2 border-zinc-800 group-hover:border-vibe-cyan transition-colors mb-3 shadow-xl">
                         <img
                           src={
                             person.profile_path
@@ -70,23 +72,15 @@ const MovieDetails = () => {
             </div>
           </div>
         </div>
-        <div className="mt-8">
-          <h3 className="text-xs uppercase tracking-widest text-zinc-500 font-bold mb-4">
-            Production Studios
-          </h3>
-          <div className="flex flex-wrap gap-6 items-center grayscale hover:grayscale-0 transition-all">
-            {details?.production_companies?.map(
-              (company: any) =>
-                company.logo_path && (
-                  <img
-                    key={company.id}
-                    src={`https://image.tmdb.org/t/p/w200${company.logo_path}`}
-                    alt={company.name}
-                    title={company.name} // Hover karne par naam dikhega
-                    className="h-6 md:h-8 object-contain"
-                  />
-                ),
-            )}
+        <div>
+          <h2 className="text-2xl font-bold text-vibe-cyan border-l-4 border-vibe-cyan pl-4 mb-8 uppercase tracking-tighter">
+            Similar Movies
+          </h2>
+
+          <div className="grid grid-cols-4 gap-5">
+            {similarMovies?.results?.slice(0, 8).map((movie) => (
+              <MovieCard key={movie.id} data={movie} />
+            ))}
           </div>
         </div>
       </section>
