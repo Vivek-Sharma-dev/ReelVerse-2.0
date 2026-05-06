@@ -11,6 +11,7 @@ type MovieRowProps = {
 };
 
 const MovieRow = ({ title, movieId, tvId, exploreLink }: MovieRowProps) => {
+
   const { data } = useGenreMovies(movieId, tvId);
   const movies = data?.slice(0, 8);
 

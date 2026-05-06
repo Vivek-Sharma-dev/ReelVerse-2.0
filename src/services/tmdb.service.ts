@@ -30,24 +30,24 @@ export const fetchMoviesByGenre = async (genreId: number, page: number = 1) => {
   }
 };
 
-// fetch both movie and tv shows by genre
-export const fetchContentByGenre = async (
-  movieGenreId: number,
-  tvGenreId: number | null | undefined,
+// 3. Fetch TV shows and movies by genre for home page
+export const fetchHomeContentByGenre = async (
+  movieId: number,
+  tvId: number | null | undefined,
   page: number = 1,
 ) => {
   try {
     const [movies, tvShows] = await Promise.all([
       tmdbApi.get("/discover/movie", {
         params: {
-          with_genres: movieGenreId,
+          with_genres: movieId,
           sort_by: "popularity.desc",
           page,
         },
       }),
       tmdbApi.get("/discover/tv", {
         params: {
-          with_genres: tvGenreId,
+          with_genres: tvId,
           sort_by: "popularity.desc",
           page,
         },
@@ -58,7 +58,91 @@ export const fetchContentByGenre = async (
       ...movies.data.results.map((m: any) => ({ ...m, media_type: "movie" })),
       ...tvShows.data.results.map((t: any) => ({ ...t, media_type: "tv" })),
     ];
-    return combined.sort((a, b) => b.popularity - a.popularity);
+
+    return combined;
+  } catch (error) {
+    console.error("Error fetching home content by genre:", error);
+    throw error;
+  }
+};
+
+// fetch both movie and tv shows by genre
+export const fetchContentByGenre = async (
+  movieGenreId: number,
+  tvGenreId: number | null | undefined,
+  page: number = 1,
+  filter: {
+    mediaType: string;
+    sortBy: string;
+    includeAdult: boolean;
+    year: string;
+    rating: string;
+  } = {
+    mediaType: "all",
+    sortBy: "popularity.desc",
+    includeAdult: false,
+    year: "",
+    rating: "",
+  },
+) => {
+  try {
+    let combined = [];
+    let totalPages = 500;
+    if (filter.mediaType === "all") {
+      const [movies, tvShows] = await Promise.all([
+        tmdbApi.get("/discover/movie", {
+          params: {
+            with_genres: movieGenreId,
+            sort_by: filter.sortBy,
+            include_adult: filter.includeAdult,
+            year: filter.year,
+            rating: filter.rating,
+            primary_release_year: filter.year,
+            page,
+          },
+        }),
+        tmdbApi.get("/discover/tv", {
+          params: {
+            with_genres: tvGenreId,
+            sort_by: filter.sortBy,
+            include_adult: filter.includeAdult,
+            year: filter.year,
+            rating: filter.rating,
+            first_air_date_year: filter.year,
+            page,
+          },
+        }),
+      ]);
+
+      combined = [
+        ...movies.data.results.map((m: any) => ({ ...m, media_type: "movie" })),
+        ...tvShows.data.results.map((t: any) => ({ ...t, media_type: "tv" })),
+      ];
+    } else {
+      const type = filter.mediaType === "anime" ? "tv" : filter.mediaType;
+      const genre =
+        filter.mediaType === "anime"
+          ? 16
+          : type === "movie"
+            ? movieGenreId
+            : tvGenreId;
+
+      const res = await tmdbApi.get(`/discover/${type}`, {
+        params: {
+          with_genres: genre,
+          sort_by: filter.sortBy,
+          include_adult: filter.includeAdult,
+          year: filter.year,
+          rating: filter.rating,
+          primary_release_year: filter.year,
+          first_air_date_year: filter.year,
+          page,
+        },
+      });
+      combined = res.data.results.map((t: any) => ({ ...t, media_type: type }));
+      totalPages = res.data.total_pages;
+    }
+    return { results: combined, page, total_pages: totalPages };
   } catch (error) {
     console.error("Error fetching content by genre:", error);
     throw error;
