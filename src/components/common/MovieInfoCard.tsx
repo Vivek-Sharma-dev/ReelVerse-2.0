@@ -1,5 +1,5 @@
 import type { ContentDetailsProps } from "../../utils/types/card.type";
-import { DollarSign, Star, Clock, Calendar, Globe } from "lucide-react";
+import { DollarSign, Star, Calendar, Globe } from "lucide-react";
 
 const MovieInfoCard = ({ details }: { details: ContentDetailsProps }) => {
   // Helpers
@@ -40,15 +40,15 @@ const MovieInfoCard = ({ details }: { details: ContentDetailsProps }) => {
   ];
 
   return (
-    <div className="w-full max-w-sm bg-zinc-900/50 backdrop-blur-md border-4 border-vibe-cyan rounded-3xl overflow-hidden hover:glow transition-shadow duration-300j">
+    <div className="w-full h-full max-w-sm bg-zinc-900/50 backdrop-blur-md border-4 border-vibe-cyan rounded-3xl overflow-hidden hover:glow transition-shadow duration-300j">
       {/* 1. Poster Section */}
-      <div className="relative group">
+      <div className="relative group ">
         <img
           src={`https://image.tmdb.org/t/p/w500${details.poster_path}`}
           alt={details.title || details.name}
-          className="w-full aspect-2/2 object-cover object-bottom transition-transform duration-500 group-hover:scale-105"
+          className="w-full aspect-2/2.5 object-fit transition-transform duration-500 group-hover:scale-105"
         />
-        <div className="absolute inset-0 bg-linear-to-t from-zinc-900 via-transparent to-transparent opacity-60" />
+       
       </div>
 
       {/* 2. Stats Grid */}

@@ -1,20 +1,19 @@
-import { Play, PlayCircleIcon, Plus, Star } from "lucide-react";
+import { PlayCircleIcon, Plus, Star } from "lucide-react";
 import { BiMovie } from "react-icons/bi";
 import { Link } from "react-router-dom";
 import type { MovieProps } from "../../utils/types/card.type";
 import { movieGenreMap, tvGenreMap } from "../../utils/types/Mapping";
 
 const MovieCard = ({ data }: { data: MovieProps }) => {
+  const isMovie =
+    data?.media_type === "movie" || !!data?.title || !!data?.release_date;
   const geners = data?.genre_ids.map((id) => {
-    return data?.media_type === "movie" ? movieGenreMap[id] : tvGenreMap[id];
+    return isMovie ? movieGenreMap[id] : tvGenreMap[id];
   });
 
   const filteredGeners = geners.filter(
     (genre) => genre !== undefined && genre.length > 0,
   ) as string[];
-
-  const isMovie =
-    data?.media_type === "movie" || !!data?.title || !!data?.release_date;
 
   const type = isMovie ? "movie" : "tv";
   return (
@@ -42,7 +41,7 @@ const MovieCard = ({ data }: { data: MovieProps }) => {
         <div className="p-2 flex flex-col gap-1">
           <div className="flex justify-between">
             <h1 className="text-mdx font-medium group-hover:text-vibe-cyan transition-all duration-300 line-clamp-1">
-              {data?.original_title}
+              {data?.original_title || data?.original_name}
             </h1>
             {data?.vote_average !== 0 && (
               <p className="text-vibe-cyan flex items-center gap-1">
@@ -56,18 +55,20 @@ const MovieCard = ({ data }: { data: MovieProps }) => {
             )}
           </div>
           <div className="flex items-center gap-4">
-            <p className="text-[12px] text-gray-400 mt-2 bg-gray-700 px-2 py-1 rounded font-semibold">
-              {data?.release_date}
+            <p className="text-[12px] text-gray-400 mt-2 bg-gray-700 px-2 py-1 rounded font-semibold line-clamp-1">
+              {data?.release_date || data?.first_air_date}
             </p>
-            <p className="text-[12px] text-gray-400 bg-gray-700 mt-2 px-2 py-1 rounded font-semibold">
-              {filteredGeners.slice(0, 2).join(", ") || "Unknown Genre"}
+            <p className="text-[12px] text-gray-400 bg-gray-700 mt-2 px-2 py-1 rounded font-semibold line-clamp-1">
+              {filteredGeners.length > 0
+                ? filteredGeners.slice(0, 2).join(", ")
+                : "Unknown Genre"}
             </p>
           </div>
           <p className="text-[14px] text-gray-300 mt-2 line-clamp-2">
             {data?.overview}
           </p>
           <div className="border-b border-gray-700 mt-3" />
-          <div className="flex justify-between items-center my-2">
+          <div className="flex justify-center items-center my-2">
             <button
               onClick={(e) => {
                 e.stopPropagation();
@@ -77,17 +78,6 @@ const MovieCard = ({ data }: { data: MovieProps }) => {
               className="flex items-center gap-2 text-gray-400 cursor-pointer hover:text-white transition-all duration-300 active:scale-95"
             >
               <Plus /> Watch list
-            </button>
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                e.preventDefault();
-                console.log("play trailer");
-              }}
-              className="border-2 p-2 rounded-full border-vibe-cyan"
-              aria-label="play trailer"
-            >
-              <Play className="text-vibe-cyan" fill="currentColor" size={16} />
             </button>
           </div>
         </div>

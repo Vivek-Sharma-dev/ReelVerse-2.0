@@ -14,6 +14,9 @@ export type MovieProps = {
   original_title: string;
   media_type: string;
   title: string;
+  // tv option
+  first_air_date: string;
+  original_name: string;
 };
 
 export type MovieCardProps = {
@@ -63,12 +66,14 @@ export interface ContentDetailsProps extends Omit<
   };
 
   // 3. TV Specific
+  id: number;
   name?: string;
   original_name?: string;
   first_air_date?: string;
   number_of_seasons?: number;
   number_of_episodes?: number;
   episode_run_time?: number[];
+  episode_count: number;
 }
 
 export interface CastProps {

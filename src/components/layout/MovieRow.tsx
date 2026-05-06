@@ -5,12 +5,13 @@ import type { MovieProps } from "../../utils/types/card.type";
 
 type MovieRowProps = {
   title: string; // Section name (e.g., "Horror Classics")
-  genreId: number; // TMDB Genre ID
   exploreLink: string; // "Explore All" button ka path
+  movieId: number;
+  tvId: number | null | undefined;
 };
 
-const MovieRow = ({ title, genreId, exploreLink }: MovieRowProps) => {
-  const { data } = useGenreMovies(genreId);
+const MovieRow = ({ title, movieId, tvId, exploreLink }: MovieRowProps) => {
+  const { data } = useGenreMovies(movieId, tvId);
   const movies = data?.slice(0, 8);
 
   return (

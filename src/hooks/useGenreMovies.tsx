@@ -1,18 +1,28 @@
 import { useQuery, useInfiniteQuery } from "@tanstack/react-query";
-import { fetchMoviesByGenre } from "../services/tmdb.service.ts";
+import {
+  fetchContentByGenre,
+  fetchMoviesByGenre,
+} from "../services/tmdb.service.ts";
 
-export const useGenreMovies = (genreId: number) => {
+export const useGenreMovies = (
+  movieId: number,
+  tvId: number | null | undefined,
+) => {
   return useQuery({
-    queryKey: ["Movies", genreId],
-    queryFn: () => fetchMoviesByGenre(genreId),
+    queryKey: ["content", movieId, tvId],
+    queryFn: () => fetchContentByGenre(movieId, tvId),
     staleTime: 1000 * 60 * 60, // 1 hour
   });
 };
 
-export const useInfiniteGenreMovies = (genreId: number) => {
+export const useInfiniteGenreMovies = (
+  movieId: number,
+  tvId: number | null | undefined,
+) => {
   return useInfiniteQuery({
-    queryKey: ["infiniteMovies", genreId],
-    queryFn: ({ pageParam = 1 }) => fetchMoviesByGenre(genreId, pageParam),
+    queryKey: ["infiniteMovies", movieId, tvId],
+    queryFn: ({ pageParam = 1 }) =>
+      fetchContentByGenre(movieId, tvId, pageParam),
     getNextPageParam: (lastPage) => {
       return lastPage.page < lastPage.total_pages
         ? lastPage.page + 1

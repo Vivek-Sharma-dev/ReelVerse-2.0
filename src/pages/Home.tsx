@@ -4,7 +4,7 @@ import Loading from "../components/common/Loading";
 import Error from "../components/common/Error";
 import MovieCard from "../components/common/MovieCard";
 import HeroSection from "../components/layout/header/HeroSection";
-import { GENRES } from "../utils/constant";
+import { GENRES, GENRE_MAP } from "../utils/constant";
 import MovieRow from "../components/layout/MovieRow";
 
 const Home = () => {
@@ -17,47 +17,21 @@ const Home = () => {
   }
   return (
     <>
-      <section className="w-full min-h-screen relative">
+      <section className="w-full relative">
         <HeroSection data={data as MovieProps[]} />
-        <div className="grid grid-cols-4 gap-4 my-10">
-          {data?.slice(0, 12).map((movie) => (
-            <MovieCard key={movie.id} data={movie} />
-          ))}
-        </div>
-
-        <div>
-          {/* action movies */}
-          <MovieRow
-            title="Action Packed"
-            genreId={GENRES.ACTION}
-            exploreLink="/action"
-          />
-          {/* comedy movies */}
-          <MovieRow
-            title="Laugh Out Loud"
-            genreId={GENRES.COMEDY}
-            exploreLink="/comedy"
-          />
-          {/* horror movies */}
-          <MovieRow
-            title="Spine Chillers"
-            genreId={GENRES.HORROR}
-            exploreLink="/horror"
-          />
-          {/* sci-fi movies */}
-          <MovieRow
-            title="Sci-Fi Spectacles"
-            genreId={GENRES.SCIFI}
-            exploreLink="/sci-fi"
-          />
-          {/* romance movies */}
-          <MovieRow
-            title="Romantic Escapes"
-            genreId={GENRES.ROMANCE}
-            exploreLink="/romance"
-          />
-        </div>
       </section>
+      <section className="py-8 container mx-auto" id="Movie-list">
+        {GENRE_MAP.map((genre) => (
+          <MovieRow
+            key={genre.name}
+            title={genre.name}
+            movieId={genre.movie}
+            tvId={genre.tv}
+            exploreLink={`/genre/${genre.movie}/${genre.tv}`}
+          />
+        ))}
+      </section>
+
     </>
   );
 };

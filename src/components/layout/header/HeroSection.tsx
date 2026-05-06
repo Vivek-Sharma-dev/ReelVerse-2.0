@@ -55,7 +55,8 @@ const HeroSection = ({ data }: { data: MovieProps[] }) => {
             {featuredMovies.map((_, i) => (
               <div
                 key={i}
-                className={`h-1.5 rounded-full transition-all duration-300 ${i === currentIndex ? "w-8 bg-vibe-cyan" : "w-2 bg-white/40"}`}
+                onClick={() => setCurrentIndex(i)}
+                className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${i === currentIndex ? "w-8 bg-vibe-cyan" : "w-2 bg-white/40"}`}
               />
             ))}
           </div>

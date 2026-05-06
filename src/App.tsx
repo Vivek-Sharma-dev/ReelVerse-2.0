@@ -6,7 +6,7 @@ const App = () => {
     <>
       <Header />
       {/* --- Main Content --- */}
-      <main className="container mx-auto p-4">
+      <main className="px-4">
         <Outlet />
       </main>
     </>

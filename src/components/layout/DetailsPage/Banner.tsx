@@ -1,7 +1,18 @@
-import { Play, Plus, Star } from "lucide-react";
+import { Play, Plus, Star, X } from "lucide-react";
 import type { ContentDetailsProps } from "../../../utils/types/card.type";
+import type { TrailerType } from "../../../pages/movieDetails/MovieDetails";
 
-const Banner = ({ details }: { details: ContentDetailsProps }) => {
+const Banner = ({
+  details,
+  trailer,
+  isTrailerPlaying,
+  setIsTrailerPlaying,
+}: {
+  details: ContentDetailsProps;
+  trailer: TrailerType;
+  isTrailerPlaying: boolean;
+  setIsTrailerPlaying: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
   // Common Data Handling
   const title = details.title || details.name;
   const date = details.release_date || details.first_air_date;
@@ -15,69 +26,96 @@ const Banner = ({ details }: { details: ContentDetailsProps }) => {
 
   return (
     <div className="relative w-full h-[60dvh] md:h-[70dvh]">
-      {/* 1. Backdrop Image with Gradient Overlay */}
-      <div className="absolute inset-0">
-        <img
-          src={`https://image.tmdb.org/t/p/original${details.backdrop_path}`}
-          className="w-full h-full object-cover"
-          alt={title}
-        />
-        <div className="absolute inset-0 bg-linear-to-t from-main-bg via-main-bg/60 to-transparent" />
-        <div className="absolute inset-0 bg-linear-to-r from-main-bg via-transparent to-transparent" />
-      </div>
+      {isTrailerPlaying ? (
+        <>
+          <div className="relative w-full h-full z-50 rounded-2xl">
+            <iframe
+              className="w-full h-full"
+              src={`https://www.youtube.com/embed/${trailer.key}?autoplay=1&loop=1&playlist=${trailer.key}`}
+              title="YouTube video player"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowFullScreen
+            ></iframe>
+            <button
+              onClick={() => setIsTrailerPlaying(false)}
+              className="absolute top-13 right-6 p-2 bg-white/20 rounded-full hover:bg-white/40 active:scale-95"
+            >
+              <X />
+            </button>
+          </div>
+        </>
+      ) : (
+        <>
+          <div className="absolute inset-0">
+            <img
+              src={`https://image.tmdb.org/t/p/original${details.backdrop_path}`}
+              className="w-full h-full object-cover"
+              alt={title}
+            />
+            <div className="absolute inset-0 bg-linear-to-t from-main-bg via-main-bg/60 to-transparent" />
+            <div className="absolute inset-0 bg-linear-to-r from-main-bg via-transparent to-transparent" />
+          </div>
 
-      {/* 2. Content Container */}
-      <div className="absolute bottom-10 left-0 px-6 md:px-16 w-full z-10">
-        <div className="flex flex-col gap-4 max-w-4xl">
-          {/* Tagline if exists */}
-          {details.tagline && (
-            <span className="text-vibe-cyan italic tracking-widest text-sm md:text-base opacity-90 font-serif">
-              "{details.tagline}"
-            </span>
-          )}
-
-          <h1 className="text-4xl md:text-3xl font-serif uppercase tracking-tighter leading-none">
-            {title}
-          </h1>
-
-          <div className="flex flex-wrap items-center gap-4 text-sm md:text-lg font-medium text-zinc-300">
-            {details?.vote_average !== 0 && (
-              <p className="text-vibe-cyan flex items-center gap-1">
-                <Star
-                  className="text-vibe-cyan"
-                  fill="currentColor"
-                  size={15}
-                />
-                {details?.vote_average.toFixed(1)}
-              </p>
-            )}
-            <span className="text-vibe-cyan">{year}</span>
-            <span className="px-2 py-0.5 border border-zinc-600 rounded text-xs">
-              HD
-            </span>
-            <span>{duration}</span>
-            <div className="flex gap-2">
-              {details.genres?.slice(0, 3).map((g) => (
-                <span
-                  key={g.id}
-                  className="text-zinc-400 underline decoration-vibe-cyan/40 underline-offset-4"
-                >
-                  {g.name}
+          {/* 2. Content Container */}
+          <div className="absolute bottom-10 left-0 px-6 md:px-16 w-full z-10">
+            <div className="flex flex-col gap-4 max-w-4xl">
+              {/* Tagline if exists */}
+              {details.tagline && (
+                <span className="text-vibe-cyan italic tracking-widest text-sm md:text-base opacity-90 font-serif">
+                  "{details.tagline}"
                 </span>
-              ))}
+              )}
+
+              <h1 className="text-4xl md:text-3xl font-serif uppercase tracking-tighter leading-none">
+                {title}
+              </h1>
+
+              <div className="flex flex-wrap items-center gap-4 text-sm md:text-lg font-medium text-zinc-300">
+                {details?.vote_average !== 0 && (
+                  <p className="text-vibe-cyan flex items-center gap-1">
+                    <Star
+                      className="text-vibe-cyan"
+                      fill="currentColor"
+                      size={15}
+                    />
+                    {details?.vote_average.toFixed(1)}
+                  </p>
+                )}
+                <span className="text-vibe-cyan">{year}</span>
+                <span className="px-2 py-0.5 border border-zinc-600 rounded text-xs">
+                  HD
+                </span>
+                <span>{duration}</span>
+                <div className="flex gap-2">
+                  {details.genres?.slice(0, 3).map((g) => (
+                    <span
+                      key={g.id}
+                      className="text-zinc-400 underline decoration-vibe-cyan/40 underline-offset-4"
+                    >
+                      {g.name}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={() => setIsTrailerPlaying(true)}
+                  className="bg-vibe-cyan text-white px-6 py-3 rounded-full font-bold hover:bg-vibe-cyan/80 transition-colors flex items-center gap-2"
+                >
+                  <Play className="text-white" fill="currentColor" /> Watch
+                  Trailer
+                </button>
+                <button className="ml-4 bg-white/10 px-6 py-3 rounded-full font-bold hover:bg-white/20 transition-colors flex items-center gap-2">
+                  <Plus /> Add to Watchlist
+                </button>
+              </div>
             </div>
           </div>
-
-          <div className="flex items-center gap-3">
-            <button className="bg-vibe-cyan text-white px-6 py-3 rounded-full font-bold hover:bg-vibe-cyan/80 transition-colors flex items-center gap-2">
-              <Play className="text-white" fill="currentColor" /> Watch Trailer
-            </button>
-            <button className="ml-4 bg-white/10 px-6 py-3 rounded-full font-bold hover:bg-white/20 transition-colors flex items-center gap-2">
-              <Plus /> Add to Watchlist
-            </button>
-          </div>
-        </div>
-      </div>
+        </>
+      )}
+      {/* 1. Backdrop Image with Gradient Overlay */}
     </div>
   );
 };
