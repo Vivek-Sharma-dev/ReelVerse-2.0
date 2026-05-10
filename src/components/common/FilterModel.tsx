@@ -1,5 +1,11 @@
-import { useState } from "react";
-
+import { useEffect, useState } from "react";
+type FiltersType = {
+  mediaType: string;
+  year: string;
+  includeAdult: boolean;
+  sortBy: string;
+  rating: string;
+};
 const FilterModal = ({
   isOpen,
   onClose,
@@ -8,8 +14,8 @@ const FilterModal = ({
 }: {
   isOpen: boolean;
   onClose: () => void;
-  filters: any;
-  setFilters: any;
+  filters: FiltersType;
+  setFilters: React.Dispatch<React.SetStateAction<FiltersType>>;
 }) => {
   const [activeTab, setActiveTab] = useState("type"); // 'type', 'year', 'rating'
 
@@ -19,8 +25,41 @@ const FilterModal = ({
     { id: "safety", label: "Content Safety" },
     { id: "sort", label: "Sort By" },
   ];
+  // selected filters
+  const [selectedFilters, setSelectedFilters] = useState({
+    mediaType: "all",
+    year: "",
+    includeAdult: false,
+    sortBy: "popularity.desc",
+    rating: "",
+  });
+  useEffect(() => {
+    if (isOpen) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setSelectedFilters(filters);
+    }
+  }, [isOpen, filters]);
 
   if (!isOpen) return null;
+
+  function resetFilters() {
+    setActiveTab("type");
+    setSelectedFilters({
+      mediaType: "all",
+      year: "",
+      includeAdult: false,
+      sortBy: "popularity.desc",
+      rating: "",
+    });
+    setFilters({
+      mediaType: "all",
+      year: "",
+      includeAdult: false,
+      sortBy: "popularity.desc",
+      rating: "",
+    });
+    onClose();
+  }
 
   return (
     <div className="fixed inset-0 z-100 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
@@ -61,8 +100,10 @@ const FilterModal = ({
                 {["all", "movie", "tv", "anime"].map((t) => (
                   <button
                     key={t}
-                    onClick={() => setFilters({ ...filters, mediaType: t })}
-                    className={`w-full p-4 rounded-xl border text-left transition-all ${filters.mediaType === t ? "border-vibe-cyan bg-vibe-cyan/5 text-white" : "border-zinc-800 text-zinc-500"}`}
+                    onClick={() =>
+                      setSelectedFilters({ ...selectedFilters, mediaType: t })
+                    }
+                    className={`w-full p-4 rounded-xl border text-left transition-all ${selectedFilters.mediaType === t ? "border-vibe-cyan bg-vibe-cyan/5 text-white" : "border-zinc-800 text-zinc-500"}`}
                   >
                     {t.toUpperCase()}
                   </button>
@@ -75,9 +116,12 @@ const FilterModal = ({
                 type="number"
                 placeholder="Ex: 2024"
                 className="w-full bg-zinc-900 border border-zinc-800 p-4 rounded-xl text-white outline-none focus:border-vibe-cyan"
-                value={filters.year}
+                value={selectedFilters.year}
                 onChange={(e) =>
-                  setFilters({ ...filters, year: e.target.value })
+                  setSelectedFilters({
+                    ...selectedFilters,
+                    year: e.target.value,
+                  })
                 }
               />
             )}
@@ -88,7 +132,10 @@ const FilterModal = ({
                   type="checkbox"
                   checked={filters.includeAdult}
                   onChange={(e) =>
-                    setFilters({ ...filters, includeAdult: e.target.checked })
+                    setSelectedFilters({
+                      ...selectedFilters,
+                      includeAdult: e.target.checked,
+                    })
                   }
                 />
                 <span className="text-white font-bold">
@@ -96,27 +143,54 @@ const FilterModal = ({
                 </span>
               </label>
             )}
+
+            {activeTab === "sort" && (
+              <div className="space-y-3">
+                {[
+                  { id: "popularity.desc", label: "Most Popular" },
+                  { id: "vote_average.desc", label: "Top Rated" },
+                  { id: "primary_release_date.desc", label: "Newest First" },
+                ].map((option) => (
+                  <button
+                    key={option.id}
+                    onClick={() =>
+                      setSelectedFilters({
+                        ...selectedFilters,
+                        sortBy: option.id,
+                      })
+                    }
+                    className={`w-full p-4 rounded-xl border text-left transition-all ${
+                      selectedFilters.sortBy === option.id
+                        ? "border-vibe-cyan bg-vibe-cyan/5 text-white"
+                        : "border-zinc-800 text-zinc-500 hover:border-zinc-700"
+                    }`}
+                  >
+                    <div className="flex justify-between items-center">
+                      {option.label}
+                      {selectedFilters.sortBy === option.id && (
+                        <div className="w-2 h-2 rounded-full bg-vibe-cyan shadow-[0_0_10px_#06B6D4]" />
+                      )}
+                    </div>
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
         </div>
 
         {/* Footer */}
         <div className="p-6 border-t border-zinc-900 flex justify-end gap-4">
           <button
-            onClick={() => {
-              setFilters({
-                mediaType: "all",
-                year: "",
-                includeAdult: false,
-                sortBy: "popularity.desc",
-              });
-              onClose();
-            }}
+            onClick={resetFilters}
             className="text-zinc-500 font-bold text-sm"
           >
             RESET
           </button>
           <button
-            onClick={onClose}
+            onClick={() => {
+              setFilters(selectedFilters);
+              onClose();
+            }}
             className="bg-vibe-cyan text-black px-8 py-2 rounded-xl font-bold"
           >
             APPLY FILTERS

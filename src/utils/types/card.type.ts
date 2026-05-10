@@ -19,24 +19,29 @@ export type MovieProps = {
   original_name: string;
 };
 
-export type MovieCardProps = {
-  id: number;
-  release_date: string;
-  vote_average: number;
-  overview: string;
-  popularity: number;
-  vote_count: number;
-  original_language: string;
-  adult: boolean;
-  original_title: string;
-  poster_path: string;
-  media_type: string;
-  genre_ids: number[];
-};
+// export type MovieCardProps = {
+//   id: number;
+//   release_date: string;
+//   vote_average: number;
+//   overview: string;
+//   popularity: number;
+//   vote_count: number;
+//   original_language: string;
+//   adult: boolean;
+//   original_title: string;
+//   poster_path: string;
+//   media_type: string;
+//   genre_ids: number[];
+// };
 
 export interface ContentDetailsProps extends Omit<
   MovieProps,
-  "genre_ids" | "title" | "release_date" | "original_title"
+  | "genre_ids"
+  | "title"
+  | "release_date"
+  | "original_title"
+  | "original_name"
+  | "first_air_date"
 > {
   // 1. Common detailed fields
   genres: { id: number; name: string }[];
@@ -74,6 +79,16 @@ export interface ContentDetailsProps extends Omit<
   number_of_episodes?: number;
   episode_run_time?: number[];
   episode_count: number;
+
+  // season
+  seasons: [
+    {
+      id: number;
+      name: string;
+      poster_path: string;
+      episode_count: number;
+    },
+  ];
 }
 
 export interface CastProps {

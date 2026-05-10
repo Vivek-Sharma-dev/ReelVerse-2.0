@@ -17,14 +17,14 @@ const MovieCard = ({ data }: { data: MovieProps }) => {
 
   const type = isMovie ? "movie" : "tv";
   return (
-    <Link to={`/watch/${type}/${data?.id}`} className="w-full h-full ">
+    <Link to={`/watch/${type}/${data?.id}`} className="w-full h-full">
       {/* card for single movie */}
-      <div className="border-2 border-gray-400 hover:scale-101 hover:border-vibe-cyan rounded-lg overflow-hidden  hover:glow transition-all duration-300 group">
-        <div className="h-62 aspect-auto overflow-hidden relative">
+      <div className="border-2 border-gray-400 hover:scale-101 hover:border-vibe-cyan rounded-lg overflow-hidden  hover:glow transition-all duration-300 group h-full">
+        <div className="h-92 aspect-auto overflow-hidden relative">
           <img
             src={`https://image.tmdb.org/t/p/w500/${data?.poster_path}`}
-            alt={data?.original_title}
-            className={`object-cover object-bottom rounded-t-lg shadow-lg h-full w-full transition-transform duration-300 group-hover:scale-105`}
+            alt={data?.original_title || data?.original_name}
+            className={`object-fit object-center rounded-t-lg shadow-lg h-full w-full transition-transform duration-300 group-hover:scale-105`}
           />
           <div>
             {isMovie ? (
@@ -64,8 +64,8 @@ const MovieCard = ({ data }: { data: MovieProps }) => {
                 : "Unknown Genre"}
             </p>
           </div>
-          <p className="text-[14px] text-gray-300 mt-2 line-clamp-2">
-            {data?.overview}
+          <p className={`text-[14px] text-gray-300 mt-2 ${data?.overview ? "line-clamp-2": "min-h-10"}`}>
+            {data?.overview ? data?.overview : "No overview available"}
           </p>
           <div className="border-b border-gray-700 mt-3" />
           <div className="flex justify-center items-center my-2">

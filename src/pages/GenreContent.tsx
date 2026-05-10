@@ -4,12 +4,12 @@ import Loading from "../components/common/Loading";
 import MovieCard from "../components/common/MovieCard";
 import { useEffect, useState, useRef } from "react";
 import { useInView } from "react-intersection-observer";
-import { FiFilter, FiChevronDown, FiCheck } from "react-icons/fi"; // Icons ke liye
+import { FiFilter, FiChevronDown } from "react-icons/fi";
 import FilterModel from "../components/common/FilterModel";
-import FilterModal from "../components/common/FilterModel";
+import Error from "../components/common/Error";
 
 const GenreContent = () => {
-  const { movieId, tvId, genreName } = useParams(); // URL se genre name bhi le lo
+  const { movieId, tvId, genreName } = useParams();
   const [filters, setFilters] = useState({
     mediaType: "all",
     year: "",
@@ -43,15 +43,9 @@ const GenreContent = () => {
   }, [inView, hasNextPage, fetchNextPage]);
 
   if (isPending) return <Loading />;
+  if (isError) return <Error />;
 
   const allResults = data?.pages.flatMap((page) => page.results) || [];
-
-  const filterOptions = [
-    { id: "all", label: "All Content" },
-    { id: "movie", label: "Movies Only" },
-    { id: "tv", label: "TV Shows" },
-    { id: "anime", label: "Anime" },
-  ];
 
   return (
     <div className="container mx-auto px-4 py-10 min-h-screen">
@@ -89,7 +83,7 @@ const GenreContent = () => {
       </div>
 
       {/* Grid Section */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 items-stretch gap-6">
         {allResults.map((movie) => (
           <MovieCard key={`${movie.id}-${movie.media_type}`} data={movie} />
         ))}

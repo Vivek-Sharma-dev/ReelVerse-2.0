@@ -59,7 +59,9 @@ export const fetchHomeContentByGenre = async (
       ...tvShows.data.results.map((t: any) => ({ ...t, media_type: "tv" })),
     ];
 
-    return combined;
+    const shuffle = combined.sort(() => Math.random() - 0.5);
+
+    return shuffle;
   } catch (error) {
     console.error("Error fetching home content by genre:", error);
     throw error;
@@ -142,7 +144,8 @@ export const fetchContentByGenre = async (
       combined = res.data.results.map((t: any) => ({ ...t, media_type: type }));
       totalPages = res.data.total_pages;
     }
-    return { results: combined, page, total_pages: totalPages };
+    const shuffle = combined.sort(() => Math.random() - 0.5);
+    return { results: shuffle, page, total_pages: totalPages };
   } catch (error) {
     console.error("Error fetching content by genre:", error);
     throw error;

@@ -44,10 +44,18 @@ export const useInfiniteGenreMovies = (
     year: "",
     rating: "",
   },
- 
 ) => {
   return useInfiniteQuery({
-    queryKey: ["infiniteMovies", movieId, tvId, filter.mediaType],
+    queryKey: [
+      "infiniteMovies",
+      movieId,
+      tvId,
+      filter.mediaType,
+      filter.sortBy,
+      filter.includeAdult,
+      filter.year,
+      filter.rating,
+    ],
     queryFn: ({ pageParam = 1 }) =>
       fetchContentByGenre(movieId, tvId, pageParam, filter),
     getNextPageParam: (lastPage) => {
