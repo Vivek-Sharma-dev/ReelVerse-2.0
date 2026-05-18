@@ -9,6 +9,7 @@ import Home from "./pages/Home.tsx";
 import MovieDetails from "./pages/movieDetails/MovieDetails.tsx";
 import GenreContent from "./pages/GenreContent.tsx";
 import ExplorePage from "./pages/ExplorePage.tsx";
+import SearchPage from "./pages/SearchPage.tsx";
 
 const queryClient = new QueryClient();
 
@@ -40,6 +41,10 @@ const router = createBrowserRouter([
         element: (
           <h1 className="text-center text-2xl mt-10">404 - Page Not Found</h1>
         ),
+      },
+      {
+        path: "/search",
+        element: <SearchPage />,
       },
     ],
   },

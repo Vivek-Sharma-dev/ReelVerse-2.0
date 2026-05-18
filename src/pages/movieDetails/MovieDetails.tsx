@@ -56,7 +56,6 @@ const MovieDetails = () => {
     return videos[0];
   };
 
-  console.log(details)
   const trailer = getBestTrailer(trailerData?.data?.results || []);
   return (
     <>
@@ -64,7 +63,7 @@ const MovieDetails = () => {
         <section id="details-hero">
           <Banner
             details={details}
-            trailer={trailer!}
+            trailer={trailer}
             isTrailerPlaying={isTrailerPlaying}
             setIsTrailerPlaying={setIsTrailerPlaying}
           />
