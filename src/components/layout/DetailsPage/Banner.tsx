@@ -7,11 +7,13 @@ const Banner = ({
   trailer,
   isTrailerPlaying,
   setIsTrailerPlaying,
+  onStreamClick,
 }: {
   details: ContentDetailsProps;
   trailer: TrailerType | null;
   isTrailerPlaying: boolean;
   setIsTrailerPlaying: React.Dispatch<React.SetStateAction<boolean>>;
+  onStreamClick: () => void; // New prop for handling stream button click
 }) => {
   // Common Data Handling
   const title = details.title || details.name;
@@ -118,6 +120,13 @@ const Banner = ({
                 )}
                 <button className="ml-4 bg-white/10 px-6 py-3 rounded-full font-bold hover:bg-white/20 transition-colors flex items-center gap-2">
                   <Plus /> Add to Watchlist
+                </button>
+                <button
+                  onClick={onStreamClick} // Trigger application internal inline player grid
+                  className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-6 py-3 rounded-full font-bold hover:opacity-90 transition-all flex items-center gap-2 shadow-lg shadow-indigo-500/20"
+                >
+                  <Play className="text-white" fill="currentColor" /> Stream
+                  Content
                 </button>
               </div>
             </div>

@@ -8,6 +8,7 @@ import { useTrailer } from "../../hooks/useTrailer";
 import { useState } from "react";
 import MovieCard from "../../components/common/MovieCard";
 import type { MovieProps } from "../../utils/types/card.type";
+import WatchPlayer from "./WatchPlayer";
 
 export type TrailerType = {
   key: string;
@@ -24,6 +25,10 @@ const MovieDetails = () => {
   const { id, type } = useParams();
   const [isTrailerPlaying, setIsTrailerPlaying] = useState<boolean>(false);
   const trailerData = useTrailer(Number(id), type!);
+  // MovieDetails.tsx ke andar states section:
+  const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const [activeSeason, setActiveSeason] = useState<number>(1);
+  const [activeEpisode, setActiveEpisode] = useState<number>(1);
   const { data, isPending, isError } = useMovieDetails(
     Number(id),
     type || "movie",
@@ -32,7 +37,6 @@ const MovieDetails = () => {
   if (isPending) return <Loading />;
   if (isError) return <Error />;
   const { details, credits, similarMovies } = data || {};
-  console.log("Movie Details:", details);
 
   const getBestTrailer = (videos: TrailerType[]) => {
     if (!videos || videos.length === 0) return null;
@@ -60,14 +64,43 @@ const MovieDetails = () => {
   return (
     <>
       <section id="movie-details">
-        <section id="details-hero">
-          <Banner
-            details={details}
-            trailer={trailer}
-            isTrailerPlaying={isTrailerPlaying}
-            setIsTrailerPlaying={setIsTrailerPlaying}
-          />
+        {/* MovieDetails.tsx ka render block wrapper */}
+        <section id="movie-details" className="pb-20">
+          <section
+            id="details-hero"
+            className={isPlaying ? "container mx-auto pt-6 px-4" : ""}
+          >
+            {isPlaying ? (
+              // Agar streaming ON hai, toh screen par direct player dikhao server toggles ke sath
+              <div className="relative w-full mb-10">
+                <WatchPlayer
+                  id={Number(id)}
+                  type={type || "movie"}
+                  season={activeSeason}
+                  episode={activeEpisode}
+                />
+                <button
+                  onClick={() => setIsPlaying(false)}
+                  className="absolute -top-3 -right-3 sm:top-4 sm:right-4 z-50 bg-red-600 hover:bg-red-700 text-white font-bold text-xs px-3 py-1.5 rounded-lg shadow-lg shadow-red-600/20 uppercase tracking-wider"
+                >
+                  Close Player
+                </button>
+              </div>
+            ) : (
+              // Agar default view hai, toh tera purana shaktishali Banner component
+              <Banner
+                details={details}
+                trailer={trailer}
+                isTrailerPlaying={isTrailerPlaying}
+                setIsTrailerPlaying={setIsTrailerPlaying}
+                onStreamClick={() => setIsPlaying(true)} // Kal ka callback link add kiya
+              />
+            )}
+          </section>
         </section>
+
+        {/* Baaki ka overview, cast, seasons grid niche smoothly chalta rahega */}
+
         <section id="movie-info" className="container mx-auto">
           <div className="flex justify-between gap-5 my-7 relative">
             <div>
