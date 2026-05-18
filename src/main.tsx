@@ -5,16 +5,10 @@ import App from "./App.tsx";
 import { QueryClient } from "@tanstack/react-query";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import AnimeContent from "./pages/AnimeContent.tsx";
-import HollywoodContent from "./pages/HollywoodContent.tsx";
-import IndianContent from "./pages/IndianContent.tsx";
-import IndianMovies from "./pages/IndianMovies.tsx";
-import IndianShows from "./pages/IndianShows.tsx";
 import Home from "./pages/Home.tsx";
 import MovieDetails from "./pages/movieDetails/MovieDetails.tsx";
 import GenreContent from "./pages/GenreContent.tsx";
-
-
+import ExplorePage from "./pages/ExplorePage.tsx";
 
 const queryClient = new QueryClient();
 
@@ -27,35 +21,19 @@ const router = createBrowserRouter([
         path: "/",
         element: <Home />,
         // home page
-      
       },
-      {
-        path: "/anime",
-        element: <AnimeContent />,
-      },
-      {
-        path: "/hollywood-content",
-        element: <HollywoodContent />,
-      },
-      {
-        path: "/indian-content",
-        element: <IndianContent />,
-      },
-      {
-        path: "/indian-movies",
-        element: <IndianMovies />,
-      },
-      {
-        path: "/indian-shows",
-        element: <IndianShows />,
-      },
+
       {
         path: "/watch/:type/:id",
         element: <MovieDetails />,
       },
       {
-        path: "/genre/:movieId/:tvId",
+        path: "/genre/:movieId/:tvId/:genreName",
         element: <GenreContent />,
+      },
+      {
+        path: "/explore/:category",
+        element: <ExplorePage />,
       },
       {
         path: "*",

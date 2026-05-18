@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import { useInfiniteGenreMovies } from "../hooks/useGenreMovies";
 import Loading from "../components/common/Loading";
 import MovieCard from "../components/common/MovieCard";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { FiFilter, FiChevronDown } from "react-icons/fi";
 import FilterModel from "../components/common/FilterModel";
@@ -10,6 +10,7 @@ import Error from "../components/common/Error";
 
 const GenreContent = () => {
   const { movieId, tvId, genreName } = useParams();
+  console.log(movieId, tvId, genreName);
   const [filters, setFilters] = useState({
     mediaType: "all",
     year: "",
@@ -18,25 +19,10 @@ const GenreContent = () => {
     rating: "",
   });
   const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
   const { ref, inView } = useInView();
 
   const { data, fetchNextPage, hasNextPage, isPending, isError } =
-    useInfiniteGenreMovies(Number(movieId), Number(tvId), filters);
-
-  // Close dropdown when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
-        setIsFilterOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+    useInfiniteGenreMovies(Number(movieId), Number(tvId), filters, "");
 
   useEffect(() => {
     if (inView && hasNextPage) fetchNextPage();
@@ -63,7 +49,7 @@ const GenreContent = () => {
 
         {/* Custom Filter Dropdown */}
         <div>
-          <div className="relative inline-block text-left" ref={dropdownRef}>
+          <div className="relative inline-block text-left">
             <button
               onClick={() => setIsFilterOpen(true)}
               className="flex items-center gap-2 text-zinc-500 hover:text-white"

@@ -1,4 +1,6 @@
+import { Check } from "lucide-react";
 import { useEffect, useState } from "react";
+import { BiCheckboxChecked } from "react-icons/bi";
 type FiltersType = {
   mediaType: string;
   year: string;
@@ -129,8 +131,10 @@ const FilterModal = ({
             {activeTab === "safety" && (
               <label className="flex items-center gap-4 cursor-pointer p-4 bg-zinc-900 rounded-xl border border-zinc-800">
                 <input
+                id="isAdult"
+                 className="hidden"
                   type="checkbox"
-                  checked={filters.includeAdult}
+                  checked={selectedFilters.includeAdult}
                   onChange={(e) =>
                     setSelectedFilters({
                       ...selectedFilters,
@@ -138,9 +142,16 @@ const FilterModal = ({
                     })
                   }
                 />
-                <span className="text-white font-bold">
+                {selectedFilters.includeAdult ? (
+                  <div className="w-5 h-5 rounded-sm border border-vibe-cyan flex items-center justify-center">
+                    <Check size={20} className=" text-vibe-cyan" />
+                  </div>
+                ) : (
+                  <div className="w-5 h-5 rounded-sm border border-zinc-800" />
+                )}
+                <label htmlFor="isAdult" className="text-white font-bold">
                   Include Adult Content
-                </span>
+                </label>
               </label>
             )}
 

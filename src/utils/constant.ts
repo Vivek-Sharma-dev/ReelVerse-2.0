@@ -77,3 +77,14 @@ export const GENRE_MAP = [
     tv: 10768, // War & Politics in TV
   },
 ];
+
+
+export interface ContentFilter {
+  mediaType: string;
+  sortBy: string;
+  includeAdult: boolean;
+  year: string;
+  rating: string;
+  primary_release_year?: string;
+  first_air_date_year?: string;
+}

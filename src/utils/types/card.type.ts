@@ -1,4 +1,5 @@
-export type MovieProps = {
+export interface MovieProps {
+  name?: string | undefined; // TV show name
   id: number;
   release_date: string;
   poster_path: string;
@@ -19,20 +20,7 @@ export type MovieProps = {
   original_name: string;
 };
 
-// export type MovieCardProps = {
-//   id: number;
-//   release_date: string;
-//   vote_average: number;
-//   overview: string;
-//   popularity: number;
-//   vote_count: number;
-//   original_language: string;
-//   adult: boolean;
-//   original_title: string;
-//   poster_path: string;
-//   media_type: string;
-//   genre_ids: number[];
-// };
+
 
 export interface ContentDetailsProps extends Omit<
   MovieProps,

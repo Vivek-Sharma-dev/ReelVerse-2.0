@@ -1,14 +1,27 @@
 {
-    "version": "0.2",
-    "language": "en",
-    "words": [
-       "geners",
-       "tmdb",
-       "imdb",
-    ],
-    "ignorePaths": [
-        "**/node_modules/**",
-        "**/dist/**",
-        "**/build/**"
-    ]
+  "version": "0.2",
+  "language": "en",
+  "words": [
+    "geners",
+    "tmdb",
+    "imdb",
+    "ullu",
+    "kooku",
+    "altbalaji",
+    "primeshot",
+    "gandii",
+    "baat",
+    "charmsukh",
+    "chachi",
+    "no.1",
+    "palang",
+    "tod",
+    "anjane",
+    "18+",
+    "sensual",
+    "hentai",
+    "ecchi",
+    "riko",
+  ],
+  "ignorePaths": ["**/node_modules/**", "**/dist/**", "**/build/**"]
 }

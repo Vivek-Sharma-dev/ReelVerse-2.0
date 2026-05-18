@@ -1,0 +1,157 @@
+import { useParams, useSearchParams } from "react-router-dom";
+import { useInfinityExploreContent } from "../hooks/useGenreMovies";
+import { useEffect, useState } from "react";
+import MovieCard from "../components/common/MovieCard";
+import FilterModel from "../components/common/FilterModel";
+import { FiChevronDown, FiFilter } from "react-icons/fi";
+import { useInView } from "react-intersection-observer";
+import Loading from "../components/common/Loading";
+import Error from "../components/common/Error";
+import MovieRow from "../components/layout/MovieRow";
+import Carousel from "../components/common/Carousel";
+import HeroSection from "../components/layout/header/HeroSection";
+
+const ExplorePage = () => {
+  const { category } = useParams();
+  const [searchParams] = useSearchParams();
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const { ref, inView } = useInView();
+
+  // 1. URL se '?sort=...' nikaalo, agar nahi hai toh default popularity.desc
+  const currentSortParam = searchParams.get("sort") || "popularity.desc";
+  // Check karo ki kya user kisi specific filter ("See All") ko explore kar raha hai
+  const isCustomExploring = searchParams.has("sort");
+
+  const [filters, setFilters] = useState({
+    mediaType: "all",
+    year: "",
+    includeAdult: false,
+    sortBy: currentSortParam, // Set initial sort from URL
+    rating: "",
+  });
+
+  // 2. Agar URL badalta hai (user doosre link par click karta hai), toh state sync karo
+  useEffect(() => {
+    setFilters((prev) => ({
+      ...prev,
+      sortBy: currentSortParam,
+    }));
+  }, [currentSortParam]);
+
+  const { data, isError, isLoading, fetchNextPage, hasNextPage } =
+    useInfinityExploreContent(category || "IN", filters);
+
+  useEffect(() => {
+    if (inView && hasNextPage) {
+      fetchNextPage();
+    }
+  }, [inView, hasNextPage, fetchNextPage]);
+
+  if (isError) return <Error />;
+  if (isLoading) return <Loading />;
+
+  const results = data?.pages.flatMap((page) => page.results) || [];
+  const length = results?.length || 0;
+
+  // Dynamic Title Logic
+  const getHeadingTitle = () => {
+    if (category === "indian") return "Desi Vibes 🇮🇳";
+    if (category === "hollywood") return "Hollywood Hits 🎬";
+    if (category === "anime") return "Otaku Station ⛩️";
+    return category || "Explore";
+  };
+
+  return (
+    <>
+      <section id="heroSection">
+        {/*Hero Section */}
+        <div>
+          <HeroSection data={results} />
+        </div>
+      </section>
+
+        {/* Header Section */}
+      <section
+        className="container mx-auto py-10 px-4"
+        id={`section-${category}`}
+      >
+        <div className="flex justify-between items-end mb-12 border-b border-zinc-800 pb-6">
+          <div>
+            <h1 className="text-4xl md:text-3xl font-black text-white uppercase tracking-tighter">
+              {getHeadingTitle()}{" "}
+              <span className="text-vibe-cyan text-xl">
+                {isCustomExploring
+                  ? `> ${searchParams.get("sort")?.split(".")[0]}`
+                  : "Content"}
+              </span>
+            </h1>
+            <p className="text-zinc-500 text-sm mt-2 font-medium tracking-wide">
+              Exploring {length}+ titles in this category
+            </p>
+          </div>
+          <div>
+            <div className="relative inline-block text-left">
+              <button
+                onClick={() => setIsFilterOpen(true)}
+                className="flex items-center gap-2 text-zinc-500 hover:text-white font-bold border border-zinc-800 px-4 py-2 rounded-xl bg-zinc-900/50 transition-all"
+              >
+                <FiFilter className="text-vibe-cyan" />
+                <span>Advanced Filters</span>
+                <FiChevronDown />
+              </button>
+              <FilterModel
+                isOpen={isFilterOpen}
+                onClose={() => setIsFilterOpen(false)}
+                filters={filters}
+                setFilters={setFilters}
+              />
+            </div>
+          </div>
+        </div>
+
+        {!isCustomExploring && (
+          <div className="space-y-10 mb-16">
+            <MovieRow
+              movieId={null}
+              tvId={null}
+              title={"Top Rated Masterpieces"}
+              exploreLink={`/explore/${category}?sort=vote_average.desc`} // dynamic parameter
+              filter={{ ...filters, sortBy: "vote_average.desc" }}
+              category={category}
+            />
+            <MovieRow
+              movieId={null}
+              tvId={null}
+              title={"Trending Now"}
+              exploreLink={`/explore/${category}?sort=popularity.desc`} // dynamic parameter
+              filter={{ ...filters, sortBy: "popularity.desc" }}
+              category={category}
+            />
+          </div>
+        )}
+
+        {/* 4. Main Infinite Grid Section */}
+        <div>
+          <h2 className="text-2xl font-bold text-white mb-6 uppercase tracking-tight">
+            {isCustomExploring ? "Filtered Results" : "More To Explore"}
+          </h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            {results.map((item) => (
+              <MovieCard
+                key={`${item.id}-${item.media_type || "movie"}`}
+                data={item}
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* Loader for Infinite Scroll */}
+        <div ref={ref} className="py-10 flex justify-center">
+          {hasNextPage && <Loading />}
+        </div>
+      </section>
+    </>
+  );
+};
+
+export default ExplorePage;

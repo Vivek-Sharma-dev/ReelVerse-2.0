@@ -1,20 +1,46 @@
 import { Link } from "react-router-dom";
 import MovieCard from "../common/MovieCard";
-import { useGenreMovies } from "../../hooks/useGenreMovies.tsx";
+import {
+  useGenreMovies,
+  useInfiniteGenreMovies,
+} from "../../hooks/useGenreMovies.tsx";
 import type { MovieProps } from "../../utils/types/card.type";
+import type { ContentFilter } from "../../utils/constant.ts";
 
 type MovieRowProps = {
   title: string; // Section name (e.g., "Horror Classics")
   exploreLink: string; // "Explore All" button ka path
-  movieId: number;
+  movieId: number | null | undefined;
   tvId: number | null | undefined;
+  category: string | undefined;
+  filter?: ContentFilter;
 };
 
-const MovieRow = ({ title, movieId, tvId, exploreLink }: MovieRowProps) => {
-
-  const { data } = useGenreMovies(movieId, tvId);
-  const movies = data?.slice(0, 8);
-
+const MovieRow = ({
+  title,
+  movieId,
+  tvId,
+  exploreLink,
+  category = "",
+  filter = {
+    mediaType: "all",
+    sortBy: "popularity.desc",
+    includeAdult: false,
+    year: "",
+    rating: "",
+  },
+}: MovieRowProps) => {
+  const { data, isPending, isError } = useInfiniteGenreMovies(
+    movieId,
+    tvId,
+    filter,
+    category,
+  );
+  if(isPending) return <p>Loading...</p>;
+  if(isError) return <p>Error loading movies.</p>;
+  const movies =
+  data?.pages.flatMap((page) => page.results).slice(0, 8) || ([] as MovieProps[]);
+  console.log(movies)
   return (
     <section className="py-8">
       <div className="flex justify-between items-center mb-6">

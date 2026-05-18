@@ -1,6 +1,4 @@
-import { useEffect, useRef, useState } from "react";
-import { FaTimes } from "react-icons/fa";
-import { HiMenuAlt3 } from "react-icons/hi";
+import { useEffect, useRef } from "react";
 import { NavLink } from "react-router-dom";
 import {
   activeLinkStyle,
@@ -22,19 +20,19 @@ const navLinks: NavLinkType[] = [
   },
   {
     name: "hollywood",
-    path: "/hollywood-content",
+    path: "/explore/hollywood",
     label: "Hollywood",
     id: "hollywood-link",
   },
   {
     name: "indian",
-    path: "/indian-content",
+    path: "/explore/indian",
     label: "Indian",
     id: "indian-link",
   },
   {
     name: "anime",
-    path: "/anime",
+    path: "/explore/anime",
     label: "Anime",
     id: "anime-link",
   },

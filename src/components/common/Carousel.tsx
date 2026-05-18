@@ -82,11 +82,21 @@ const Carousel = ({
     <div ref={container} className="relative h-[80dvh] overflow-hidden">
       <img
         src={`https://image.tmdb.org/t/p/original/${movie.backdrop_path}`}
-        alt={movie.original_title}
+        alt={
+          movie.title ||
+          movie.name ||
+          movie.original_name ||
+          movie.original_title
+        }
         className="absolute inset-0 w-full h-full object-cover hero-bg-img"
       />
       <div className="hero-content relative z-10 p-16 flex flex-col justify-center h-full bg-linear-to-r from-black/80 to-transparent">
-        <h1 className="text-4xl font-bold">{movie.original_title}</h1>
+        <h1 className="text-4xl font-bold">
+          {movie.title ||
+            movie.name ||
+            movie.original_name ||
+            movie.original_title}
+        </h1>
         <div className="flex items-center gap-4 mt-4">
           {geners.map((genre, index) => (
             <span

@@ -26,11 +26,11 @@ const Home = () => {
             title={genre.name}
             movieId={genre.movie}
             tvId={genre.tv}
-            exploreLink={`/genre/${genre.movie}/${genre.tv}`}
+            exploreLink={`/genre/${genre.movie}/${genre.tv}/${genre.name}`}
+            category={genre.name}
           />
         ))}
       </section>
-
     </>
   );
 };
