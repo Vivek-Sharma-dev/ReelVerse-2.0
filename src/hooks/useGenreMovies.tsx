@@ -2,7 +2,6 @@ import { useQuery, useInfiniteQuery } from "@tanstack/react-query";
 import {
   fetchContentByGenre,
   fetchExploreContent,
-  fetchHomeContentByGenre,
 } from "../services/tmdb.service.ts";
 import type { ContentFilter } from "../utils/constant.ts";
 

@@ -1,6 +1,5 @@
 import { Check } from "lucide-react";
 import { useEffect, useState } from "react";
-import { BiCheckboxChecked } from "react-icons/bi";
 type FiltersType = {
   mediaType: string;
   year: string;
