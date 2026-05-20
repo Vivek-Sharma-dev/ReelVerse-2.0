@@ -3,7 +3,7 @@ import { useGSAP } from "@gsap/react";
 import { useRef } from "react";
 import { movieGenreMap, tvGenreMap } from "../../utils/types/Mapping";
 import type { MovieProps } from "../../utils/types/card.type";
-import { Link } from "lucide-react";
+import { Link } from "react-router-dom";
 const Carousel = ({
   movie,
   isExiting,
@@ -82,7 +82,7 @@ const Carousel = ({
   return (
     <Link
       to={`/watch/${movie.media_type}/${movie.id}`}
-      className="w-full h-full"
+      className="relative w-full md:h-[60dvh] lg:h-[70dvh] overflow-hiddenw-full h-full"
     >
       <div
         ref={container}
