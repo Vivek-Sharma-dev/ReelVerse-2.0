@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useMovieDetails } from "../../hooks/useDetails";
 import Loading from "../../components/common/Loading";
 import Error from "../../components/common/Error";
@@ -86,28 +86,30 @@ const MovieDetails = () => {
                 {/* Horizontal Scroll for Cast */}
                 <div className="flex gap-6 overflow-x-auto pb-6 no-scrollbar">
                   {credits?.cast?.slice(0, 15).map((person) => (
-                    <div
-                      key={person.id}
-                      className="shrink-0 w-32 md:w-40 group flex flex-col items-center"
-                    >
-                      <div className="relative aspect-square overflow-hidden h-42 w-30 rounded-full border-2 border-zinc-800 group-hover:border-vibe-cyan transition-colors mb-3 shadow-xl">
-                        <img
-                          src={
-                            person.profile_path
-                              ? `https://image.tmdb.org/t/p/w200${person.profile_path}`
-                              : "https://via.placeholder.com/200x200?text=No+Image"
-                          }
-                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                          alt={person.name}
-                        />
+                    <Link to={`/person/${person.id}`} key={person.id}>
+                      <div
+                        key={person.id}
+                        className="shrink-0 w-32 md:w-40 group flex flex-col items-center"
+                      >
+                        <div className="relative aspect-square overflow-hidden h-42 w-30 rounded-full border-2 border-zinc-800 group-hover:border-vibe-cyan transition-colors mb-3 shadow-xl">
+                          <img
+                            src={
+                              person.profile_path
+                                ? `https://image.tmdb.org/t/p/w200${person.profile_path}`
+                                : "https://via.placeholder.com/200x200?text=No+Image"
+                            }
+                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                            alt={person.name}
+                          />
+                        </div>
+                        <h4 className="text-sm font-bold text-white truncate">
+                          {person.name}
+                        </h4>
+                        <p className="text-xs text-zinc-500 truncate italic">
+                          {person.character}
+                        </p>
                       </div>
-                      <h4 className="text-sm font-bold text-white truncate">
-                        {person.name}
-                      </h4>
-                      <p className="text-xs text-zinc-500 truncate italic">
-                        {person.character}
-                      </p>
-                    </div>
+                    </Link>
                   ))}
                 </div>
               </div>

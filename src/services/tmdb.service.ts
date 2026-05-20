@@ -289,3 +289,31 @@ export const fetchExploreContent = async (
     throw error;
   }
 };
+
+
+// fetch person details
+export const fetchPersonDetails = async (id: number) : Promise<{
+  person: any;
+  credits: any[];
+}> => {
+  try {
+    const [personRes, movieCreditsRes, tvCreditsRes] = await Promise.all([
+      tmdbApi.get(`/person/${id}`),
+      tmdbApi.get(`/person/${id}/movie_credits`),
+      tmdbApi.get(`/person/${id}/tv_credits`),
+    ]);
+
+    const combinedCredits = [
+      ...movieCreditsRes.data.cast.map((m: any) => ({ ...m, media_type: "movie" })),
+      ...tvCreditsRes.data.cast.map((t: any) => ({ ...t, media_type: "tv" })),
+    ]
+
+    return {
+      person: personRes.data,
+      credits: combinedCredits.sort(() => Math.random() - 0.5), 
+    };
+  } catch (error) {
+    console.error("Error fetching person details:", error);
+    throw error;
+  }
+}

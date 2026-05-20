@@ -10,6 +10,7 @@ import MovieDetails from "./pages/movieDetails/MovieDetails.tsx";
 import GenreContent from "./pages/GenreContent.tsx";
 import ExplorePage from "./pages/ExplorePage.tsx";
 import SearchPage from "./pages/SearchPage.tsx";
+import PersonDetails from "./pages/PersonDetails.tsx";
 
 const queryClient = new QueryClient();
 
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
       {
         path: "/explore/:category",
         element: <ExplorePage />,
+      },
+      {
+        path: "/person/:id",
+        element: <PersonDetails />,
       },
       {
         path: "*",
