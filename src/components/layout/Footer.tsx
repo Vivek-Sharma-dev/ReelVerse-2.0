@@ -1,6 +1,5 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
-import { PlayCircleIcon,  Globe } from 'lucide-react';
+import { PlayCircleIcon } from 'lucide-react';
 import { BsGithub } from 'react-icons/bs';
 import { LiaLinkedin } from 'react-icons/lia';
 

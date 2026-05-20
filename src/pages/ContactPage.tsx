@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import { Mail, MessageSquare, Send, User } from "lucide-react";
 import { useForm, ValidationError } from "@formspree/react";
 const ContactPage = () => {
@@ -8,7 +8,7 @@ const ContactPage = () => {
   if (state.succeeded) {
     return (
       <div className="min-h-screen bg-[#0d0d13] text-gray-100 pt-24 px-4 md:px-12 pb-12 flex items-center justify-center selection:bg-vibe-cyan/30">
-        <div className="max-w-4xl w-full bg-white/[0.01] border border-white/5 backdrop-blur-md p-8 md:p-12 rounded-3xl shadow-2xl shadow-black/40 flex flex-col md:flex-row gap-10">
+        <div className="max-w-4xl w-full bg-white/1 border border-white/5 backdrop-blur-md p-8 md:p-12 rounded-3xl shadow-2xl shadow-black/40 flex flex-col md:flex-row gap-10">
           <div className="flex-1 flex flex-col justify-center items-center space-y-6">
             <h1 className="text-4xl font-black text-white uppercase tracking-tighter mb-4">
               Transmission <span className="text-vibe-cyan">Received</span>
@@ -39,7 +39,7 @@ const ContactPage = () => {
 
   return (
     <div className="min-h-screen bg-[#0d0d13] text-gray-100 pt-24 px-4 md:px-12 pb-12 flex items-center justify-center selection:bg-vibe-cyan/30">
-      <div className="max-w-4xl w-full bg-white/[0.01] border border-white/5 backdrop-blur-md p-8 md:p-12 rounded-3xl shadow-2xl shadow-black/40 flex flex-col md:flex-row gap-10">
+      <div className="max-w-4xl w-full bg-white/1 border border-white/5 backdrop-blur-md p-8 md:p-12 rounded-3xl shadow-2xl shadow-black/40 flex flex-col md:flex-row gap-10">
         {/* Pitch Context */}
         <div className="flex-1 flex flex-col justify-between space-y-6">
           <div>

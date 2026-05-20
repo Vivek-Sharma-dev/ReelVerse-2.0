@@ -1,4 +1,3 @@
-import React from 'react';
 import { useWatchlist } from '../context/WatchlistContext';
 import MovieCard from '../components/common/MovieCard';
 import { type MovieProps } from '../utils/types/card.type';

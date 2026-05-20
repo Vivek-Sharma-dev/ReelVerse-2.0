@@ -5,8 +5,6 @@ import {
 } from "../../hooks/useGenreMovies.tsx";
 import type { MovieProps } from "../../utils/types/card.type";
 import type { ContentFilter } from "../../utils/constant.ts";
-import {useGSAP} from "@gsap/react";
-import gsap from "gsap";
 type MovieRowProps = {
   title: string; // Section name (e.g., "Horror Classics")
   exploreLink: string; // "Explore All" button ka path
