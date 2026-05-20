@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import MovieCard from "../common/MovieCard";
 import {
-  useGenreMovies,
   useInfiniteGenreMovies,
 } from "../../hooks/useGenreMovies.tsx";
 import type { MovieProps } from "../../utils/types/card.type";

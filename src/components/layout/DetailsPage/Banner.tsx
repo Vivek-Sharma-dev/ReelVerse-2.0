@@ -1,7 +1,7 @@
 import { Play, Plus, Star, X } from "lucide-react";
 import type { ContentDetailsProps } from "../../../utils/types/card.type";
 import type { TrailerType } from "../../../pages/movieDetails/MovieDetails";
-
+import { useWatchlist } from "../../../context/WatchlistContext";
 const Banner = ({
   details,
   trailer,
@@ -17,6 +17,41 @@ const Banner = ({
   const title = details.title || details.name;
   const date = details.release_date || details.first_air_date;
   const year = date ? new Date(date).getFullYear() : "N/A";
+  const { isInWatchlist, addToWatchlist, removeFromWatchlist } = useWatchlist();
+  const isAdded = isInWatchlist(details.id);
+
+   const handleWatchlistToggle = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    e.preventDefault();
+    if (isAdded) {
+      removeFromWatchlist(details.id);
+    } else {
+      const formattedMovieForWatchlist = {
+      id: details.id,
+      title: details.title || "",
+      name: details.name || "",
+      original_title: details.original_title || "",
+      original_name: details.original_name || "",
+      backdrop_path: details.backdrop_path || "",
+      poster_path: details.poster_path || "",
+      overview: details.overview || "",
+      vote_average: details.vote_average || 0,
+      release_date: details.release_date || "",
+      first_air_date: details.first_air_date || "",
+      media_type: details.title || details.release_date ? "movie" : "tv", 
+      adult: details.adult || false,
+      video: details.video || false,
+      vote_count: details.vote_count || 0,
+      popularity: details.popularity || 0,
+      original_language: details.original_language || "",
+      
+      // FIX: Details page ke [{id, name}] array ko flat integer list [id] mein map karo 🌟
+      genre_ids: details.genres ? details.genres.map((g: any) => g.id) : []
+
+    };
+      addToWatchlist(formattedMovieForWatchlist);
+    }
+  };
 
   // Format Runtime: Movies use 'runtime', TV uses 'episode_run_time' array
   const rawRuntime = details.runtime || details.episode_run_time?.[0] || 0;
@@ -116,8 +151,11 @@ const Banner = ({
                     Trailer Unavailable
                   </button>
                 )}
-                <button className="bg-white/10 px-6 py-3 rounded-full font-bold hover:bg-white/20 transition-colors flex items-center gap-2">
-                  <Plus /> Add to Watchlist
+                <button
+                  onClick={handleWatchlistToggle}
+                  className="bg-white/10 px-6 py-3 rounded-full font-bold hover:bg-white/20 transition-colors flex items-center gap-2"
+                >
+                  <Plus /> {isAdded ? "Remove from" : "Add to"} Watchlist
                 </button>
               </div>
             </div>

@@ -11,6 +11,9 @@ import GenreContent from "./pages/GenreContent.tsx";
 import ExplorePage from "./pages/ExplorePage.tsx";
 import SearchPage from "./pages/SearchPage.tsx";
 import PersonDetails from "./pages/PersonDetails.tsx";
+import { WatchlistProvider } from "./context/WatchlistContext.tsx";
+import WatchlistPage from "./pages/WatchlistPage.tsx";
+import ContactPage from "./pages/ContactPage.tsx";
 
 const queryClient = new QueryClient();
 
@@ -42,14 +45,22 @@ const router = createBrowserRouter([
         element: <PersonDetails />,
       },
       {
+        path: "/search",
+        element: <SearchPage />,
+      },
+      {
+        path: "/watchlist",
+        element: <WatchlistPage />
+      },
+      {
+        path: "/contact-us",
+        element: <ContactPage />
+      },
+      {
         path: "*",
         element: (
           <h1 className="text-center text-2xl mt-10">404 - Page Not Found</h1>
         ),
-      },
-      {
-        path: "/search",
-        element: <SearchPage />,
       },
     ],
   },
@@ -57,7 +68,9 @@ const router = createBrowserRouter([
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
+      <WatchlistProvider>
       <RouterProvider router={router} />
+      </WatchlistProvider>
     </QueryClientProvider>
   </StrictMode>,
 );

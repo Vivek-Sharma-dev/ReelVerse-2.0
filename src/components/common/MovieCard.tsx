@@ -1,8 +1,10 @@
-import { PlayCircleIcon, Plus, Star } from "lucide-react";
+import { Check, PlayCircleIcon, Plus, Star } from "lucide-react";
 import { BiMovie } from "react-icons/bi";
 import { Link } from "react-router-dom";
 import type { MovieProps } from "../../utils/types/card.type";
 import { movieGenreMap, tvGenreMap } from "../../utils/types/Mapping";
+import { useWatchlist } from "../../context/WatchlistContext";
+import type React from "react";
 
 const MovieCard = ({ data }: { data: MovieProps }) => {
   const isMovie =
@@ -10,6 +12,20 @@ const MovieCard = ({ data }: { data: MovieProps }) => {
   const geners = data?.genre_ids.map((id) => {
     return isMovie ? movieGenreMap[id] : tvGenreMap[id];
   });
+
+  const { isInWatchlist, addToWatchlist, removeFromWatchlist } = useWatchlist();
+
+  const isAdded = isInWatchlist(data?.id);
+
+  const handleWatchlistToggle = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    e.preventDefault();
+    if (isAdded) {
+      removeFromWatchlist(data.id);
+    } else {
+      addToWatchlist(data);
+    }
+  };
 
   const filteredGeners = geners.filter(
     (genre) => genre !== undefined && genre.length > 0,
@@ -41,7 +57,10 @@ const MovieCard = ({ data }: { data: MovieProps }) => {
         <div className="p-2 flex flex-col gap-1">
           <div className="flex justify-between">
             <h1 className="text-xl font-medium group-hover:text-vibe-cyan transition-all duration-300 line-clamp-1">
-              {data?.title || data?.name || data?.original_title || data?.original_name}
+              {data?.title ||
+                data?.name ||
+                data?.original_title ||
+                data?.original_name}
             </h1>
             {data?.vote_average !== 0 && (
               <p className="text-vibe-cyan flex items-center gap-1">
@@ -64,20 +83,32 @@ const MovieCard = ({ data }: { data: MovieProps }) => {
                 : "Unknown Genre"}
             </p>
           </div>
-          <p className={`text-[14px] text-gray-300 mt-2 ${data?.overview ? "line-clamp-2": "min-h-10"}`}>
+          <p
+            className={`text-[14px] text-gray-300 mt-2 ${data?.overview ? "line-clamp-2" : "min-h-10"}`}
+          >
             {data?.overview ? data?.overview : "No overview available"}
           </p>
           <div className="border-b border-gray-700 mt-3" />
           <div className="flex justify-center items-center my-2">
             <button
-              onClick={(e) => {
-                e.stopPropagation();
-                e.preventDefault();
-                console.log("add to wishlist");
-              }}
-              className="flex items-center gap-2 text-gray-400 cursor-pointer hover:text-white transition-all duration-300 active:scale-95"
+              onClick={handleWatchlistToggle}
+              className={`flex items-center gap-2 text-xs transition-all duration-300 active:scale-95 py-1 font-semibold ${
+                isAdded
+                  ? "text-vibe-cyan hover:text-red-400"
+                  : "text-zinc-400 hover:text-white"
+              }`}
             >
-              <Plus /> Watch list
+              {isAdded ? (
+                <>
+                  <Check size={14} className="animate-scaleIn" />
+                  <span>In Watchlist</span>
+                </>
+              ) : (
+                <>
+                  <Plus size={14} />
+                  <span>Watch list</span>
+                </>
+              )}
             </button>
           </div>
         </div>

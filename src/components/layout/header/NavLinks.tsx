@@ -36,6 +36,18 @@ const navLinks: NavLinkType[] = [
     label: "Anime",
     id: "anime-link",
   },
+  {
+    name: "watchlist",
+    path: "/watchlist",
+    label: "Watchlist",
+    id: "watchlist-link",
+  },
+  {
+    name: "contact",
+    path: "/contact-us",
+    label: "Contact",
+    id: "contact-link",
+  }
 ];
 const NavLinks = ({
   direction = "row",

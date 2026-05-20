@@ -40,14 +40,14 @@ const HeroSection = ({ data }: { data: MovieProps[] }) => {
         <div>
           <button
             onClick={() => triggerNext("prev")}
-            className="absolute left-4 top-1/2 -translate-y-1/2 z-20 p-3 bg-black/20 backdrop-blur-md rounded-full opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
+            className="absolute left-4 top-1/2 -translate-y-1/2 z-20 p-3 bg-black/20 backdrop-blur-md rounded-full lg:opacity-0 lg:group-hover:opacity-100 transition-opacity cursor-pointer"
           >
             <ChevronLeft size={30} />
           </button>
 
           <button
             onClick={() => triggerNext("next")}
-            className="absolute right-4 top-1/2 -translate-y-1/2 z-20 p-3 bg-black/20 backdrop-blur-md rounded-full opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
+            className="absolute right-4 top-1/2 -translate-y-1/2 z-20 p-3 bg-black/20 backdrop-blur-md rounded-full lg:opacity-0 lg:group-hover:opacity-100 transition-opacity cursor-pointer"
           >
             <ChevronRight size={30} />
           </button>

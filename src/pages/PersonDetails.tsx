@@ -1,4 +1,3 @@
-import React from 'react';
 import { useParams } from 'react-router-dom';
 import { usePersonDetails } from '../hooks/usePersonDetails';
 import { type MovieProps } from '../utils/types/card.type';
