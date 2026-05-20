@@ -53,8 +53,8 @@ const Banner = ({
               className="w-full h-full object-cover"
               alt={title}
             />
-            <div className="absolute inset-0 bg-linear-to-t from-main-bg via-main-bg/60 to-transparent" />
-            <div className="absolute inset-0 bg-linear-to-r from-main-bg via-transparent to-transparent" />
+            <div className="hidden lg:block absolute inset-0 bg-linear-to-t from-main-bg via-main-bg/60 to-transparent" />
+            <div className="hidden lg:block absolute inset-0 bg-linear-to-r from-main-bg via-transparent to-transparent" />
           </div>
 
           {/* 2. Content Container */}
@@ -67,7 +67,7 @@ const Banner = ({
                 </span>
               )}
 
-              <h1 className="text-4xl md:text-3xl font-serif uppercase tracking-tighter leading-none">
+              <h1 className="text-xl lg:text-4xl md:text-3xl font-serif uppercase tracking-tighter leading-none">
                 {title}
               </h1>
 
@@ -99,11 +99,11 @@ const Banner = ({
                 </div>
               </div>
 
-              <div className="flex items-center gap-3">
+              <div className="flex flex-col lg:flex-row items-start lg:items-center gap-3">
                 {trailer?.key ? (
                   <button
                     onClick={() => setIsTrailerPlaying(true)}
-                    className="bg-vibe-cyan text-white px-6 py-3 rounded-full font-bold hover:bg-vibe-cyan/80 transition-colors flex items-center gap-2"
+                    className="bg-vibe-cyan text-white px-6 py-2 lg:py-3 rounded-full font-bold hover:bg-vibe-cyan/80 transition-colors flex items-center gap-2"
                   >
                     <Play className="text-white" fill="currentColor" /> Watch
                     Trailer
@@ -111,12 +111,12 @@ const Banner = ({
                 ) : (
                   <button
                     disabled
-                    className="bg-zinc-800 text-zinc-500 border border-zinc-700 px-6 py-3 rounded-full font-bold cursor-not-allowed flex items-center gap-2"
+                    className="bg-zinc-800 text-zinc-500 border border-zinc-700 px-6 py-2 lg:py-3 rounded-full font-bold cursor-not-allowed flex items-center gap-2"
                   >
                     Trailer Unavailable
                   </button>
                 )}
-                <button className="ml-4 bg-white/10 px-6 py-3 rounded-full font-bold hover:bg-white/20 transition-colors flex items-center gap-2">
+                <button className="bg-white/10 px-6 py-3 rounded-full font-bold hover:bg-white/20 transition-colors flex items-center gap-2">
                   <Plus /> Add to Watchlist
                 </button>
               </div>

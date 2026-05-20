@@ -44,7 +44,7 @@ const MovieRow = ({
   return (
     <section className="py-8">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold text-vibe-cyan border-l-4 border-vibe-cyan pl-4">
+        <h2 className="text-xl lg:text-2xl font-bold text-vibe-cyan border-l-4 border-vibe-cyan pl-4">
           {title}
         </h2>
         <Link
@@ -55,9 +55,11 @@ const MovieRow = ({
         </Link>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-        {movies?.map((movie: MovieProps) => (
-          <MovieCard key={movie.id} data={movie} />
+      <div className="grid  grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+        {movies?.map((movie: MovieProps, idx: number) => (
+          <div className={`${idx >= 4 ? "hidden lg:block" : ""}`} key={movie.id}>
+          <MovieCard data={movie} />
+          </div>
         ))}
       </div>
     </section>

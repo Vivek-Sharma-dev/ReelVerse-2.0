@@ -68,8 +68,8 @@ const MovieDetails = () => {
             setIsTrailerPlaying={setIsTrailerPlaying}
           />
         </section>
-        <section id="movie-info" className="container mx-auto">
-          <div className="flex justify-between gap-5 my-7 relative">
+        <section id="movie-info" className="container mx-auto px-3 lg:px-0">
+          <div className="flex flex-col justify-between gap-5 my-7 relative">
             <div>
               <h2 className="text-2xl font-bold text-vibe-cyan border-l-4 border-vibe-cyan pl-4 mb-8 uppercase tracking-tighter">
                 Overview
@@ -114,7 +114,7 @@ const MovieDetails = () => {
                 </div>
               </div>
             </div>
-            <div className="absolute lg:-top-60 right-0">
+            <div className="lg:absolute lg:-top-60 lg:right-0">
               <MovieInfoCard details={details} />
             </div>
           </div>

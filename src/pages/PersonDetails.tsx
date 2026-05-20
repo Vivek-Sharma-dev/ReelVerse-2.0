@@ -36,14 +36,14 @@ const PersonDetails = () => {
     console.log('Person Details Data:', person); // Debugging log to check the structure of the fetched data
 
   return (
-    <div className="min-h-screen bg-[#0d0d13] text-gray-100 pt-24 px-4 md:px-12 pb-12 selection:bg-vibe-cyan/30">
+    <div className="min-h-screen bg-[#0d0d13] text-gray-100 pt-10 px-4 md:px-12 pb-12 selection:bg-vibe-cyan/30">
       
       {/* Container: Profile Section + Bio */}
       <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-start gap-10">
         
         {/* Left Side: Avatar Panel -> Made STICKY to prevent empty space below */}
         <div className="w-full lg:w-1/4 flex flex-col items-center lg:items-start shrink-0 lg:sticky lg:top-24">
-          <div className="w-64 h-92 rounded-2xl overflow-hidden shadow-2xl shadow-vibe-cyan/5 border border-white/10 group bg-gray-900">
+          <div className=" rounded-2xl overflow-hidden shadow-2xl shadow-vibe-cyan/5 border border-white/10 group bg-gray-900">
             {person.profile_path ? (
               <img
                 src={`${TMDB_IMAGE_BASE}${person.profile_path}`}
@@ -58,7 +58,7 @@ const PersonDetails = () => {
           </div>
           
           {/* Quick Info Box */}
-          <div className="mt-6 w-64 space-y-3 bg-white/[0.02] border border-white/5 p-4 rounded-xl text-sm">
+          <div className="mt-6 w-64 space-y-3 bg-white/2 border border-white/5 p-4 rounded-xl text-sm">
             <div>
               <span className="text-vibe-cyan/70 font-semibold block">Known For</span>
               <span className="text-gray-300">{person.known_for_department || 'Acting'}</span>
@@ -79,7 +79,7 @@ const PersonDetails = () => {
               {person.name}
             </h1>
             <h3 className="text-xl font-bold text-transparent bg-clip-text bg-linear-to-r from-vibe-cyan to-indigo-400 mb-2">Biography</h3>
-            <p className="text-gray-400 leading-relaxed text-justify font-normal text-sm md:text-base max-h-64 overflow-y-auto pr-2 custom-scrollbar">
+            <p className="text-gray-400 leading-relaxed text-justify font-normal text-sm md:text-base max-h-64 overflow-y-auto pr-2 no-scrollbar">
               {person.biography || `${person.name} is a celebrated personality in world cinema.`}
             </p>
           </div>
@@ -89,17 +89,16 @@ const PersonDetails = () => {
           {/* Combined Credits Dynamic Grid */}
           <div>
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-black tracking-tight text-white flex items-center gap-2">
-                <span className="w-2 h-6 bg-vibe-cyan rounded-full block"></span>
+              <h2 className="text-2xl font-black tracking-tight text-white flex items-center gap-2 h-full border-l-4 border-vibe-cyan pl-4">
                 Filmography & Roles
               </h2>
               <span className="text-xs bg-vibe-cyan/10 border border-vibe-cyan/20 text-vibe-cyan px-3 py-1 rounded-full font-mono">
-                {credits.length} Titles Loaded
+                {credits.length} Total Credits
               </span>
             </div>
 
             {/* 🛠️ FIXED GRID LAYOUT: Standard responsive column scale up to 5 cols */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-5">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
               {/* 🛠️ FIXED: Safe slicing mechanism instead of mutation-heavy splice */}
               {credits.slice(0, 20).map((movie: MovieProps, index: number) => (
                 <MovieCard key={`${movie.id}-${index}`} data={movie} />

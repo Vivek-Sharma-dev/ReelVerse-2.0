@@ -40,7 +40,7 @@ const MovieCard = ({ data }: { data: MovieProps }) => {
         </div>
         <div className="p-2 flex flex-col gap-1">
           <div className="flex justify-between">
-            <h1 className="text-mdx font-medium group-hover:text-vibe-cyan transition-all duration-300 line-clamp-1">
+            <h1 className="text-xl font-medium group-hover:text-vibe-cyan transition-all duration-300 line-clamp-1">
               {data?.title || data?.name || data?.original_title || data?.original_name}
             </h1>
             {data?.vote_average !== 0 && (

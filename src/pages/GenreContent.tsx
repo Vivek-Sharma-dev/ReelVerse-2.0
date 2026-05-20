@@ -7,6 +7,7 @@ import { useInView } from "react-intersection-observer";
 import { FiFilter, FiChevronDown } from "react-icons/fi";
 import FilterModel from "../components/common/FilterModel";
 import Error from "../components/common/Error";
+import HeroSection from "../components/layout/HeroSection";
 
 const GenreContent = () => {
   const { movieId, tvId, genreName } = useParams();
@@ -34,13 +35,16 @@ const GenreContent = () => {
   const allResults = data?.pages.flatMap((page) => page.results) || [];
 
   return (
-    <div className="container mx-auto px-4 py-10 min-h-screen">
+    <>
+      <section className="mb-4">
+        <HeroSection data={allResults.slice(0, 5)} />
+      </section>
       {/* Header Section */}
-      <div className="flex justify-between items-end mb-12 border-b border-zinc-800 pb-6">
+      <section className="flex justify-between items-center mb-12 border-b border-zinc-800 pb-6 container mx-auto px-4">
         <div>
-          <h1 className="text-4xl md:text-5xl font-black text-white uppercase tracking-tighter">
+          <h1 className="text-xl lg:text-4xl md:text-5xl font-black text-white uppercase tracking-tighter ">
             {genreName || "Action"}{" "}
-            <span className="text-vibe-cyan">Content</span>
+            <span className="text-vibe-cyan text-sm lg:text-xl">Content</span>
           </h1>
           <p className="text-zinc-500 text-sm mt-2 font-medium tracking-wide">
             Exploring {allResults.length}+ titles in this category
@@ -48,38 +52,38 @@ const GenreContent = () => {
         </div>
 
         {/* Custom Filter Dropdown */}
-        <div>
-          <div className="relative inline-block text-left">
-            <button
-              onClick={() => setIsFilterOpen(true)}
-              className="flex items-center gap-2 text-zinc-500 hover:text-white"
-            >
-              <FiFilter />
-              <span>Filter</span>
-              <FiChevronDown />
-            </button>
-            <FilterModel
-              isOpen={isFilterOpen}
-              onClose={() => setIsFilterOpen(false)}
-              filters={filters}
-              setFilters={setFilters}
-            />
-          </div>
+        <div className="relative inline-block text-left">
+          <button
+            onClick={() => setIsFilterOpen(true)}
+            className="flex items-center gap-2 text-zinc-500 hover:text-white"
+          >
+            <FiFilter />
+            <span>Filter</span>
+            <FiChevronDown />
+          </button>
+          <FilterModel
+            isOpen={isFilterOpen}
+            onClose={() => setIsFilterOpen(false)}
+            filters={filters}
+            setFilters={setFilters}
+          />
         </div>
-      </div>
+      </section>
 
       {/* Grid Section */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 items-stretch gap-6">
-        {allResults.map((movie) => (
-          <MovieCard key={`${movie.id}-${movie.media_type}`} data={movie} />
-        ))}
-      </div>
+      <section id="content-portion" className="container mx-auto px-3 lg:px-0">
+        <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 items-stretch gap-6">
+          {allResults.map((movie) => (
+            <MovieCard key={`${movie.id}-${movie.media_type}`} data={movie} />
+          ))}
+        </div>
+      </section>
 
       {/* Loader for Infinite Scroll */}
       <div ref={ref} className="py-10 flex justify-center">
         {hasNextPage && <Loading />}
       </div>
-    </div>
+    </>
   );
 };
 

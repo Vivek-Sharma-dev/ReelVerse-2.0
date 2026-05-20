@@ -8,8 +8,7 @@ import { useInView } from "react-intersection-observer";
 import Loading from "../components/common/Loading";
 import Error from "../components/common/Error";
 import MovieRow from "../components/layout/MovieRow";
-import Carousel from "../components/common/Carousel";
-import HeroSection from "../components/layout/header/HeroSection";
+import HeroSection from "../components/layout/HeroSection";
 
 const ExplorePage = () => {
   const { category } = useParams();
@@ -65,9 +64,7 @@ const ExplorePage = () => {
     <>
       <section id="heroSection">
         {/*Hero Section */}
-        <div>
           <HeroSection data={results} />
-        </div>
       </section>
 
         {/* Header Section */}
@@ -75,11 +72,11 @@ const ExplorePage = () => {
         className="container mx-auto py-10 px-4"
         id={`section-${category}`}
       >
-        <div className="flex justify-between items-end mb-12 border-b border-zinc-800 pb-6">
+        <div className="flex justify-between items-center mb-12 border-b border-zinc-800 pb-6">
           <div>
-            <h1 className="text-4xl md:text-3xl font-black text-white uppercase tracking-tighter">
+            <h1 className="text-xl lg:text-4xl md:text-3xl font-black text-white uppercase tracking-tighter">
               {getHeadingTitle()}{" "}
-              <span className="text-vibe-cyan text-xl">
+              <span className="text-vibe-cyan text-sm lg:text-xl">
                 {isCustomExploring
                   ? `> ${searchParams.get("sort")?.split(".")[0]}`
                   : "Content"}
@@ -96,7 +93,7 @@ const ExplorePage = () => {
                 className="flex items-center gap-2 text-zinc-500 hover:text-white font-bold border border-zinc-800 px-4 py-2 rounded-xl bg-zinc-900/50 transition-all"
               >
                 <FiFilter className="text-vibe-cyan" />
-                <span>Advanced Filters</span>
+                <span>Filters</span>
                 <FiChevronDown />
               </button>
               <FilterModel
@@ -114,7 +111,7 @@ const ExplorePage = () => {
             <MovieRow
               movieId={null}
               tvId={null}
-              title={"Top Rated Masterpieces"}
+              title={"Top Rated"}
               exploreLink={`/explore/${category}?sort=vote_average.desc`} // dynamic parameter
               filter={{ ...filters, sortBy: "vote_average.desc" }}
               category={category}
@@ -132,10 +129,10 @@ const ExplorePage = () => {
 
         {/* 4. Main Infinite Grid Section */}
         <div>
-          <h2 className="text-2xl font-bold text-white mb-6 uppercase tracking-tight">
+          <h2 className="text-xl lg:text-2xl font-bold text-white mb-6 uppercase tracking-tight">
             {isCustomExploring ? "Filtered Results" : "More To Explore"}
           </h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
             {results.map((item) => (
               <MovieCard
                 key={`${item.id}-${item.media_type || "movie"}`}
