@@ -3,6 +3,7 @@ import { useGSAP } from "@gsap/react";
 import { useRef } from "react";
 import { movieGenreMap, tvGenreMap } from "../../utils/types/Mapping";
 import type { MovieProps } from "../../utils/types/card.type";
+import { Link } from "lucide-react";
 const Carousel = ({
   movie,
   isExiting,
@@ -79,45 +80,55 @@ const Carousel = ({
   });
 
   return (
-    <div ref={container} className="relative w-full md:h-[60dvh] lg:h-[70dvh] overflow-hidden">
-      <img
-        src={`https://image.tmdb.org/t/p/original/${movie.backdrop_path}`}
-        alt={
-          movie.title ||
-          movie.name ||
-          movie.original_name ||
-          movie.original_title
-        }
-        className=" w-full h-full object-cover hero-bg-img"
-      />
-      <div className="hero-content absolute inset-0 z-10 px-5 lg:p-16 flex flex-col justify-center h-full bg-linear-to-r from-black/80 to-transparent">
-        <h1 className="text-xl md:text-3xl lg:text-4xl font-bold">
-          {movie.title ||
+    <Link
+      to={`/watch/${movie.media_type}/${movie.id}`}
+      className="w-full h-full"
+    >
+      <div
+        ref={container}
+        className="relative w-full md:h-[60dvh] lg:h-[70dvh] overflow-hidden"
+      >
+        <img
+          src={`https://image.tmdb.org/t/p/original/${movie.backdrop_path}`}
+          alt={
+            movie.title ||
             movie.name ||
             movie.original_name ||
-            movie.original_title}
-        </h1>
-        <div className="flex items-center gap-1 lg:gap-4">
-          {geners.map((genre, index) => (
-            <span
-              key={index}
-              className={` text-[12px] text-gray-400 bg-gray-700/50 mt-2 px-2 py-1 rounded font-semibold inline-block`}
-            >
-              {genre}
-            </span>
-          ))}
-        </div>
-        <p className="max-w-xl text-zinc-400 hidden lg:block">{movie.overview}</p>
-        <div className="flex gap-4 mt-6">
-          <button className="bg-vibe-cyan text-black px-6 py-1 lg:py-2 font-bold rounded text-sm lg:text-base">
-            Play Now
-          </button>
-          <button className="bg-white/10 px-6 py-1 lg:py-2 font-bold rounded text-sm lg:text-base">
-            Watch list
-          </button>
+            movie.original_title
+          }
+          className=" w-full h-full object-cover hero-bg-img"
+        />
+        <div className="hero-content absolute inset-0 z-10 px-5 lg:p-16 flex flex-col justify-center h-full bg-linear-to-r from-black/80 to-transparent">
+          <h1 className="text-xl md:text-3xl lg:text-4xl font-bold">
+            {movie.title ||
+              movie.name ||
+              movie.original_name ||
+              movie.original_title}
+          </h1>
+          <div className="flex items-center gap-1 lg:gap-4">
+            {geners.map((genre, index) => (
+              <span
+                key={index}
+                className={` text-[12px] text-gray-400 bg-gray-700/50 mt-2 px-2 py-1 rounded font-semibold inline-block`}
+              >
+                {genre}
+              </span>
+            ))}
+          </div>
+          <p className="max-w-xl text-zinc-400 hidden lg:block">
+            {movie.overview}
+          </p>
+          <div className="flex gap-4 mt-6">
+            <button className="bg-vibe-cyan text-black px-6 py-1 lg:py-2 font-bold rounded text-sm lg:text-base">
+              Play Now
+            </button>
+            <button className="bg-white/10 px-6 py-1 lg:py-2 font-bold rounded text-sm lg:text-base">
+              Watch list
+            </button>
+          </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 
