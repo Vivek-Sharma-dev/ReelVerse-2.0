@@ -5,7 +5,8 @@ import {
 } from "../../hooks/useGenreMovies.tsx";
 import type { MovieProps } from "../../utils/types/card.type";
 import type { ContentFilter } from "../../utils/constant.ts";
-
+import {useGSAP} from "@gsap/react";
+import gsap from "gsap";
 type MovieRowProps = {
   title: string; // Section name (e.g., "Horror Classics")
   exploreLink: string; // "Explore All" button ka path
@@ -35,11 +36,13 @@ const MovieRow = ({
     filter,
     category,
   );
+  
+  
+
   if(isPending) return <p>Loading...</p>;
   if(isError) return <p>Error loading movies.</p>;
   const movies =
   data?.pages.flatMap((page) => page.results).slice(0, 8) || ([] as MovieProps[]);
-  console.log(movies)
   return (
     <section className="py-8">
       <div className="flex justify-between items-center mb-6">
