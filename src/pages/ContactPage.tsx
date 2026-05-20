@@ -1,9 +1,14 @@
 import  { useState } from "react";
 import { Mail, MessageSquare, Send, User } from "lucide-react";
 import { useForm, ValidationError } from "@formspree/react";
+import useMetaData from "../hooks/useMetaData";
 const ContactPage = () => {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
   const [state, handleSubmit] = useForm("xykvkrvr");
+  useMetaData(
+    "Contact Us",
+    "Have feature suggestions for Vibe Stream? Or want to talk about Full-Stack optimizations? Drop a message down into the console pipeline!",
+  );
 
   if (state.succeeded) {
     return (

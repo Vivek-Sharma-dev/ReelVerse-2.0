@@ -98,7 +98,7 @@ const Carousel = ({
           }
           className=" w-full h-full object-cover hero-bg-img"
         />
-        <div className="hero-content absolute inset-0 z-10 px-5 lg:p-16 flex flex-col justify-center h-full bg-linear-to-r from-black/80 to-transparent">
+        <div className="hero-content absolute inset-0 z-10 px-5 lg:p-16 flex flex-col lg:space-y-5 justify-center h-full bg-linear-to-r from-black/80 to-transparent">
           <h1 className="text-xl md:text-3xl lg:text-4xl font-bold">
             {movie.title ||
               movie.name ||

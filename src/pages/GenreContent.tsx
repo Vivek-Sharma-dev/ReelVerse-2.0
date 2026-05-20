@@ -8,10 +8,10 @@ import { FiFilter, FiChevronDown } from "react-icons/fi";
 import FilterModel from "../components/common/FilterModel";
 import Error from "../components/common/Error";
 import HeroSection from "../components/layout/HeroSection";
+import useMetaData from "../hooks/useMetaData";
 
 const GenreContent = () => {
   const { movieId, tvId, genreName } = useParams();
-  console.log(movieId, tvId, genreName);
   const [filters, setFilters] = useState({
     mediaType: "all",
     year: "",
@@ -19,6 +19,10 @@ const GenreContent = () => {
     sortBy: "popularity.desc",
     rating: "",
   });
+  useMetaData(
+    `${genreName || "Genre"} Content`,
+    `Explore a curated collection of ${genreName || "genre"} movies and TV shows on Vibe Stream. Dive into trending titles, personalized recommendations, and detailed information about your favorite entertainment in this genre.`,
+  )
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const { ref, inView } = useInView();
 

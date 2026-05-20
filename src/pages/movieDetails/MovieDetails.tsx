@@ -8,6 +8,7 @@ import { useTrailer } from "../../hooks/useTrailer";
 import { useState } from "react";
 import MovieCard from "../../components/common/MovieCard";
 import type { MovieProps } from "../../utils/types/card.type";
+import useMetaData from "../../hooks/useMetaData";
 
 export type TrailerType = {
   key: string;
@@ -21,6 +22,10 @@ export type TrailerType = {
 };
 
 const MovieDetails = () => {
+  useMetaData(
+    "Movie Details",
+    "Discover detailed information about your favorite movies and TV shows, including trailers, cast, and similar recommendations on Vibe Stream.",
+  );
   const { id, type } = useParams();
   const [isTrailerPlaying, setIsTrailerPlaying] = useState<boolean>(false);
   const trailerData = useTrailer(Number(id), type!);
@@ -32,7 +37,6 @@ const MovieDetails = () => {
   if (isPending) return <Loading />;
   if (isError) return <Error />;
   const { details, credits, similarMovies } = data || {};
-  console.log("Movie Details:", details);
 
   const getBestTrailer = (videos: TrailerType[]) => {
     if (!videos || videos.length === 0) return null;

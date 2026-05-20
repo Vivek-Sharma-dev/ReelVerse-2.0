@@ -133,7 +133,6 @@ export const fetchContentByGenre = async (
         }),
       ]);
 
-      console.log("year", filter.year);
       combined = [
         ...movies.data.results.map((m: any) => ({ ...m, media_type: "movie" })),
         ...tvShows.data.results.map((t: any) => ({ ...t, media_type: "tv" })),

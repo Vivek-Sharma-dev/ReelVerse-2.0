@@ -5,13 +5,18 @@ import { filterAdultContent } from "../utils/functions";
 import MovieCard from "../components/common/MovieCard";
 import Loading from "../components/common/Loading";
 import type { MovieProps } from "../utils/types/card.type";
+import useMetaData from "../hooks/useMetaData";
 
 const SearchPage = () => {
+
   const [searchParams] = useSearchParams();
   const query = searchParams.get("q") || "";
   const [results, setResults] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-
+  useMetaData(
+    `Search: ${query}`,
+    `Discover search results for "${query}" on Vibe Stream. Find movies and TV shows matching your query, with safe content filtering for a personalized entertainment experience.`,
+  )
   useEffect(() => {
     const fetchAllResults = async () => {
       if (!query) return;

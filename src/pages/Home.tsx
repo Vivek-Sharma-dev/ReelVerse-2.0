@@ -5,8 +5,13 @@ import Error from "../components/common/Error";
 import HeroSection from "../components/layout/HeroSection";
 import { GENRE_MAP } from "../utils/constant";
 import MovieRow from "../components/layout/MovieRow";
+import useMetaData from "../hooks/useMetaData";
 
 const Home = () => {
+  useMetaData(
+    "Home",
+    "Welcome to Vibe Stream, your ultimate destination for discovering trending movies and TV shows. Explore personalized recommendations, detailed information, and a vast collection of entertainment content all in one place.",
+  )
   const { data, isError, isLoading } = useTrendingMovies();
   if (isLoading) {
     return <Loading />;

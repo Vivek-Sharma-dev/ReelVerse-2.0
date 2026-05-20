@@ -2,26 +2,32 @@ import { useParams } from 'react-router-dom';
 import { usePersonDetails } from '../hooks/usePersonDetails';
 import { type MovieProps } from '../utils/types/card.type';
 import MovieCard from '../components/common/MovieCard';
+import { use } from 'react';
+import useMetaData from '../hooks/useMetaData';
 
 const PersonDetails = () => {
-  const { id } = useParams<{ id: string }>();
-  const { data, isPending, isError } = usePersonDetails(Number(id));
-
-  // Loading Skeleton State
-  if (isPending) {
-    return (
-      <div className="min-h-screen bg-[#0d0d13] text-white flex items-center justify-center">
+    const { id } = useParams<{ id: string }>();
+    const { data, isPending, isError } = usePersonDetails(Number(id));
+    
+    useMetaData(
+        `${data?.person.name}'s Bio & Filmography` || "Actor Details",
+        `Discover detailed information about ${data?.person.name}, including biography, filmography, and notable works. Explore the career highlights and contributions of this celebrated personality in world cinema on Vibe Stream.`,
+    )
+    // Loading Skeleton State
+    if (isPending) {
+        return (
+            <div className="min-h-screen bg-[#0d0d13] text-white flex items-center justify-center">
         <div className="flex flex-col items-center gap-3">
           <div className="w-12 h-12 border-4 border-vibe-cyan border-t-transparent rounded-full animate-spin"></div>
           <p className="text-gray-400 text-sm font-medium tracking-wide">Syncing Actor Aura... 🌀</p>
         </div>
       </div>
     );
-  }
+}
 
-  // Error State
+// Error State
   if (isError || !data) {
-    return (
+      return (
       <div className="min-h-screen bg-[#0d0d13] text-white flex items-center justify-center">
         <div className="text-center">
           <h2 className="text-2xl font-bold text-red-500 mb-2">💥 Explosion in Actor Engine</h2>

@@ -9,12 +9,17 @@ import Loading from "../components/common/Loading";
 import Error from "../components/common/Error";
 import MovieRow from "../components/layout/MovieRow";
 import HeroSection from "../components/layout/HeroSection";
+import useMetaData from "../hooks/useMetaData";
 
 const ExplorePage = () => {
   const { category } = useParams();
   const [searchParams] = useSearchParams();
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const { ref, inView } = useInView();
+  useMetaData(
+    `${category ? category.charAt(0).toUpperCase() + category.slice(1) : "Explore"} Explore`,
+    `Dive into the ${category ? category : "Explore"} section of Vibe Stream to discover a curated collection of movies and TV shows. Filter by popularity, ratings, release year, and more to find your next binge-worthy obsession with ease.`,
+  )
 
   // 1. URL se '?sort=...' nikaalo, agar nahi hai toh default popularity.desc
   const currentSortParam = searchParams.get("sort") || "popularity.desc";

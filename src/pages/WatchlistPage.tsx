@@ -3,9 +3,14 @@ import MovieCard from '../components/common/MovieCard';
 import { type MovieProps } from '../utils/types/card.type';
 import { Film } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import useMetaData from '../hooks/useMetaData';
 
 const WatchlistPage = () => {
   const { watchlist } = useWatchlist();
+  useMetaData(
+    "My Watchlist",
+    "Your personalized collection of curated movies and shows. Dive into your Watchlist to find all the content you've saved for later, and never miss out on your next binge-worthy obsession with Vibe Stream.",
+  )
 
   return (
     <div className="min-h-screen bg-[#0d0d13] text-gray-100 pt-24 px-4 md:px-12 pb-12 selection:bg-vibe-cyan/30">
