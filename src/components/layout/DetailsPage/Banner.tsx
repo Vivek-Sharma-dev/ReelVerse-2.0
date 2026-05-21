@@ -60,7 +60,7 @@ const Banner = ({
   const duration = hours > 0 ? `${hours}h ${minutes}m` : `${minutes}m`;
 
   return (
-    <div className="relative w-full h-[60dvh] md:h-[70dvh]">
+    <div className="relative w-full h-[60dvh] md:h-[80dvh]">
       {isTrailerPlaying && trailer?.key ? (
         <>
           <div className="relative w-full h-full z-50 rounded-2xl">
@@ -85,7 +85,7 @@ const Banner = ({
           <div className="absolute inset-0">
             <img
               src={`https://image.tmdb.org/t/p/original${details.backdrop_path}`}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover object-top"
               alt={title}
             />
             <div className="hidden lg:block absolute inset-0 bg-linear-to-t from-main-bg via-main-bg/60 to-transparent" />

@@ -15,8 +15,8 @@ const SearchPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   useMetaData(
     `Search: ${query}`,
-    `Discover search results for "${query}" on Vibe Stream. Find movies and TV shows matching your query, with safe content filtering for a personalized entertainment experience.`,
-  )
+    `Discover search results for "${query}" on ReelVerse. Find movies and TV shows matching your query, with safe content filtering for a personalized entertainment experience.`,
+  );
   useEffect(() => {
     const fetchAllResults = async () => {
       if (!query) return;

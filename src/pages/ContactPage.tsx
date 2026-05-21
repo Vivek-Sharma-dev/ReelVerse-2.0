@@ -7,7 +7,7 @@ const ContactPage = () => {
   const [state, handleSubmit] = useForm("xykvkrvr");
   useMetaData(
     "Contact Us",
-    "Have feature suggestions for Vibe Stream? Or want to talk about Full-Stack optimizations? Drop a message down into the console pipeline!",
+    "Have feature suggestions for ReelVerse? Or want to talk about Full-Stack optimizations? Drop a message down into the console pipeline!",
   );
 
   if (state.succeeded) {

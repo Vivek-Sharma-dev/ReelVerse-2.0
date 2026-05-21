@@ -19,10 +19,17 @@ export default defineConfig([
       ecmaVersion: 2020,
       globals: globals.browser,
     },
-    parserOptions: {
-      // ... baaki settings rehne dena
-      tsconfigRootDir: __dirname, // <-- Yeh line add karni hai
-      project: ["./tsconfig.json", "./tsconfig.app.json"], // Apni tsconfig files ka array path de do
+    rules: {
+      "no-unused-vars": [
+        "error",
+        {
+          vars: "all",
+          args: "after-used",
+          ignoreRestSiblings: true,
+        },
+      ],
+
+      "no-console": "warn",
     },
   },
 ]);

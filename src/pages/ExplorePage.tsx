@@ -10,20 +10,23 @@ import Error from "../components/common/Error";
 import MovieRow from "../components/layout/MovieRow";
 import HeroSection from "../components/layout/HeroSection";
 import useMetaData from "../hooks/useMetaData";
+import CardLoader from "../components/common/CardLoader";
+import CarouselSkeleton from "../components/common/CarouselSkeleton";
 
 const ExplorePage = () => {
   const { category } = useParams();
   const [searchParams] = useSearchParams();
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const { ref, inView } = useInView();
+
+  // Set dynamic metadata based on category and sorting
   useMetaData(
     `${category ? category.charAt(0).toUpperCase() + category.slice(1) : "Explore"} Explore`,
-    `Dive into the ${category ? category : "Explore"} section of Vibe Stream to discover a curated collection of movies and TV shows. Filter by popularity, ratings, release year, and more to find your next binge-worthy obsession with ease.`,
-  )
-
-  // 1. URL se '?sort=...' nikaalo, agar nahi hai toh default popularity.desc
+    `Dive into the ${category ? category : "Explore"} section of ReelVerse to discover a curated collection of movies and TV shows. Filter by popularity, ratings, release year, and more to find your next binge-worthy obsession with ease.`,
+  );
+  // Dynamic sorting parameter from URL
   const currentSortParam = searchParams.get("sort") || "popularity.desc";
-  // Check karo ki kya user kisi specific filter ("See All") ko explore kar raha hai
+  // Check if user is applying custom sorting (like rating, release date) instead of default popularity
   const isCustomExploring = searchParams.has("sort");
 
   const [filters, setFilters] = useState({
@@ -34,7 +37,7 @@ const ExplorePage = () => {
     rating: "",
   });
 
-  // 2. Agar URL badalta hai (user doosre link par click karta hai), toh state sync karo
+  // Sync filters with URL sort parameter changes
   useEffect(() => {
     setFilters((prev) => ({
       ...prev,
@@ -45,6 +48,7 @@ const ExplorePage = () => {
   const { data, isError, isLoading, fetchNextPage, hasNextPage } =
     useInfinityExploreContent(category || "IN", filters);
 
+  // Infinite scroll trigger
   useEffect(() => {
     if (inView && hasNextPage) {
       fetchNextPage();
@@ -52,7 +56,13 @@ const ExplorePage = () => {
   }, [inView, hasNextPage, fetchNextPage]);
 
   if (isError) return <Error />;
-  if (isLoading) return <Loading />;
+  if (isLoading)
+    return (
+      <>
+        <CarouselSkeleton />
+        <CardLoader CardsCount={8} />
+      </>
+    );
 
   const results = data?.pages.flatMap((page) => page.results) || [];
   const length = results?.length || 0;
@@ -69,10 +79,10 @@ const ExplorePage = () => {
     <>
       <section id="heroSection">
         {/*Hero Section */}
-          <HeroSection data={results} />
+        <HeroSection data={results} />
       </section>
 
-        {/* Header Section */}
+      {/* Header Section */}
       <section
         className="container mx-auto py-10 px-4"
         id={`section-${category}`}

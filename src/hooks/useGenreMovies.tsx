@@ -27,7 +27,7 @@ export const useGenreMovies = (
       filter.includeAdult,
       filter.year,
       filter.rating,
-      category
+      category,
     ],
     queryFn: () => fetchContentByGenre(movieId, tvId, 1, filter, category),
     staleTime: 1000 * 60 * 60, // 1 hour
@@ -63,7 +63,7 @@ export const useInfiniteGenreMovies = (
       filter.year,
       filter.rating,
     ],
-    queryFn: ({ pageParam = 1 }) =>
+    queryFn: ({ pageParam = 1 }) => 
       fetchContentByGenre(movieId, tvId, pageParam, filter, category || ""),
     getNextPageParam: (lastPage) => {
       return lastPage.page < lastPage.total_pages
@@ -75,7 +75,10 @@ export const useInfiniteGenreMovies = (
   });
 };
 
-export const useInfinityExploreContent = (category: string, filter: ContentFilter) => {
+export const useInfinityExploreContent = (
+  category: string,
+  filter: ContentFilter,
+) => {
   return useInfiniteQuery({
     queryKey: [
       "infiniteMovies",

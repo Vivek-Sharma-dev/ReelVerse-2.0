@@ -9,7 +9,7 @@ const WatchlistPage = () => {
   const { watchlist } = useWatchlist();
   useMetaData(
     "My Watchlist",
-    "Your personalized collection of curated movies and shows. Dive into your Watchlist to find all the content you've saved for later, and never miss out on your next binge-worthy obsession with Vibe Stream.",
+    "Your personalized collection of curated movies and shows. Dive into your Watchlist to find all the content you've saved for later, and never miss out on your next binge-worthy obsession with ReelVerse.",
   )
 
   return (

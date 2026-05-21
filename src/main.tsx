@@ -14,6 +14,8 @@ import PersonDetails from "./pages/PersonDetails.tsx";
 import { WatchlistProvider } from "./context/WatchlistContext.tsx";
 import WatchlistPage from "./pages/WatchlistPage.tsx";
 import ContactPage from "./pages/ContactPage.tsx";
+import ReelsPage from "./pages/ReelPage.tsx";
+import NotFoundPage from "./pages/NotFoundPage.tsx";
 
 const queryClient = new QueryClient();
 
@@ -57,10 +59,12 @@ const router = createBrowserRouter([
         element: <ContactPage />
       },
       {
+        path: "/trailers",
+        element: <ReelsPage />
+      },
+      {
         path: "*",
-        element: (
-          <h1 className="text-center text-2xl mt-10">404 - Page Not Found</h1>
-        ),
+        element:<NotFoundPage />,
       },
     ],
   },

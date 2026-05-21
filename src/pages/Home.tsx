@@ -10,7 +10,7 @@ import useMetaData from "../hooks/useMetaData";
 const Home = () => {
   useMetaData(
     "Home",
-    "Welcome to Vibe Stream, your ultimate destination for discovering trending movies and TV shows. Explore personalized recommendations, detailed information, and a vast collection of entertainment content all in one place.",
+    "Welcome to ReelVerse, your ultimate destination for discovering trending movies and TV shows. Explore personalized recommendations, detailed information, and a vast collection of entertainment content all in one place.",
   )
   const { data, isError, isLoading } = useTrendingMovies();
   if (isLoading) {

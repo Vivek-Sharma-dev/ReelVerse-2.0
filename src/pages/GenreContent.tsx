@@ -9,6 +9,8 @@ import FilterModel from "../components/common/FilterModel";
 import Error from "../components/common/Error";
 import HeroSection from "../components/layout/HeroSection";
 import useMetaData from "../hooks/useMetaData";
+import CarouselSkeleton from "../components/common/CarouselSkeleton";
+import CardLoader from "../components/common/CardLoader";
 
 const GenreContent = () => {
   const { movieId, tvId, genreName } = useParams();
@@ -21,8 +23,8 @@ const GenreContent = () => {
   });
   useMetaData(
     `${genreName || "Genre"} Content`,
-    `Explore a curated collection of ${genreName || "genre"} movies and TV shows on Vibe Stream. Dive into trending titles, personalized recommendations, and detailed information about your favorite entertainment in this genre.`,
-  )
+    `Explore a curated collection of ${genreName || "genre"} movies and TV shows on ReelVerse. Dive into trending titles, personalized recommendations, and detailed information about your favorite entertainment in this genre.`,
+  );
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const { ref, inView } = useInView();
 
@@ -33,7 +35,12 @@ const GenreContent = () => {
     if (inView && hasNextPage) fetchNextPage();
   }, [inView, hasNextPage, fetchNextPage]);
 
-  if (isPending) return <Loading />;
+  if (isPending) return (
+    <>
+    <CarouselSkeleton />
+    <CardLoader CardsCount={8} />
+    </>
+  );
   if (isError) return <Error />;
 
   const allResults = data?.pages.flatMap((page) => page.results) || [];

@@ -5,6 +5,7 @@ import {
 } from "../../hooks/useGenreMovies.tsx";
 import type { MovieProps } from "../../utils/types/card.type";
 import type { ContentFilter } from "../../utils/constant.ts";
+import CardLoader from "../common/CardLoader.tsx";
 type MovieRowProps = {
   title: string; // Section name (e.g., "Horror Classics")
   exploreLink: string; // "Explore All" button ka path
@@ -37,7 +38,7 @@ const MovieRow = ({
   
   
 
-  if(isPending) return <p>Loading...</p>;
+  if(isPending) return <CardLoader CardsCount={8} />;
   if(isError) return <p>Error loading movies.</p>;
   const movies =
   data?.pages.flatMap((page) => page.results).slice(0, 8) || ([] as MovieProps[]);

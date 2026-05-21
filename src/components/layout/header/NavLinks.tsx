@@ -43,6 +43,12 @@ const navLinks: NavLinkType[] = [
     id: "watchlist-link",
   },
   {
+    name: "Trailers",
+    path: "/trailers",
+    label: "Trailers",
+    id: "trailers-link",
+  },
+  {
     name: "contact",
     path: "/contact-us",
     label: "Contact",

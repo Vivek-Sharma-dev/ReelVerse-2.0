@@ -22,16 +22,18 @@ export type TrailerType = {
 };
 
 const MovieDetails = () => {
-  useMetaData(
-    "Movie Details",
-    "Discover detailed information about your favorite movies and TV shows, including trailers, cast, and similar recommendations on Vibe Stream.",
-  );
   const { id, type } = useParams();
   const [isTrailerPlaying, setIsTrailerPlaying] = useState<boolean>(false);
   const trailerData = useTrailer(Number(id), type!);
   const { data, isPending, isError } = useMovieDetails(
     Number(id),
     type || "movie",
+  );
+  useMetaData(
+    data?.details
+      ? ` ${data?.details.title || data?.details.name} - Details, Cast & Similar Movies`
+      : "Loading Title...",
+    "Discover detailed information about your favorite movies and TV shows, including trailers, cast, and similar recommendations on ReelVerse.",
   );
 
   if (isPending) return <Loading />;
@@ -60,6 +62,8 @@ const MovieDetails = () => {
     return videos[0];
   };
 
+  
+  console.log(data)
   const trailer = getBestTrailer(trailerData?.data?.results || []);
   return (
     <>
@@ -154,9 +158,9 @@ const MovieDetails = () => {
             <h2 className="text-2xl font-bold text-vibe-cyan border-l-4 border-vibe-cyan pl-4 mb-8 uppercase tracking-tighter">
               Similar Movies
             </h2>
-            {similarMovies && similarMovies.results.length > 0 ? (
+            {similarMovies && similarMovies.length > 0 ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-                {similarMovies.results.map((movie: MovieProps) => (
+                {similarMovies.map((movie: MovieProps) => (
                   <MovieCard key={movie.id} data={movie} />
                 ))}
               </div>

@@ -11,7 +11,7 @@ const PersonDetails = () => {
     
     useMetaData(
         `${data?.person.name}'s Bio & Filmography` || "Actor Details",
-        `Discover detailed information about ${data?.person.name}, including biography, filmography, and notable works. Explore the career highlights and contributions of this celebrated personality in world cinema on Vibe Stream.`,
+        `Discover detailed information about ${data?.person.name}, including biography, filmography, and notable works. Explore the career highlights and contributions of this celebrated personality in world cinema on ReelVerse.`,
     )
     // Loading Skeleton State
     if (isPending) {

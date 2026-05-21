@@ -7,7 +7,7 @@ const Hamburger = ({
   setIsMenuOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   return (
-    <div className="lg:hidden order-1 lg:order-0">
+    <div className="lg:hidden order-1 lg:order-0 ">
       <button
         onClick={(e) => {
           e.stopPropagation();
