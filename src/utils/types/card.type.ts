@@ -18,6 +18,8 @@ export interface MovieProps {
   // tv option
   first_air_date: string;
   original_name: string;
+  youtubeKey?: string;
+  category? : string;
 };
 
 

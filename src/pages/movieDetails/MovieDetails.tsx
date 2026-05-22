@@ -63,7 +63,6 @@ const MovieDetails = () => {
   };
 
   
-  console.log(data)
   const trailer = getBestTrailer(trailerData?.data?.results || []);
   return (
     <>

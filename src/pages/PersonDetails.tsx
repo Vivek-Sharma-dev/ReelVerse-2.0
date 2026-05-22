@@ -2,7 +2,6 @@ import { useParams } from 'react-router-dom';
 import { usePersonDetails } from '../hooks/usePersonDetails';
 import { type MovieProps } from '../utils/types/card.type';
 import MovieCard from '../components/common/MovieCard';
-import { use } from 'react';
 import useMetaData from '../hooks/useMetaData';
 
 const PersonDetails = () => {
@@ -10,7 +9,7 @@ const PersonDetails = () => {
     const { data, isPending, isError } = usePersonDetails(Number(id));
     
     useMetaData(
-        `${data?.person.name}'s Bio & Filmography` || "Actor Details",
+        `${data?.person.name}` || "Actor Details",
         `Discover detailed information about ${data?.person.name}, including biography, filmography, and notable works. Explore the career highlights and contributions of this celebrated personality in world cinema on ReelVerse.`,
     )
     // Loading Skeleton State
@@ -38,7 +37,6 @@ const PersonDetails = () => {
   }
   const { person, credits } = data;
   const TMDB_IMAGE_BASE = 'https://image.tmdb.org/t/p/w500';
-    console.log('Person Details Data:', person); // Debugging log to check the structure of the fetched data
 
   return (
     <div className="min-h-screen bg-[#0d0d13] text-gray-100 pt-10 px-4 md:px-12 pb-12 selection:bg-vibe-cyan/30">

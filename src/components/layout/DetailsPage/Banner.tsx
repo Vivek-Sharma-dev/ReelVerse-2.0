@@ -1,7 +1,7 @@
 import { Play, Plus, Star, X } from "lucide-react";
 import type { ContentDetailsProps } from "../../../utils/types/card.type";
 import type { TrailerType } from "../../../pages/movieDetails/MovieDetails";
-import { useWatchlist } from "../../../context/WatchlistContext";
+import { useWatchlist } from "../../../hooks/useWatchlist";
 const Banner = ({
   details,
   trailer,
@@ -46,7 +46,7 @@ const Banner = ({
       original_language: details.original_language || "",
       
       // FIX: Details page ke [{id, name}] array ko flat integer list [id] mein map karo 🌟
-      genre_ids: details.genres ? details.genres.map((g: any) => g.id) : []
+      genre_ids: details.genres ? details.genres.map((g: { id: number }) => g.id) : []
 
     };
       addToWatchlist(formattedMovieForWatchlist);

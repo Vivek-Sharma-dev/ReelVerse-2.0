@@ -1,21 +1,20 @@
 import { useNavigate } from "react-router-dom";
-import { useWatchlist } from "../../context/WatchlistContext";
 import { useEffect, useRef, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { Check, MessageCircle, Pause, Play, Plus } from "lucide-react";
+import type { MovieProps } from "../../utils/types/card.type";
+import { useWatchlist } from "../../hooks/useWatchlist";
 
-const ReelCard = ({
-  item,
-  isLastItem,
-  innerRef,
-  globalMute,
-}: {
-  item: any;
+interface CardProps {
+  item: MovieProps;
   idx: number;
   isLastItem: boolean;
-  innerRef: any;
+  // eslint-disable-next-line
+  innerRef: (_node?: HTMLDivElement | null) => void;
   globalMute: boolean;
-}) => {
+}
+
+const ReelCard = ({ item, isLastItem, innerRef, globalMute }: CardProps) => {
   const navigate = useNavigate();
   const { addToWatchlist, removeFromWatchlist, isInWatchlist } = useWatchlist();
 
@@ -31,6 +30,7 @@ const ReelCard = ({
   // 🎬 Auto Play/Pause Logic based on visibility
   useEffect(() => {
     if (!inView) {
+      // eslint-disable-next-line
       setIsPlaying(true);
     }
   }, [inView]);
@@ -55,9 +55,9 @@ const ReelCard = ({
   const title = item.title || item.original_title || "Cinematic Epic";
   const isAdded = isInWatchlist(item.id);
 
-  const setRefs = (node: any) => {
+  const setRefs = (node: HTMLDivElement | null) => {
     viewRef(node);
-    if (isLastItem) innerRef(node);
+    if (isLastItem && innerRef) innerRef(node);
   };
 
   return (
@@ -71,7 +71,6 @@ const ReelCard = ({
           <iframe
             ref={iframeRef}
             className="w-full h-full object-cover"
-            // 🌟 NOTE: `enablejsapi=1` hona zaroorii hai taaki hamara custom code play/pause command bhej sake
             src={`https://www.youtube.com/embed/${item.youtubeKey}?autoplay=1&mute=${globalMute ? 1 : 0}&loop=1&playlist=${item.youtubeKey}&controls=1&modestbranding=1&rel=0&iv_load_policy=3&playsinline=1&enablejsapi=1`}
             title={title}
             frameBorder="0"

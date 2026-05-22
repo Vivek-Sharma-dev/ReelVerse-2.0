@@ -1,4 +1,3 @@
-import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Film, Home, MoveLeft } from 'lucide-react';
 
@@ -27,7 +26,7 @@ const NotFoundPage = () => {
         </div>
 
         {/* 404 Heading Aura */}
-        <h1 className="text-8xl md:text-9xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white to-zinc-700 select-none">
+        <h1 className="text-8xl md:text-9xl font-black tracking-tighter text-transparent bg-clip-text bg-linear-to-b from-white to-zinc-700 select-none">
           404
         </h1>
         

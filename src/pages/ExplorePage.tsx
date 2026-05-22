@@ -32,16 +32,17 @@ const ExplorePage = () => {
   const [filters, setFilters] = useState({
     mediaType: "all",
     year: "",
-    includeAdult: false,
-    sortBy: currentSortParam, // Set initial sort from URL
+    include_adult: false,
+    sort_by: currentSortParam, // Set initial sort from URL
     rating: "",
   });
 
   // Sync filters with URL sort parameter changes
   useEffect(() => {
+    // eslint-disable-next-line
     setFilters((prev) => ({
       ...prev,
-      sortBy: currentSortParam,
+      sort_by: currentSortParam,
     }));
   }, [currentSortParam]);
 
@@ -128,7 +129,7 @@ const ExplorePage = () => {
               tvId={null}
               title={"Top Rated"}
               exploreLink={`/explore/${category}?sort=vote_average.desc`} // dynamic parameter
-              filter={{ ...filters, sortBy: "vote_average.desc" }}
+              filter={{ ...filters, sort_by: "vote_average.desc" }}
               category={category}
             />
             <MovieRow
@@ -136,7 +137,7 @@ const ExplorePage = () => {
               tvId={null}
               title={"Trending Now"}
               exploreLink={`/explore/${category}?sort=popularity.desc`} // dynamic parameter
-              filter={{ ...filters, sortBy: "popularity.desc" }}
+              filter={{ ...filters, sort_by: "popularity.desc" }}
               category={category}
             />
           </div>

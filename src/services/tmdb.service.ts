@@ -3,9 +3,9 @@ import {
   type CreditsResponse,
   type MovieProps,
 } from "./../utils/types/card.type";
-import type { ContentFilter } from "../utils/constant";
+import type { ContentFilter, PersonDetails } from "../utils/constant";
 import { filterAdultContent } from "../utils/functions";
-import tmdbApi from "./api";
+import tmdbApi from "./api.service.ts";
 
 // ** Content fetching functions for TMDB API
 
@@ -15,6 +15,7 @@ export const fetchTrendingMovies = async () => {
     const response = await tmdbApi.get("/trending/movie/week");
     return response.data.results;
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error("Error fetching trending movies:", error);
     throw error;
   }
@@ -27,8 +28,8 @@ export const fetchContentByGenre = async (
   page: number = 1,
   filter: ContentFilter = {
     mediaType: "all",
-    sortBy: "popularity.desc",
-    includeAdult: false,
+    sort_by: "popularity.desc",
+    include_adult: false,
     year: "",
     rating: "",
   },
@@ -38,10 +39,10 @@ export const fetchContentByGenre = async (
     let combined = [];
     let totalPages = 500;
 
-    const getParams = (type: "movie" | "tv" | any) => {
-      const baseParams: any = {
-        sort_by: filter.sortBy,
-        include_adult: filter.includeAdult,
+    const getParams = (type: "movie" | "tv") => {
+      const baseParams: ContentFilter = {
+        sort_by: filter.sort_by,
+        include_adult: filter.include_adult,
         page,
         year: filter.year,
         rating: filter.rating,
@@ -84,8 +85,14 @@ export const fetchContentByGenre = async (
       ]);
 
       combined = [
-        ...movies.data.results.map((m: any) => ({ ...m, media_type: "movie" })),
-        ...tvShows.data.results.map((t: any) => ({ ...t, media_type: "tv" })),
+        ...movies.data.results.map((m: ContentDetailsProps) => ({
+          ...m,
+          media_type: "movie",
+        })),
+        ...tvShows.data.results.map((t: ContentDetailsProps) => ({
+          ...t,
+          media_type: "tv",
+        })),
       ];
 
       totalPages = Math.max(movies.data.total_pages, tvShows.data.total_pages);
@@ -93,17 +100,21 @@ export const fetchContentByGenre = async (
       const type = filter.mediaType === "anime" ? "tv" : filter.mediaType;
 
       const res = await tmdbApi.get(`/discover/${type}`, {
-        params: getParams(type as any),
+        params: getParams(type as "movie" | "tv"),
       });
-      combined = res.data.results.map((t: any) => ({ ...t, media_type: type }));
+      combined = res.data.results.map((t: ContentDetailsProps) => ({
+        ...t,
+        media_type: type,
+      }));
       totalPages = res.data.total_pages;
     }
-    if (!filter.includeAdult) {
+    if (!filter.include_adult) {
       combined = filterAdultContent(combined);
     }
     const shuffle = combined.sort(() => Math.random() - 0.5);
     return { results: shuffle, page, total_pages: totalPages };
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error("Error fetching content by genre:", error);
     throw error;
   }
@@ -131,6 +142,7 @@ export const fetchMovieDetails = async (id: number, type: string) => {
     };
     return combinedData;
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error("Error fetching movie details:", error);
     throw error;
   }
@@ -142,6 +154,7 @@ export const fetchTrailer = async (id: number, type: string) => {
     const response = await tmdbApi.get(`/${type}/${id}/videos`);
     return response.data;
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error("Error fetching trailer:", error);
     throw error;
   }
@@ -157,6 +170,7 @@ export const searchMovies = async (query: string) => {
     });
     return response.data.results;
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error("Error searching movies:", error);
     throw error;
   }
@@ -168,10 +182,10 @@ export const fetchExploreContent = async (
   page: number = 1,
   filters: ContentFilter,
 ) => {
-  const params: any = {
+  const params: ContentFilter = {
     page,
-    sort_by: filters.sortBy || "popularity.desc",
-    include_adult: filters.includeAdult || false,
+    sort_by: filters.sort_by || "popularity.desc",
+    include_adult: filters.include_adult || false,
     year: filters.year || "",
     rating: filters.rating || "",
     primary_release_year: filters.year || "",
@@ -205,18 +219,24 @@ export const fetchExploreContent = async (
 
     if (filters.mediaType === "all") {
       combined.push(
-        ...movieRes.data.results.map((m: any) => ({
+        ...movieRes.data.results.map((m: ContentDetailsProps) => ({
           ...m,
           media_type: "movie",
         })),
-        ...tvRes.data.results.map((t: any) => ({ ...t, media_type: "tv" })),
+        ...tvRes.data.results.map((t: ContentDetailsProps) => ({
+          ...t,
+          media_type: "tv",
+        })),
       );
     } else {
       combined.push(
-        ...res.data.results.map((t: any) => ({ ...t, media_type: type })),
+        ...res.data.results.map((t: ContentDetailsProps) => ({
+          ...t,
+          media_type: type,
+        })),
       );
     }
-    if (!filters.includeAdult) {
+    if (!filters.include_adult) {
       combined = filterAdultContent(combined);
     }
 
@@ -227,17 +247,19 @@ export const fetchExploreContent = async (
       total_pages: res.data.total_pages,
     };
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error("Error fetching content by genre:", error);
     throw error;
   }
 };
 
+
 // fetch person details
 export const fetchPersonDetails = async (
   id: number,
 ): Promise<{
-  person: any;
-  credits: any[];
+  person: PersonDetails;
+  credits: MovieProps[];
 }> => {
   try {
     const [personRes, movieCreditsRes, tvCreditsRes] = await Promise.all([
@@ -247,11 +269,14 @@ export const fetchPersonDetails = async (
     ]);
 
     const combinedCredits = [
-      ...movieCreditsRes.data.cast.map((m: any) => ({
+      ...movieCreditsRes.data.cast.map((m: MovieProps) => ({
         ...m,
         media_type: "movie",
       })),
-      ...tvCreditsRes.data.cast.map((t: any) => ({ ...t, media_type: "tv" })),
+      ...tvCreditsRes.data.cast.map((t: MovieProps) => ({
+        ...t,
+        media_type: "tv",
+      })),
     ];
 
     return {
@@ -259,6 +284,7 @@ export const fetchPersonDetails = async (
       credits: combinedCredits.sort(() => Math.random() - 0.5),
     };
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error("Error fetching person details:", error);
     throw error;
   }
@@ -299,9 +325,15 @@ export const fetchTrailerData = async (page: number) => {
   ]);
 
   const combinedResults = [
-    ...animeRes.data.results.map((m: any) => ({ ...m, category: "Anime" })),
-    ...indianRes.data.results.map((m: any) => ({ ...m, category: "Indian" })),
-    ...hollywoodRes.data.results.map((m: any) => ({
+    ...animeRes.data.results.map((m: ContentDetailsProps) => ({
+      ...m,
+      category: "Anime",
+    })),
+    ...indianRes.data.results.map((m: ContentDetailsProps) => ({
+      ...m,
+      category: "Indian",
+    })),
+    ...hollywoodRes.data.results.map((m: ContentDetailsProps) => ({
       ...m,
       category: "Hollywood",
     })),
@@ -315,17 +347,27 @@ export const fetchTrailerData = async (page: number) => {
     ];
   }
 
+  interface TrailerTypes {
+    key: string;
+    name: string;
+    site: string;
+    size: number;
+    type: string;
+    official: boolean;
+    published_at: string;
+    id: string;
+  }
   // 🎬 Parallel trailer validation check pipeline (No Blank Videos allowed)
   const finalizedList = await Promise.all(
-    combinedResults.map(async (movie: any) => {
+    combinedResults.map(async (movie: ContentDetailsProps) => {
       try {
         const videoRes = await tmdbApi.get(`/movie/${movie.id}/videos`);
         const videos = videoRes.data.results || [];
         const trailer =
           videos.find(
-            (v: any) => v.type === "Trailer" && v.site === "YouTube",
+            (v: TrailerTypes) => v.type === "Trailer" && v.site === "YouTube",
           ) ||
-          videos.find((v: any) => v.site === "YouTube") ||
+          videos.find((v: TrailerTypes) => v.site === "YouTube") ||
           null;
 
         return trailer ? { ...movie, youtubeKey: trailer.key } : null;

@@ -17,8 +17,8 @@ const GenreContent = () => {
   const [filters, setFilters] = useState({
     mediaType: "all",
     year: "",
-    includeAdult: false,
-    sortBy: "popularity.desc",
+    include_adult: false,
+    sort_by: "popularity.desc",
     rating: "",
   });
   useMetaData(

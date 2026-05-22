@@ -1,4 +1,3 @@
-import React from 'react';
 
 const CarouselSkeleton = () => {
   return (
@@ -6,7 +5,7 @@ const CarouselSkeleton = () => {
     <div className="relative w-full h-[60dvh] md:h-[70dvh] bg-zinc-950 flex items-end pb-12 px-6 md:px-16 animate-pulse overflow-hidden">
       
       {/* Background Subtle Shimmer Base */}
-      <div className="absolute inset-0 bg-gradient-to-t from-[#0d0d13] via-zinc-900/20 to-zinc-950/40" />
+      <div className="absolute inset-0 bg-linear-to-t from-[#0d0d13] via-zinc-900/20 to-zinc-950/40" />
 
       {/* Content Container Matrix */}
       <div className="relative z-10 w-full max-w-4xl flex flex-col gap-4">

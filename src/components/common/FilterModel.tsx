@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 type FiltersType = {
   mediaType: string;
   year: string;
-  includeAdult: boolean;
-  sortBy: string;
+  include_adult: boolean;
+  sort_by: string;
   rating: string;
 };
 const FilterModal = ({
@@ -30,8 +30,8 @@ const FilterModal = ({
   const [selectedFilters, setSelectedFilters] = useState({
     mediaType: "all",
     year: "",
-    includeAdult: false,
-    sortBy: "popularity.desc",
+    include_adult: false,
+    sort_by: "popularity.desc",
     rating: "",
   });
   useEffect(() => {
@@ -48,15 +48,15 @@ const FilterModal = ({
     setSelectedFilters({
       mediaType: "all",
       year: "",
-      includeAdult: false,
-      sortBy: "popularity.desc",
+      include_adult: false,
+      sort_by: "popularity.desc",
       rating: "",
     });
     setFilters({
       mediaType: "all",
       year: "",
-      includeAdult: false,
-      sortBy: "popularity.desc",
+      include_adult: false,
+      sort_by: "popularity.desc",
       rating: "",
     });
     onClose();
@@ -130,18 +130,18 @@ const FilterModal = ({
             {activeTab === "safety" && (
               <label className="flex items-center gap-4 cursor-pointer p-4 bg-zinc-900 rounded-xl border border-zinc-800">
                 <input
-                id="isAdult"
-                 className="hidden"
+                  id="isAdult"
+                  className="hidden"
                   type="checkbox"
-                  checked={selectedFilters.includeAdult}
+                  checked={selectedFilters.include_adult}
                   onChange={(e) =>
                     setSelectedFilters({
                       ...selectedFilters,
-                      includeAdult: e.target.checked,
+                      include_adult: e.target.checked,
                     })
                   }
                 />
-                {selectedFilters.includeAdult ? (
+                {selectedFilters.include_adult ? (
                   <div className="w-5 h-5 rounded-sm border border-vibe-cyan flex items-center justify-center">
                     <Check size={20} className=" text-vibe-cyan" />
                   </div>
@@ -166,18 +166,18 @@ const FilterModal = ({
                     onClick={() =>
                       setSelectedFilters({
                         ...selectedFilters,
-                        sortBy: option.id,
+                        sort_by: option.id,
                       })
                     }
                     className={`w-full p-4 rounded-xl border text-left transition-all ${
-                      selectedFilters.sortBy === option.id
+                      selectedFilters.sort_by === option.id
                         ? "border-vibe-cyan bg-vibe-cyan/5 text-white"
                         : "border-zinc-800 text-zinc-500 hover:border-zinc-700"
                     }`}
                   >
                     <div className="flex justify-between items-center">
                       {option.label}
-                      {selectedFilters.sortBy === option.id && (
+                      {selectedFilters.sort_by === option.id && (
                         <div className="w-2 h-2 rounded-full bg-vibe-cyan shadow-[0_0_10px_#06B6D4]" />
                       )}
                     </div>

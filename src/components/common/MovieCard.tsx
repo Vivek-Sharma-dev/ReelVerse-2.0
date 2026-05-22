@@ -3,8 +3,8 @@ import { BiMovie } from "react-icons/bi";
 import { Link } from "react-router-dom";
 import type { MovieProps } from "../../utils/types/card.type";
 import { movieGenreMap, tvGenreMap } from "../../utils/types/Mapping";
-import { useWatchlist } from "../../context/WatchlistContext";
 import type React from "react";
+import { useWatchlist } from "../../hooks/useWatchlist";
 
 const MovieCard = ({ data }: { data: MovieProps }) => {
   const isMovie =

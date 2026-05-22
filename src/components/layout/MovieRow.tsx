@@ -22,11 +22,12 @@ const MovieRow = ({
   exploreLink,
   category = "",
   filter = {
-    mediaType: "all",
-    sortBy: "popularity.desc",
-    includeAdult: false,
+    mediaType: "all" ,
+    sort_by: "popularity.desc",
+    include_adult: false,
     year: "",
     rating: "",
+
   },
 }: MovieRowProps) => {
   const { data, isPending, isError } = useInfiniteGenreMovies(

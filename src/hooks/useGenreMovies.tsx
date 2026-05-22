@@ -10,8 +10,8 @@ export const useGenreMovies = (
   tvId: number | null | undefined,
   filter: ContentFilter = {
     mediaType: "all",
-    sortBy: "popularity.desc",
-    includeAdult: false,
+    sort_by: "popularity.desc",
+    include_adult: false,
     year: "",
     rating: "",
   },
@@ -23,8 +23,8 @@ export const useGenreMovies = (
       movieId,
       tvId,
       filter.mediaType,
-      filter.sortBy,
-      filter.includeAdult,
+      filter.sort_by,
+      filter.include_adult,
       filter.year,
       filter.rating,
       category,
@@ -37,16 +37,10 @@ export const useGenreMovies = (
 export const useInfiniteGenreMovies = (
   movieId: number | null | undefined,
   tvId: number | null | undefined,
-  filter: {
-    mediaType: string;
-    sortBy: string;
-    includeAdult: boolean;
-    year: string;
-    rating: string;
-  } = {
+  filter: ContentFilter  = {
     mediaType: "all",
-    sortBy: "popularity.desc",
-    includeAdult: false,
+    sort_by: "popularity.desc",
+    include_adult: false,
     year: "",
     rating: "",
   },
@@ -58,8 +52,8 @@ export const useInfiniteGenreMovies = (
       movieId,
       tvId,
       filter.mediaType,
-      filter.sortBy,
-      filter.includeAdult,
+      filter.sort_by,
+      filter.include_adult,
       filter.year,
       filter.rating,
     ],
@@ -84,8 +78,8 @@ export const useInfinityExploreContent = (
       "infiniteMovies",
       category,
       filter.mediaType,
-      filter.sortBy,
-      filter.includeAdult,
+      filter.sort_by,
+      filter.include_adult,
       filter.year,
       filter.rating,
     ],

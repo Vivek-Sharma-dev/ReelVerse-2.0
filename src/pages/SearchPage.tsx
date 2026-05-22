@@ -25,6 +25,7 @@ const SearchPage = () => {
         const data = await searchMovies(query);
         setResults(data || []);
       } catch (error) {
+        // eslint-disable-next-line no-console
         console.error("Search page fetch failed:", error);
       } finally {
         setIsLoading(false);

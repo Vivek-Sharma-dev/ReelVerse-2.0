@@ -46,6 +46,7 @@ const SearchBar = () => {
           const data = await searchMovies(query);
           setResults(data || []);
         } catch (error) {
+          // eslint-disable-next-line no-console
           console.error("Search API failed:", error);
         }
       } else {

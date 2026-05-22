@@ -1,14 +1,18 @@
-import React, { useState, createContext, useContext, useEffect } from "react";
+import React, { useState, createContext, useEffect } from "react";
 import type { MovieProps } from "../utils/types/card.type";
 
-interface WatchlistContextType {
+export interface WatchlistContextType {
   watchlist: MovieProps[];
+  // eslint-disable-next-line no-unused-vars
   addToWatchlist: (movie: MovieProps) => void;
+  // eslint-disable-next-line no-unused-vars
   removeFromWatchlist: (movieId: number) => void;
+  // eslint-disable-next-line no-unused-vars
   isInWatchlist: (movieId: number) => boolean;
 }
 
-const WatchlistContext = createContext<WatchlistContextType | undefined>(
+// eslint-disable-next-line react-refresh/only-export-components
+export const WatchlistContext = createContext<WatchlistContextType | undefined>(
   undefined,
 );
 
@@ -48,12 +52,4 @@ export const WatchlistProvider = ({
       {children}
     </WatchlistContext.Provider>
   );
-};
-
-export const useWatchlist = () => {
-  const context = useContext(WatchlistContext);
-  if (!context) {
-    throw new Error("useWatchlist must be used within a WatchlistProvider");
-  }
-  return context;
 };
