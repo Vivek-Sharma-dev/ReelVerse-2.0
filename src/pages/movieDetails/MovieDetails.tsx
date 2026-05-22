@@ -1,6 +1,5 @@
 import { Link, useParams } from "react-router-dom";
 import { useMovieDetails } from "../../hooks/useDetails";
-import Loading from "../../components/common/Loading";
 import Error from "../../components/common/Error";
 import Banner from "../../components/layout/DetailsPage/Banner";
 import MovieInfoCard from "../../components/common/MovieInfoCard";
@@ -9,6 +8,7 @@ import { useState } from "react";
 import MovieCard from "../../components/common/MovieCard";
 import type { MovieProps } from "../../utils/types/card.type";
 import useMetaData from "../../hooks/useMetaData";
+import DetailsSkeleton from "../../components/common/DetailsSkeleton";
 
 export type TrailerType = {
   key: string;
@@ -36,7 +36,7 @@ const MovieDetails = () => {
     "Discover detailed information about your favorite movies and TV shows, including trailers, cast, and similar recommendations on ReelVerse.",
   );
 
-  if (isPending) return <Loading />;
+  if (isPending) return <DetailsSkeleton />;
   if (isError) return <Error />;
   const { details, credits, similarMovies } = data || {};
 
