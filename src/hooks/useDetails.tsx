@@ -8,3 +8,4 @@ export const useMovieDetails = (movieId: number, type: string) => {
     staleTime: 1000 * 60 * 60, // 1 hour
   });
 };
+ 

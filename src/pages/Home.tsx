@@ -6,15 +6,22 @@ import HeroSection from "../components/layout/HeroSection";
 import { GENRE_MAP } from "../utils/constant";
 import MovieRow from "../components/layout/MovieRow";
 import useMetaData from "../hooks/useMetaData";
+import CardLoader from "../components/common/CardLoader";
+import CarouselSkeleton from "../components/common/CarouselSkeleton";
 
 const Home = () => {
   useMetaData(
     "Home",
     "Welcome to ReelVerse, your ultimate destination for discovering trending movies and TV shows. Explore personalized recommendations, detailed information, and a vast collection of entertainment content all in one place.",
-  )
+  );
   const { data, isError, isLoading } = useTrendingMovies();
   if (isLoading) {
-    return <Loading />;
+    return (
+      <>
+        <CarouselSkeleton />
+        <CardLoader CardsCount={8} />
+      </>
+    );
   }
   if (isError) {
     return <Error />;
