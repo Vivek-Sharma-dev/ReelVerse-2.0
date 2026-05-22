@@ -1,6 +1,5 @@
 import { useTrendingMovies } from "../hooks/useTrendingMovies";
 import { type MovieProps } from "../utils/types/card.type";
-import Loading from "../components/common/Loading";
 import Error from "../components/common/Error";
 import HeroSection from "../components/layout/HeroSection";
 import { GENRE_MAP } from "../utils/constant";
