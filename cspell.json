@@ -22,7 +22,8 @@
     "hentai",
     "ecchi",
     "riko",
-    "watchlist"
+    "watchlist",
+    "gsap",
   ],
   "ignorePaths": ["**/node_modules/**", "**/dist/**", "**/build/**"]
 }

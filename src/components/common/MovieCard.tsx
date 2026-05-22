@@ -7,16 +7,18 @@ import type React from "react";
 import { useWatchlist } from "../../hooks/useWatchlist";
 
 const MovieCard = ({ data }: { data: MovieProps }) => {
+  // use watchlist
+  const { isInWatchlist, addToWatchlist, removeFromWatchlist } = useWatchlist();
+  // check if movie or tv
   const isMovie =
     data?.media_type === "movie" || !!data?.title || !!data?.release_date;
   const geners = data?.genre_ids.map((id) => {
     return isMovie ? movieGenreMap[id] : tvGenreMap[id];
   });
 
-  const { isInWatchlist, addToWatchlist, removeFromWatchlist } = useWatchlist();
+  const isAdded = isInWatchlist(data?.id); // check if movie is in watchlist or not
 
-  const isAdded = isInWatchlist(data?.id);
-
+  // handle watchlist toggle
   const handleWatchlistToggle = (e: React.MouseEvent) => {
     e.stopPropagation();
     e.preventDefault();
@@ -27,11 +29,14 @@ const MovieCard = ({ data }: { data: MovieProps }) => {
     }
   };
 
+  // filter undefined and empty geners
   const filteredGeners = geners.filter(
     (genre) => genre !== undefined && genre.length > 0,
   ) as string[];
 
   const type = isMovie ? "movie" : "tv";
+  const name =
+    data?.title || data?.name || data?.original_title || data?.original_name;
   return (
     <Link to={`/watch/${type}/${data?.id}`} className="w-full h-full">
       {/* card for single movie */}
@@ -39,7 +44,7 @@ const MovieCard = ({ data }: { data: MovieProps }) => {
         <div className="h-92 aspect-auto overflow-hidden relative">
           <img
             src={`https://image.tmdb.org/t/p/w500/${data?.poster_path}`}
-            alt={data?.original_title || data?.original_name}
+            alt={name}
             className={`object-fit object-center rounded-t-lg shadow-lg h-full w-full transition-transform duration-300 group-hover:scale-105`}
           />
           <div>
@@ -57,10 +62,7 @@ const MovieCard = ({ data }: { data: MovieProps }) => {
         <div className="p-2 flex flex-col gap-1">
           <div className="flex justify-between">
             <h1 className="text-xl font-medium group-hover:text-vibe-cyan transition-all duration-300 line-clamp-1">
-              {data?.title ||
-                data?.name ||
-                data?.original_title ||
-                data?.original_name}
+              {name}
             </h1>
             {data?.vote_average !== 0 && (
               <p className="text-vibe-cyan flex items-center gap-1">

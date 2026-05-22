@@ -3,7 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import { searchMovies } from "../services/tmdb.service";
 import { filterAdultContent } from "../utils/functions";
 import MovieCard from "../components/common/MovieCard";
-import Loading from "../components/common/Loading";
+import Loading from "../components/common/loaders/Loading";
 import type { MovieProps } from "../utils/types/card.type";
 import useMetaData from "../hooks/useMetaData";
 

@@ -11,8 +11,8 @@ const Carousel = ({
   movie: MovieProps;
   isExiting: boolean;
 }) => {
-  const container = useRef<HTMLDivElement>(null);
-
+  const container = useRef<HTMLDivElement>(null); // ref to the container div
+  // GSAP animations for exiting
   useGSAP(
     () => {
       if (isExiting) {
@@ -33,6 +33,7 @@ const Carousel = ({
     { scope: container, dependencies: [isExiting] },
   );
 
+  // GSAP animations for entering
   useGSAP(
     () => {
       gsap.set(".hero-content > *", { opacity: 0, y: 50 });
@@ -74,11 +75,16 @@ const Carousel = ({
     },
     { scope: container, dependencies: [movie.id] },
   );
+  // check if movie exists
   if (!movie) return null;
+  // map genre ids to genre names
   const geners = movie?.genre_ids.map((id) => {
     return movie?.media_type === "movie" ? movieGenreMap[id] : tvGenreMap[id];
   });
 
+  // get movie name
+  const name =
+    movie.title || movie.name || movie.original_name || movie.original_title;
   return (
     <Link
       to={`/watch/${movie.media_type}/${movie.id}`}
@@ -90,20 +96,12 @@ const Carousel = ({
       >
         <img
           src={`https://image.tmdb.org/t/p/original/${movie.backdrop_path}`}
-          alt={
-            movie.title ||
-            movie.name ||
-            movie.original_name ||
-            movie.original_title
-          }
+          alt={name}
           className=" w-full h-full object-cover hero-bg-img"
         />
         <div className="hero-content absolute inset-0 z-10 px-5 lg:p-16 flex flex-col lg:space-y-5 justify-center h-full bg-linear-to-r from-black/80 to-transparent">
           <h1 className="text-xl md:text-3xl lg:text-4xl font-bold">
-            {movie.title ||
-              movie.name ||
-              movie.original_name ||
-              movie.original_title}
+            {name}
           </h1>
           <div className="flex items-center gap-1 lg:gap-4">
             {geners.map((genre, index) => (

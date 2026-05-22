@@ -39,16 +39,17 @@ const MovieInfoCard = ({ details }: { details: ContentDetailsProps }) => {
     },
   ];
 
+  const name = details.title || details.name || "N/A";
   return (
     <div className="w-full h-full max-w-sm bg-zinc-900/50 backdrop-blur-md border-4 border-vibe-cyan rounded-3xl overflow-hidden hover:glow transition-shadow duration-300j">
       {/* 1. Poster Section */}
       <div className="relative group ">
         <img
           src={`https://image.tmdb.org/t/p/w500${details.poster_path}`}
-          alt={details.title || details.name}
+          alt={name}
           className="w-full aspect-2/2.5 object-fit transition-transform duration-500 group-hover:scale-105"
         />
-       
+        <div className="absolute inset-0 bg-zinc-900/50 backdrop-blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
       </div>
 
       {/* 2. Stats Grid */}

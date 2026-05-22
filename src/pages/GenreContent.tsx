@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useInfiniteGenreMovies } from "../hooks/useGenreMovies";
-import Loading from "../components/common/Loading";
+import Loading from "../components/common/loaders/Loading";
 import MovieCard from "../components/common/MovieCard";
 import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
@@ -9,8 +9,8 @@ import FilterModel from "../components/common/FilterModel";
 import Error from "../components/common/Error";
 import HeroSection from "../components/layout/HeroSection";
 import useMetaData from "../hooks/useMetaData";
-import CarouselSkeleton from "../components/common/CarouselSkeleton";
-import CardLoader from "../components/common/CardLoader";
+import CarouselSkeleton from "../components/common/loaders/CarouselSkeleton";
+import CardLoader from "../components/common/loaders/CardLoader";
 
 const GenreContent = () => {
   const { movieId, tvId, genreName } = useParams();

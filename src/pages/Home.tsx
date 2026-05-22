@@ -5,8 +5,8 @@ import HeroSection from "../components/layout/HeroSection";
 import { GENRE_MAP } from "../utils/constant";
 import MovieRow from "../components/layout/MovieRow";
 import useMetaData from "../hooks/useMetaData";
-import CardLoader from "../components/common/CardLoader";
-import CarouselSkeleton from "../components/common/CarouselSkeleton";
+import CardLoader from "../components/common/loaders/CardLoader";
+import CarouselSkeleton from "../components/common/loaders/CarouselSkeleton";
 
 const Home = () => {
   useMetaData(

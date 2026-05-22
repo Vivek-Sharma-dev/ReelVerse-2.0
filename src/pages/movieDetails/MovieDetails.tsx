@@ -8,7 +8,7 @@ import { useState } from "react";
 import MovieCard from "../../components/common/MovieCard";
 import type { MovieProps } from "../../utils/types/card.type";
 import useMetaData from "../../hooks/useMetaData";
-import DetailsSkeleton from "../../components/common/DetailsSkeleton";
+import DetailsSkeleton from "../../components/common/loaders/DetailsSkeleton";
 
 export type TrailerType = {
   key: string;

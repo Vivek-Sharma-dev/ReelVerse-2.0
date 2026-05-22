@@ -5,13 +5,13 @@ import MovieCard from "../components/common/MovieCard";
 import FilterModel from "../components/common/FilterModel";
 import { FiChevronDown, FiFilter } from "react-icons/fi";
 import { useInView } from "react-intersection-observer";
-import Loading from "../components/common/Loading";
+import Loading from "../components/common/loaders/Loading";
 import Error from "../components/common/Error";
 import MovieRow from "../components/layout/MovieRow";
 import HeroSection from "../components/layout/HeroSection";
 import useMetaData from "../hooks/useMetaData";
-import CardLoader from "../components/common/CardLoader";
-import CarouselSkeleton from "../components/common/CarouselSkeleton";
+import CardLoader from "../components/common/loaders/CardLoader";
+import CarouselSkeleton from "../components/common/loaders/CarouselSkeleton";
 
 const ExplorePage = () => {
   const { category } = useParams();

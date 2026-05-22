@@ -1,12 +1,6 @@
 import { Check } from "lucide-react";
 import { useEffect, useState } from "react";
-type FiltersType = {
-  mediaType: string;
-  year: string;
-  include_adult: boolean;
-  sort_by: string;
-  rating: string;
-};
+import type {ContentFilter} from './../../utils/constant'
 const FilterModal = ({
   isOpen,
   onClose,
@@ -15,8 +9,8 @@ const FilterModal = ({
 }: {
   isOpen: boolean;
   onClose: () => void;
-  filters: FiltersType;
-  setFilters: React.Dispatch<React.SetStateAction<FiltersType>>;
+  filters: ContentFilter;
+  setFilters: React.Dispatch<React.SetStateAction<ContentFilter>>;
 }) => {
   const [activeTab, setActiveTab] = useState("type"); // 'type', 'year', 'rating'
 
@@ -27,7 +21,7 @@ const FilterModal = ({
     { id: "sort", label: "Sort By" },
   ];
   // selected filters
-  const [selectedFilters, setSelectedFilters] = useState({
+  const [selectedFilters, setSelectedFilters] = useState<ContentFilter>({
     mediaType: "all",
     year: "",
     include_adult: false,
@@ -112,6 +106,7 @@ const FilterModal = ({
               </div>
             )}
 
+            {/* Year Input */}
             {activeTab === "year" && (
               <input
                 type="number"
@@ -127,6 +122,7 @@ const FilterModal = ({
               />
             )}
 
+            {/* Include Adult */}
             {activeTab === "safety" && (
               <label className="flex items-center gap-4 cursor-pointer p-4 bg-zinc-900 rounded-xl border border-zinc-800">
                 <input
@@ -154,6 +150,7 @@ const FilterModal = ({
               </label>
             )}
 
+            {/* Sort By */}
             {activeTab === "sort" && (
               <div className="space-y-3">
                 {[

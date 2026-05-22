@@ -1,7 +1,7 @@
 
 const TrailerSkeleton = () => {
   return (
-    // Main full screen viewport matrix container matching your Reels height layout
+    // Main full screen viewport matrix container matching the Reels height layout
     <div className="h-dvh w-full bg-black relative flex items-center justify-center overflow-hidden animate-pulse">
       
       {/* 📺 Background Video Placeholder Shimmer */}
