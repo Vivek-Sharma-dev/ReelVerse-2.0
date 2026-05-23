@@ -1,21 +1,31 @@
-import type { ContentFilter } from './../utils/types/filter.type';
+import axios from "axios";
+import type { ContentFilter } from "./../utils/types/filter.type";
 import {
   type ContentDetailsProps,
   type CreditsResponse,
   type MovieProps,
-} from "./../utils/types/movie.type.ts";
-import type {  PersonDetails } from "../utils/types/movie.type.ts";
+} from "./../utils/types/movie.type"; // 🌟 Fixed: Removed explicit .ts extensions
+import type { PersonDetails } from "../utils/types/movie.type";
 import { filterAdultContent } from "../utils/functions";
-import tmdbApi from "./api.service.ts";
-// ** Content fetching functions for TMDB API
+
+// 🌐 BASE URL Configurations (Bypasses Jio Block through Vercel Serverless Function)
+const BASE_URL = window.location.origin + "/api/tmdb";
+
+const tmdbApi = axios.create({
+  baseURL: BASE_URL,
+});
+
+// ** Content fetching functions for TMDB API via Serverless Proxy
 
 // 1. Fetch trending movies of the week
 export const fetchTrendingMovies = async () => {
   try {
-    const response = await tmdbApi.get("/trending/movie/week");
+    // 🚀 Passing actual TMDB route as endpoint query parameter
+    const response = await tmdbApi.get("", {
+      params: { endpoint: "trending/movie/week" },
+    });
     return response.data.results;
   } catch (error) {
-    // eslint-disable-next-line no-console
     console.error("Error fetching trending movies:", error);
     throw error;
   }
@@ -40,7 +50,7 @@ export const fetchContentByGenre = async (
     let totalPages = 500;
 
     const getParams = (type: "movie" | "tv") => {
-      const baseParams: ContentFilter = {
+      const baseParams: any = {
         sort_by: filter.sort_by,
         include_adult: filter.include_adult,
         page,
@@ -48,16 +58,11 @@ export const fetchContentByGenre = async (
         rating: filter.rating,
       };
 
-      // year logic
       if (filter.year) {
-        if (type === "movie") {
-          baseParams.primary_release_year = filter.year;
-        } else if (type === "tv") {
-          baseParams.first_air_date_year = filter.year;
-        }
+        if (type === "movie") baseParams.primary_release_year = filter.year;
+        else if (type === "tv") baseParams.first_air_date_year = filter.year;
       }
 
-      // 2. category
       if (category) {
         if (category === "hollywood") {
           baseParams.with_original_language = "en";
@@ -76,11 +81,11 @@ export const fetchContentByGenre = async (
 
     if (filter.mediaType === "all") {
       const [movies, tvShows] = await Promise.all([
-        tmdbApi.get("/discover/movie", {
-          params: getParams("movie"),
+        tmdbApi.get("", {
+          params: { endpoint: "discover/movie", ...getParams("movie") },
         }),
-        tmdbApi.get("/discover/tv", {
-          params: getParams("tv"),
+        tmdbApi.get("", {
+          params: { endpoint: "discover/tv", ...getParams("tv") },
         }),
       ]);
 
@@ -99,8 +104,11 @@ export const fetchContentByGenre = async (
     } else {
       const type = filter.mediaType === "anime" ? "tv" : filter.mediaType;
 
-      const res = await tmdbApi.get(`/discover/${type}`, {
-        params: getParams(type as "movie" | "tv"),
+      const res = await tmdbApi.get("", {
+        params: {
+          endpoint: `discover/${type}`,
+          ...getParams(type as "movie" | "tv"),
+        },
       });
       combined = res.data.results.map((t: ContentDetailsProps) => ({
         ...t,
@@ -108,27 +116,27 @@ export const fetchContentByGenre = async (
       }));
       totalPages = res.data.total_pages;
     }
+
     if (!filter.include_adult) {
       combined = filterAdultContent(combined);
     }
     const shuffle = combined.sort(() => Math.random() - 0.5);
     return { results: shuffle, page, total_pages: totalPages };
   } catch (error) {
-    // eslint-disable-next-line no-console
     console.error("Error fetching content by genre:", error);
     throw error;
   }
 };
 
-// ** fetching movie details, credits, similar movies, etc. can be added here as needed in the future
 // fetch movie details
 export const fetchMovieDetails = async (id: number, type: string) => {
   try {
     const [details, credits, similarMovies] = await Promise.all([
-      tmdbApi.get(`/${type}/${id}`), // fetch movie details
-      tmdbApi.get(`/${type}/${id}/credits`), // fetch credits first to get director and main cast
-      tmdbApi.get(`/${type}/${id}/similar`), // fetch similar movies
+      tmdbApi.get("", { params: { endpoint: `${type}/${id}` } }),
+      tmdbApi.get("", { params: { endpoint: `${type}/${id}/credits` } }),
+      tmdbApi.get("", { params: { endpoint: `${type}/${id}/similar` } }),
     ]);
+
     type MovieDetailsResponse = {
       details: ContentDetailsProps;
       credits: CreditsResponse;
@@ -142,7 +150,6 @@ export const fetchMovieDetails = async (id: number, type: string) => {
     };
     return combinedData;
   } catch (error) {
-    // eslint-disable-next-line no-console
     console.error("Error fetching movie details:", error);
     throw error;
   }
@@ -151,10 +158,11 @@ export const fetchMovieDetails = async (id: number, type: string) => {
 // fetch trailer
 export const fetchTrailer = async (id: number, type: string) => {
   try {
-    const response = await tmdbApi.get(`/${type}/${id}/videos`);
+    const response = await tmdbApi.get("", {
+      params: { endpoint: `${type}/${id}/videos` },
+    });
     return response.data;
   } catch (error) {
-    // eslint-disable-next-line no-console
     console.error("Error fetching trailer:", error);
     throw error;
   }
@@ -163,14 +171,11 @@ export const fetchTrailer = async (id: number, type: string) => {
 // search movies
 export const searchMovies = async (query: string) => {
   try {
-    const response = await tmdbApi.get(`/search/multi`, {
-      params: {
-        query,
-      },
+    const response = await tmdbApi.get("", {
+      params: { endpoint: "search/multi", query },
     });
     return response.data.results;
   } catch (error) {
-    // eslint-disable-next-line no-console
     console.error("Error searching movies:", error);
     throw error;
   }
@@ -182,7 +187,7 @@ export const fetchExploreContent = async (
   page: number = 1,
   filters: ContentFilter,
 ) => {
-  const params: ContentFilter = {
+  const params: any = {
     page,
     sort_by: filters.sort_by || "popularity.desc",
     include_adult: filters.include_adult || false,
@@ -206,13 +211,11 @@ export const fetchExploreContent = async (
     if (filters?.mediaType === "all") type = "tv";
   }
 
-  // filter adult content function
-
   try {
     let combined = [];
     const [movieRes, tvRes] = await Promise.all([
-      tmdbApi.get("/discover/movie", { params }),
-      tmdbApi.get("/discover/tv", { params }),
+      tmdbApi.get("", { params: { endpoint: "discover/movie", ...params } }),
+      tmdbApi.get("", { params: { endpoint: "discover/tv", ...params } }),
     ]);
 
     const res = type === "movie" ? movieRes : tvRes;
@@ -241,18 +244,15 @@ export const fetchExploreContent = async (
     }
 
     return {
-      results: combined.sort(() => Math.random() - 0.5), // shuffle results
-
+      results: combined.sort(() => Math.random() - 0.5),
       page,
       total_pages: res.data.total_pages,
     };
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error("Error fetching content by genre:", error);
+    console.error("Error fetching explore content:", error);
     throw error;
   }
 };
-
 
 // fetch person details
 export const fetchPersonDetails = async (
@@ -263,9 +263,9 @@ export const fetchPersonDetails = async (
 }> => {
   try {
     const [personRes, movieCreditsRes, tvCreditsRes] = await Promise.all([
-      tmdbApi.get(`/person/${id}`),
-      tmdbApi.get(`/person/${id}/movie_credits`),
-      tmdbApi.get(`/person/${id}/tv_credits`),
+      tmdbApi.get("", { params: { endpoint: `person/${id}` } }),
+      tmdbApi.get("", { params: { endpoint: `person/${id}/movie_credits` } }),
+      tmdbApi.get("", { params: { endpoint: `person/${id}/tv_credits` } }),
     ]);
 
     const combinedCredits = [
@@ -284,101 +284,99 @@ export const fetchPersonDetails = async (
       credits: combinedCredits.sort(() => Math.random() - 0.5),
     };
   } catch (error) {
-    // eslint-disable-next-line no-console
     console.error("Error fetching person details:", error);
     throw error;
   }
 };
 
-//fetch trailers data for explore page (anime, indian, hollywood) with parallel trailer validation and category tagging
+// fetch trailers data for explore page
 export const fetchTrailerData = async (page: number) => {
-  // 1. ANIME: Keyword ID for Anime is 210024 or Japanese animation genre logic
-  const animePromise = tmdbApi.get("/discover/movie", {
-    params: {
-      page,
-      with_keywords: "210024|287501", // Anime & Animation tags
-      with_original_language: "ja", // Japanese origin (Anime)
-    },
-  });
+  try {
+    const [animeRes, indianRes, hollywoodRes] = await Promise.all([
+      tmdbApi.get("", {
+        params: {
+          endpoint: "discover/movie",
+          page,
+          with_keywords: "210024|287501",
+          with_original_language: "ja",
+        },
+      }),
+      tmdbApi.get("", {
+        params: {
+          endpoint: "discover/movie",
+          page,
+          region: "IN",
+          with_original_language: "hi",
+        },
+      }),
+      tmdbApi.get("", {
+        params: {
+          endpoint: "discover/movie",
+          page,
+          with_original_language: "en",
+        },
+      }),
+    ]);
 
-  // 2. INDIAN: Region IN, languages Hindi (hi) or regional
-  const indianPromise = tmdbApi.get("/discover/movie", {
-    params: {
-      page,
-      region: "IN",
-      with_original_language: "hi",
-    },
-  });
-
-  // 3. HOLLYWOOD: Language English (en), popular releases
-  const hollywoodPromise = tmdbApi.get("/discover/movie", {
-    params: {
-      page,
-      with_original_language: "en",
-    },
-  });
-
-  const [animeRes, indianRes, hollywoodRes] = await Promise.all([
-    animePromise,
-    indianPromise,
-    hollywoodPromise,
-  ]);
-
-  const combinedResults = [
-    ...animeRes.data.results.map((m: ContentDetailsProps) => ({
-      ...m,
-      category: "Anime",
-    })),
-    ...indianRes.data.results.map((m: ContentDetailsProps) => ({
-      ...m,
-      category: "Indian",
-    })),
-    ...hollywoodRes.data.results.map((m: ContentDetailsProps) => ({
-      ...m,
-      category: "Hollywood",
-    })),
-  ];
-
-  for (let i = combinedResults.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [combinedResults[i], combinedResults[j]] = [
-      combinedResults[j],
-      combinedResults[i],
+    const combinedResults = [
+      ...animeRes.data.results.map((m: ContentDetailsProps) => ({
+        ...m,
+        category: "Anime",
+      })),
+      ...indianRes.data.results.map((m: ContentDetailsProps) => ({
+        ...m,
+        category: "Indian",
+      })),
+      ...hollywoodRes.data.results.map((m: ContentDetailsProps) => ({
+        ...m,
+        category: "Hollywood",
+      })),
     ];
+
+    // Fisher-Yates Shuffle
+    for (let i = combinedResults.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [combinedResults[i], combinedResults[j]] = [
+        combinedResults[j],
+        combinedResults[i],
+      ];
+    }
+
+    interface TrailerTypes {
+      key: string;
+      name: string;
+      site: string;
+      type: string;
+    }
+
+    const finalizedList = await Promise.all(
+      combinedResults.map(async (movie: ContentDetailsProps) => {
+        try {
+          const videoRes = await tmdbApi.get("", {
+            params: { endpoint: `movie/${movie.id}/videos` },
+          });
+          const videos = videoRes.data.results || [];
+          const trailer =
+            videos.find(
+              (v: TrailerTypes) => v.type === "Trailer" && v.site === "YouTube",
+            ) ||
+            videos.find((v: TrailerTypes) => v.site === "YouTube") ||
+            null;
+
+          return trailer ? { ...movie, youtubeKey: trailer.key } : null;
+        } catch {
+          return null;
+        }
+      }),
+    );
+
+    return finalizedList
+      .filter((m) => m !== null)
+      .sort(() => Math.random() - 0.5);
+  } catch (error) {
+    console.error("Error fetching trailer data:", error);
+    throw error;
   }
-
-  interface TrailerTypes {
-    key: string;
-    name: string;
-    site: string;
-    size: number;
-    type: string;
-    official: boolean;
-    published_at: string;
-    id: string;
-  }
-  // 🎬 Parallel trailer validation check pipeline (No Blank Videos allowed)
-  const finalizedList = await Promise.all(
-    combinedResults.map(async (movie: ContentDetailsProps) => {
-      try {
-        const videoRes = await tmdbApi.get(`/movie/${movie.id}/videos`);
-        const videos = videoRes.data.results || [];
-        const trailer =
-          videos.find(
-            (v: TrailerTypes) => v.type === "Trailer" && v.site === "YouTube",
-          ) ||
-          videos.find((v: TrailerTypes) => v.site === "YouTube") ||
-          null;
-
-        return trailer ? { ...movie, youtubeKey: trailer.key } : null;
-      } catch {
-        return null;
-      }
-    }),
-  );
-
-  // Filter out any entries where trailer was not found
-  return finalizedList
-    .filter((m) => m !== null)
-    .sort(() => Math.random() - 0.5);
 };
+
+export default tmdbApi;

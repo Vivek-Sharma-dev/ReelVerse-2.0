@@ -1,6 +1,10 @@
 {
   "rewrites": [
     {
+      "source": "/api/tmdb",
+      "destination": "/api/tmdb.ts"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }

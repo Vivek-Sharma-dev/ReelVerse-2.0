@@ -3,7 +3,7 @@ import { Mail, MessageSquare, Send, User } from "lucide-react";
 import { useForm, ValidationError } from "@formspree/react";
 import useMetaData from "../hooks/useMetaData";
 const ContactPage = () => {
-  // environment variables for formspree
+  // environment variables
   const formEndpoint = import.meta.env.VITE_FORMSPREE_KEY;
   const [form, setForm] = useState({ name: "", email: "", message: "" });
   const [state, handleSubmit] = useForm(formEndpoint);
