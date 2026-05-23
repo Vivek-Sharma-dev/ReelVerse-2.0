@@ -24,6 +24,8 @@
     "riko",
     "watchlist",
     "gsap",
+    "reelverse",
+    "formspree",
   ],
   "ignorePaths": ["**/node_modules/**", "**/dist/**", "**/build/**"]
 }

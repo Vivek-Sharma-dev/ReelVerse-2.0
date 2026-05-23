@@ -1,9 +1,9 @@
 import MovieCard from '../components/common/MovieCard';
-import { type MovieProps } from '../utils/types/card.type';
 import { Film } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import useMetaData from '../hooks/useMetaData';
 import { useWatchlist } from '../hooks/useWatchlist';
+import type { MovieProps } from '../utils/types/movie.type';
 
 const WatchlistPage = () => {
   const { watchlist } = useWatchlist();

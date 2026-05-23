@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { Check, MessageCircle, Pause, Play, Plus } from "lucide-react";
-import type { MovieProps } from "../../utils/types/card.type";
+import type { MovieProps } from "../../utils/types/movie.type";
 import { useWatchlist } from "../../hooks/useWatchlist";
 
 interface CardProps {

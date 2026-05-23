@@ -3,8 +3,9 @@ import {
   fetchContentByGenre,
   fetchExploreContent,
 } from "../services/tmdb.service.ts";
-import type { ContentFilter } from "../utils/constant.ts";
+import type { ContentFilter } from "../utils/types/filter.type.ts";
 
+// ** Content fetching functions for TMDB API
 export const useGenreMovies = (
   movieId: number,
   tvId: number | null | undefined,
@@ -34,6 +35,7 @@ export const useGenreMovies = (
   });
 };
 
+// ** Content fetching functions for TMDB API for INFINITE SCROLL based on genre
 export const useInfiniteGenreMovies = (
   movieId: number | null | undefined,
   tvId: number | null | undefined,
@@ -69,6 +71,8 @@ export const useInfiniteGenreMovies = (
   });
 };
 
+
+// ** Content fetching functions for TMDB API for INFINITE SCROLL based on category
 export const useInfinityExploreContent = (
   category: string,
   filter: ContentFilter,

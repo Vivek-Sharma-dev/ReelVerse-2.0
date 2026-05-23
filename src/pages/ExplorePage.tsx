@@ -7,11 +7,12 @@ import { FiChevronDown, FiFilter } from "react-icons/fi";
 import { useInView } from "react-intersection-observer";
 import Loading from "../components/common/loaders/Loading";
 import Error from "../components/common/Error";
-import MovieRow from "../components/layout/MovieRow";
-import HeroSection from "../components/layout/HeroSection";
+import MovieRow from "../components/common/MovieRow";
+import HeroSection from "../components/common/HeroSection";
 import useMetaData from "../hooks/useMetaData";
 import CardLoader from "../components/common/loaders/CardLoader";
 import CarouselSkeleton from "../components/common/loaders/CarouselSkeleton";
+import type { ContentFilter } from "../utils/types/filter.type";
 
 const ExplorePage = () => {
   const { category } = useParams();
@@ -29,11 +30,11 @@ const ExplorePage = () => {
   // Check if user is applying custom sorting (like rating, release date) instead of default popularity
   const isCustomExploring = searchParams.has("sort");
 
-  const [filters, setFilters] = useState({
+  const [filters, setFilters] = useState<ContentFilter>({
     mediaType: "all",
     year: "",
     include_adult: false,
-    sort_by: currentSortParam, // Set initial sort from URL
+    sort_by: currentSortParam,
     rating: "",
   });
 

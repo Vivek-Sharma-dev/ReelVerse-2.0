@@ -1,7 +1,6 @@
 import { Play, Plus, Star, X } from "lucide-react";
-import type { ContentDetailsProps } from "../../../utils/types/card.type";
-import type { TrailerType } from "../../../pages/movieDetails/MovieDetails";
-import { useWatchlist } from "../../../hooks/useWatchlist";
+import { useWatchlist } from "../../hooks/useWatchlist";
+import type { ContentDetailsProps, TrailerType } from "../../utils/types/movie.type";
 const Banner = ({
   details,
   trailer,
@@ -20,35 +19,37 @@ const Banner = ({
   const { isInWatchlist, addToWatchlist, removeFromWatchlist } = useWatchlist();
   const isAdded = isInWatchlist(details.id);
 
-   const handleWatchlistToggle = (e: React.MouseEvent) => {
+  const handleWatchlistToggle = (e: React.MouseEvent) => {
     e.stopPropagation();
     e.preventDefault();
     if (isAdded) {
       removeFromWatchlist(details.id);
     } else {
       const formattedMovieForWatchlist = {
-      id: details.id,
-      title: details.title || "",
-      name: details.name || "",
-      original_title: details.original_title || "",
-      original_name: details.original_name || "",
-      backdrop_path: details.backdrop_path || "",
-      poster_path: details.poster_path || "",
-      overview: details.overview || "",
-      vote_average: details.vote_average || 0,
-      release_date: details.release_date || "",
-      first_air_date: details.first_air_date || "",
-      media_type: details.title || details.release_date ? "movie" : "tv", 
-      adult: details.adult || false,
-      video: details.video || false,
-      vote_count: details.vote_count || 0,
-      popularity: details.popularity || 0,
-      original_language: details.original_language || "",
-      
-      // FIX: Details page ke [{id, name}] array ko flat integer list [id] mein map karo 🌟
-      genre_ids: details.genres ? details.genres.map((g: { id: number }) => g.id) : []
+        // FIX: Details page ke [{id, name}] array ko flat integer list [id] mein map karo 🌟
+        id: details.id,
+        title: details.title || "",
+        name: details.name || "",
+        original_title: details.original_title || "",
+        original_name: details.original_name || "",
+        backdrop_path: details.backdrop_path || "",
+        poster_path: details.poster_path || "",
+        overview: details.overview || "",
+        vote_average: details.vote_average || 0,
+        release_date: details.release_date || "",
+        first_air_date: details.first_air_date || "",
+        media_type: details.title || details.release_date ? "movie" : "tv",
+        adult: details.adult || false,
+        video: details.video || false,
+        vote_count: details.vote_count || 0,
+        popularity: details.popularity || 0,
+        original_language: details.original_language || "",
 
-    };
+        // FIX: Details page ke [{id, name}] array ko flat integer list [id] mein map karo 🌟
+        genre_ids: details.genres
+          ? details.genres.map((g: { id: number }) => g.id)
+          : [],
+      };
       addToWatchlist(formattedMovieForWatchlist);
     }
   };
@@ -61,6 +62,7 @@ const Banner = ({
 
   return (
     <div className="relative w-full h-[60dvh] md:h-[80dvh]">
+      {/* 📺 Trailer Modal */}
       {isTrailerPlaying && trailer?.key ? (
         <>
           <div className="relative w-full h-full z-50 rounded-2xl">
@@ -81,7 +83,9 @@ const Banner = ({
           </div>
         </>
       ) : (
+        // 🎬 Movie Hero Banner
         <>
+          {/* 1. Background Image */}
           <div className="absolute inset-0">
             <img
               src={`https://image.tmdb.org/t/p/original${details.backdrop_path}`}
@@ -134,6 +138,7 @@ const Banner = ({
                 </div>
               </div>
 
+              {/* 3. Buttons */}
               <div className="flex flex-col lg:flex-row items-start lg:items-center gap-3">
                 {trailer?.key ? (
                   <button

@@ -3,16 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { Search, X } from "lucide-react";
 import { searchMovies } from "../../../services/tmdb.service";
 import { filterAdultContent } from "../../../utils/functions";
+import type { SearchResult } from "../../../utils/types/navLink.type";
 
-interface SearchResult {
-  id: number;
-  title?: string;
-  name?: string;
-  media_type: string;
-  poster_path: string;
-  release_date?: string;
-  overview?: string;
-}
 
 const SearchBar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -73,12 +65,12 @@ const SearchBar = () => {
     e.preventDefault();
     if (query.trim().length > 2) {
       navigate(`/search?q=${encodeURIComponent(query.trim())}`);
-      handleClose(); // Modal ya dropdown close kar do
+      handleClose(); // Close the modal
     }
   };
   return (
     <>
-      {/* HEADER TRIGGER BUTTON: Yeh tere navbar mein chota sa dikhega */}
+      {/* HEADER TRIGGER BUTTON: GLOBAL SEARCH */}
       <button
         onClick={() => setIsOpen(true)}
         className="relative -right-10 flex items-center gap-3 bg-zinc-900 border border-zinc-800 rounded-full p-2 hover:border-zinc-700 text-zinc-400  text-sm transition-all  group"

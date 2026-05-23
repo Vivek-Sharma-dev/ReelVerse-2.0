@@ -4,7 +4,7 @@ import { searchMovies } from "../services/tmdb.service";
 import { filterAdultContent } from "../utils/functions";
 import MovieCard from "../components/common/MovieCard";
 import Loading from "../components/common/loaders/Loading";
-import type { MovieProps } from "../utils/types/card.type";
+import type { MovieProps } from "../utils/types/movie.type";
 import useMetaData from "../hooks/useMetaData";
 
 const SearchPage = () => {

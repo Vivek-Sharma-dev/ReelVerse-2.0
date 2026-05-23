@@ -7,14 +7,15 @@ import { useInView } from "react-intersection-observer";
 import { FiFilter, FiChevronDown } from "react-icons/fi";
 import FilterModel from "../components/common/FilterModel";
 import Error from "../components/common/Error";
-import HeroSection from "../components/layout/HeroSection";
+import HeroSection from "../components/common/HeroSection";
 import useMetaData from "../hooks/useMetaData";
 import CarouselSkeleton from "../components/common/loaders/CarouselSkeleton";
 import CardLoader from "../components/common/loaders/CardLoader";
+import type { ContentFilter } from "../utils/types/filter.type";
 
 const GenreContent = () => {
   const { movieId, tvId, genreName } = useParams();
-  const [filters, setFilters] = useState({
+  const [filters, setFilters] = useState<ContentFilter>({
     mediaType: "all",
     year: "",
     include_adult: false,

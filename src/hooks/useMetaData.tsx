@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-
+// Set Meta Data include title and description
 const useMetaData = (
   title: string,
   description: string = "Discover your next favorite movie or TV show on ReelVerse. Explore a vast collection of content, from timeless classics to the latest releases. Dive into a world of entertainment tailored just for you.",

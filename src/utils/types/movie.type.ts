@@ -1,3 +1,15 @@
+export type TrailerType = {
+  key: string;
+  name: string;
+  site: string;
+  size: number;
+  type: string;
+  official: boolean;
+  published_at: string;
+  id: string;
+};
+
+// Movie card props
 export interface MovieProps {
   name?: string | undefined; // TV show name
   id: number;
@@ -22,8 +34,7 @@ export interface MovieProps {
   category? : string;
 };
 
-
-
+// details page props
 export interface ContentDetailsProps extends Omit<
   MovieProps,
   | "genre_ids"
@@ -71,25 +82,38 @@ export interface ContentDetailsProps extends Omit<
   episode_count: number;
 
   // season
-  seasons: [
+  seasons?: [
     {
-      id: number;
-      name: string;
-      poster_path: string;
-      episode_count: number;
+      id?: number;
+      name?: string;
+      poster_path?: string;
+      episode_count?: number;
+      air_date?: string;
     },
   ];
 }
 
+// Credits
 export interface CastProps {
   id: number;
-  name: string; // Asli naam (e.g., Chris Pratt)
-  character: string; // Movie character (e.g., Mario)
-  profile_path: string | null; // Actor ki image
-  order: number; // Display order (Top cast ke liye kaam aayega)
+  name: string; 
+  character: string;
+  profile_path: string | null; 
+  order: number;
 }
 
-// Credits Response Type
+export interface PersonDetails {
+  name: string;
+  biography: string;
+  birthday: string;
+  deathday: string | null;
+  place_of_birth: string;
+  profile_path: string | null;
+  known_for_department: string;
+  id: number;
+}
+
+// Credits
 export interface CreditsResponse {
   id: number;
   cast: CastProps[];

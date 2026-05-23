@@ -1,25 +1,15 @@
 import { Link, useParams } from "react-router-dom";
 import { useMovieDetails } from "../../hooks/useDetails";
 import Error from "../../components/common/Error";
-import Banner from "../../components/layout/DetailsPage/Banner";
+import Banner from "./Banner";
 import MovieInfoCard from "../../components/common/MovieInfoCard";
 import { useTrailer } from "../../hooks/useTrailer";
-import { useState } from "react";
+import  { useState } from "react";
 import MovieCard from "../../components/common/MovieCard";
-import type { MovieProps } from "../../utils/types/card.type";
 import useMetaData from "../../hooks/useMetaData";
 import DetailsSkeleton from "../../components/common/loaders/DetailsSkeleton";
+import type { CastProps, MovieProps, TrailerType } from "../../utils/types/movie.type";
 
-export type TrailerType = {
-  key: string;
-  name: string;
-  site: string;
-  size: number;
-  type: string;
-  official: boolean;
-  published_at: string;
-  id: string;
-};
 
 const MovieDetails = () => {
   const { id, type } = useParams();
@@ -92,7 +82,7 @@ const MovieDetails = () => {
 
                 {/* Horizontal Scroll for Cast */}
                 <div className="flex gap-6 overflow-x-auto pb-6 no-scrollbar">
-                  {credits?.cast?.slice(0, 15).map((person) => (
+                  {credits?.cast?.slice(0, 15).map((person: CastProps) => (
                     <Link to={`/person/${person.id}`} key={person.id}>
                       <div
                         key={person.id}
@@ -133,13 +123,13 @@ const MovieDetails = () => {
                 Seasons
               </h2>
               <div className="flex gap-4 overflow-x-auto pb-4 no-scrollbar">
-                {details.seasons.map((season) => (
-                  <>
+                {details.seasons && details.seasons.map((season) => (
+                    <>
                     {season.episode_count ? (
                       <div
-                        key={season.id}
+                      key={season.id}
                         className="shrink-0 w-32 bg-zinc-900 border border-zinc-800 rounded-xl p-3 text-center"
-                      >
+                        >
                         <p className="text-vibe-cyan font-bold text-sm">
                           {season.name}
                         </p>
@@ -148,7 +138,7 @@ const MovieDetails = () => {
                         </p>
                       </div>
                     ) : null}
-                  </>
+                    </>
                 ))}
               </div>
             </div>

@@ -1,6 +1,6 @@
 import { Check } from "lucide-react";
 import { useEffect, useState } from "react";
-import type {ContentFilter} from './../../utils/constant'
+import type { ContentFilter } from "../../utils/types/filter.type";
 const FilterModal = ({
   isOpen,
   onClose,
@@ -10,7 +10,8 @@ const FilterModal = ({
   isOpen: boolean;
   onClose: () => void;
   filters: ContentFilter;
-  setFilters: React.Dispatch<React.SetStateAction<ContentFilter>>;
+  // eslint-disable-next-line no-unused-vars
+  setFilters: (filters: ContentFilter) => void; 
 }) => {
   const [activeTab, setActiveTab] = useState("type"); // 'type', 'year', 'rating'
 
@@ -46,6 +47,7 @@ const FilterModal = ({
       sort_by: "popularity.desc",
       rating: "",
     });
+    
     setFilters({
       mediaType: "all",
       year: "",

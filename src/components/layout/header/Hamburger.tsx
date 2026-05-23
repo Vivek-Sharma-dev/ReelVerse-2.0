@@ -10,7 +10,7 @@ const Hamburger = ({
     <div className="lg:hidden order-1 lg:order-0 ">
       <button
         onClick={(e) => {
-          e.stopPropagation();
+          e.stopPropagation(); // to avoid closing the modal
           setIsMenuOpen?.((prev) => !prev);
         }}
       >

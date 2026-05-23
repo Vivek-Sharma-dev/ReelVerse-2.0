@@ -1,6 +1,8 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { fetchTrailerData } from "../services/tmdb.service";
 
+
+// ** Content fetching functions for TMDB API for INFINITE SCROLL TRAILERS
 export const useInfiniteReels = () => {
   return useInfiniteQuery({
     queryKey: ["infiniteReelsUnified"],

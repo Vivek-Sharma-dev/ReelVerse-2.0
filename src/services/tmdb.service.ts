@@ -1,12 +1,12 @@
+import type { ContentFilter } from './../utils/types/filter.type';
 import {
   type ContentDetailsProps,
   type CreditsResponse,
   type MovieProps,
-} from "./../utils/types/card.type";
-import type { ContentFilter, PersonDetails } from "../utils/constant";
+} from "./../utils/types/movie.type.ts";
+import type {  PersonDetails } from "../utils/types/movie.type.ts";
 import { filterAdultContent } from "../utils/functions";
 import tmdbApi from "./api.service.ts";
-
 // ** Content fetching functions for TMDB API
 
 // 1. Fetch trending movies of the week

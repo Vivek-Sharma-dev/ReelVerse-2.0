@@ -1,4 +1,4 @@
-import type { ContentDetailsProps } from "../../utils/types/card.type";
+import type { ContentDetailsProps } from "../../utils/types/movie.type";
 import { DollarSign, Star, Calendar, Globe } from "lucide-react";
 
 const MovieInfoCard = ({ details }: { details: ContentDetailsProps }) => {

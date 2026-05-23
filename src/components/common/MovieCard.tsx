@@ -1,7 +1,7 @@
 import { Check, PlayCircleIcon, Plus, Star } from "lucide-react";
 import { BiMovie } from "react-icons/bi";
 import { Link } from "react-router-dom";
-import type { MovieProps } from "../../utils/types/card.type";
+import type { MovieProps } from "../../utils/types/movie.type";
 import { movieGenreMap, tvGenreMap } from "../../utils/types/Mapping";
 import type React from "react";
 import { useWatchlist } from "../../hooks/useWatchlist";
@@ -12,7 +12,7 @@ const MovieCard = ({ data }: { data: MovieProps }) => {
   // check if movie or tv
   const isMovie =
     data?.media_type === "movie" || !!data?.title || !!data?.release_date;
-  const geners = data?.genre_ids.map((id) => {
+  const geners = data?.genre_ids.map((id: number) => {
     return isMovie ? movieGenreMap[id] : tvGenreMap[id];
   });
 
@@ -31,7 +31,7 @@ const MovieCard = ({ data }: { data: MovieProps }) => {
 
   // filter undefined and empty geners
   const filteredGeners = geners.filter(
-    (genre) => genre !== undefined && genre.length > 0,
+    (genre: string) => genre !== undefined && genre.length > 0,
   ) as string[];
 
   const type = isMovie ? "movie" : "tv";

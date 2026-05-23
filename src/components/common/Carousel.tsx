@@ -2,7 +2,7 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { useRef } from "react";
 import { movieGenreMap, tvGenreMap } from "../../utils/types/Mapping";
-import type { MovieProps } from "../../utils/types/card.type";
+import type { MovieProps } from "../../utils/types/movie.type";
 import { Link } from "react-router-dom";
 const Carousel = ({
   movie,
@@ -78,7 +78,7 @@ const Carousel = ({
   // check if movie exists
   if (!movie) return null;
   // map genre ids to genre names
-  const geners = movie?.genre_ids.map((id) => {
+  const geners = movie?.genre_ids.map((id: number) => {
     return movie?.media_type === "movie" ? movieGenreMap[id] : tvGenreMap[id];
   });
 
@@ -104,7 +104,7 @@ const Carousel = ({
             {name}
           </h1>
           <div className="flex items-center gap-1 lg:gap-4">
-            {geners.map((genre, index) => (
+            {geners.map((genre: string, index: number) => (
               <span
                 key={index}
                 className={` text-[12px] text-gray-400 bg-gray-700/50 mt-2 px-2 py-1 rounded font-semibold inline-block`}

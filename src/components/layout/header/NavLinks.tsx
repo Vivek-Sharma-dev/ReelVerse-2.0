@@ -5,12 +5,11 @@ import {
   baseLinkStyle,
   nonActiveLinkStyle,
 } from "../../../styles/navbar.Styles";
-import {
-  type NavLinkType,
-  type DirectionType,
-} from "../../../utils/types/navlink.type";
+import type { DirectionType, NavLinkType } from "../../../utils/types/navLink.type";
 
 const rowsStyle = "flex-row gap-6 hidden lg:flex";
+
+// The links that appear in the navbar
 const navLinks: NavLinkType[] = [
   {
     name: "home",
@@ -55,6 +54,8 @@ const navLinks: NavLinkType[] = [
     id: "contact-link",
   }
 ];
+
+// The links that appear in the mobile menu
 const NavLinks = ({
   direction = "row",
   isMenuOpen,

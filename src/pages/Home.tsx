@@ -1,9 +1,9 @@
 import { useTrendingMovies } from "../hooks/useTrendingMovies";
-import { type MovieProps } from "../utils/types/card.type";
+import { type MovieProps } from "../utils/types/movie.type";
 import Error from "../components/common/Error";
-import HeroSection from "../components/layout/HeroSection";
+import HeroSection from "../components/common/HeroSection";
 import { GENRE_MAP } from "../utils/constant";
-import MovieRow from "../components/layout/MovieRow";
+import MovieRow from "../components/common/MovieRow";
 import useMetaData from "../hooks/useMetaData";
 import CardLoader from "../components/common/loaders/CardLoader";
 import CarouselSkeleton from "../components/common/loaders/CarouselSkeleton";

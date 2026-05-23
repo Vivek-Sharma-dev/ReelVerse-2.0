@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
-import Carousel from "../common/Carousel";
-import type { MovieProps } from "../../utils/types/card.type";
+import Carousel from "./Carousel";
+import type { MovieProps } from "../../utils/types/movie.type";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const HeroSection = ({ data }: { data: MovieProps[] }) => {

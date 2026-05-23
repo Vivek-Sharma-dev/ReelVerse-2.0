@@ -1,5 +1,5 @@
 import React, { useState, createContext, useEffect } from "react";
-import type { MovieProps } from "../utils/types/card.type";
+import type { MovieProps } from "../utils/types/movie.type";
 
 export interface WatchlistContextType {
   watchlist: MovieProps[];
@@ -26,10 +26,12 @@ export const WatchlistProvider = ({
     return savedData ? JSON.parse(savedData) : [];
   });
 
+  // Save watchlist to local storage
   useEffect(() => {
     localStorage.setItem("vibe_stream_watchlist", JSON.stringify(watchlist));
   }, [watchlist]);
 
+  // Add movie to watchlist
   const addToWatchlist = (movie: MovieProps) => {
     setWatchlist((prev) => {
       if (prev.some((item) => item.id === movie.id)) return prev;
@@ -37,10 +39,12 @@ export const WatchlistProvider = ({
     });
   };
 
+  // Remove movie from watchlist
   const removeFromWatchlist = (movieId: number) => {
     setWatchlist((prev) => prev.filter((movie) => movie.id !== movieId));
   };
 
+  // Check if movie is in watchlist
   const isInWatchlist = (movieId: number) => {
     return watchlist.some((movie) => movie.id === movieId);
   };

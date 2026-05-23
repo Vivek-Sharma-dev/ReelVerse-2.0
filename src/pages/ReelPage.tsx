@@ -7,10 +7,8 @@ import {
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useInView } from "react-intersection-observer";
-
-// Individual Single Reel Card Engine
 import ReelCard from "../components/common/ReelCard";
-import TrailerSkeleton from "../components/common/TrailerSkeleton";
+import TrailerSkeleton from "../components/common/loaders/TrailerSkeleton";
 
 
 // Main Component Wrapper

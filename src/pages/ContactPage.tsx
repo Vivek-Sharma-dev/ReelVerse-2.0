@@ -1,10 +1,12 @@
-import  { useState } from "react";
+import { useState } from "react";
 import { Mail, MessageSquare, Send, User } from "lucide-react";
 import { useForm, ValidationError } from "@formspree/react";
 import useMetaData from "../hooks/useMetaData";
 const ContactPage = () => {
+  // environment variables for formspree
+  const formEndpoint = import.meta.env.VITE_FORMSPREE_KEY;
   const [form, setForm] = useState({ name: "", email: "", message: "" });
-  const [state, handleSubmit] = useForm("xykvkrvr");
+  const [state, handleSubmit] = useForm(formEndpoint);
   useMetaData(
     "Contact Us",
     "Have feature suggestions for ReelVerse? Or want to talk about Full-Stack optimizations? Drop a message down into the console pipeline!",
