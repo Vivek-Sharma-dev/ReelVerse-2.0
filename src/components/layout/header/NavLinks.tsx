@@ -5,7 +5,7 @@ import {
   baseLinkStyle,
   nonActiveLinkStyle,
 } from "../../../styles/navbar.Styles";
-import type { DirectionType, NavLinkType } from "../../../utils/types/navLink.type.ts";
+import type { DirectionType, NavLinkType } from "../../../utils/types/navLink.type";
 
 const rowsStyle = "flex-row gap-6 hidden lg:flex";
 
