@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Search, X } from "lucide-react";
 import { searchMovies } from "../../../services/tmdb.service";
 import { filterAdultContent } from "../../../utils/functions";
-import type { SearchResult } from "../../../utils/types/navLink.type";
+import type { SearchResult } from "../../../utils/types/navLink.type.ts";
 
 
 const SearchBar = () => {
