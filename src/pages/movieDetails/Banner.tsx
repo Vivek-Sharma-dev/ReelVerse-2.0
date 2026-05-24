@@ -83,7 +83,6 @@ const Banner = ({
           </div>
         </>
       ) : (
-        // 🎬 Movie Hero Banner
         <>
           {/* 1. Background Image */}
           <div className="absolute inset-0">

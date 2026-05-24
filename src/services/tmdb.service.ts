@@ -2,28 +2,50 @@ import axios from "axios";
 import type { ContentFilter } from "./../utils/types/filter.type";
 import {
   type ContentDetailsProps,
-  type CreditsResponse,
   type MovieProps,
-} from "./../utils/types/movie.type"; // 🌟 Fixed: Removed explicit .ts extensions
-import type { PersonDetails } from "../utils/types/movie.type";
+} from "./../utils/types/movie.type";
 import { filterAdultContent } from "../utils/functions";
 
-// 🌐 BASE URL Configurations (Bypasses Jio Block through Vercel Serverless Function)
-const BASE_URL = window.location.origin + "/api/tmdb";
+// 🌟 AUTO DETECT ENVIRONMENT
+const isLocal =
+  window.location.hostname === "localhost" ||
+  window.location.hostname === "127.0.0.1";
 
-const tmdbApi = axios.create({
-  baseURL: BASE_URL,
-});
+// Base URLs Setup
+const TMDB_LOCAL_BASE = "https://api.themoviedb.org/3";
+const PROXY_LIVE_BASE = window.location.origin + "/api/tmdb";
 
-// ** Content fetching functions for TMDB API via Serverless Proxy
+// Helper function to build bulletproof local/live configuration URLs dynamically
+const getRequestConfig = (
+  endpoint: string,
+  extraParams: Record<string, any> = {},
+) => {
+  if (isLocal) {
+    // Local machine: Target direct TMDB structure with explicit path injection
+    return {
+      url: `${TMDB_LOCAL_BASE}/${endpoint}`,
+      params: {
+        ...extraParams,
+        api_key: import.meta.env.VITE_TMDB_API_KEY, // Automatic mapping from .env
+      },
+    };
+  } else {
+    // Production Live: Target our serverless backend function path mapping
+    return {
+      url: PROXY_LIVE_BASE,
+      params: {
+        endpoint,
+        ...extraParams,
+      },
+    };
+  }
+};
 
 // 1. Fetch trending movies of the week
 export const fetchTrendingMovies = async () => {
   try {
-    // 🚀 Passing actual TMDB route as endpoint query parameter
-    const response = await tmdbApi.get("", {
-      params: { endpoint: "trending/movie/week" },
-    });
+    const config = getRequestConfig("trending/movie/week");
+    const response = await axios.get(config.url, { params: config.params });
     return response.data.results;
   } catch (error) {
     console.error("Error fetching trending movies:", error);
@@ -80,13 +102,12 @@ export const fetchContentByGenre = async (
     };
 
     if (filter.mediaType === "all") {
+      const movieCfg = getRequestConfig("discover/movie", getParams("movie"));
+      const tvCfg = getRequestConfig("discover/tv", getParams("tv"));
+
       const [movies, tvShows] = await Promise.all([
-        tmdbApi.get("", {
-          params: { endpoint: "discover/movie", ...getParams("movie") },
-        }),
-        tmdbApi.get("", {
-          params: { endpoint: "discover/tv", ...getParams("tv") },
-        }),
+        axios.get(movieCfg.url, { params: movieCfg.params }),
+        axios.get(tvCfg.url, { params: tvCfg.params }),
       ]);
 
       combined = [
@@ -99,17 +120,15 @@ export const fetchContentByGenre = async (
           media_type: "tv",
         })),
       ];
-
       totalPages = Math.max(movies.data.total_pages, tvShows.data.total_pages);
     } else {
       const type = filter.mediaType === "anime" ? "tv" : filter.mediaType;
+      const cfg = getRequestConfig(
+        `discover/${type}`,
+        getParams(type as "movie" | "tv"),
+      );
 
-      const res = await tmdbApi.get("", {
-        params: {
-          endpoint: `discover/${type}`,
-          ...getParams(type as "movie" | "tv"),
-        },
-      });
+      const res = await axios.get(cfg.url, { params: cfg.params });
       combined = res.data.results.map((t: ContentDetailsProps) => ({
         ...t,
         media_type: type,
@@ -120,8 +139,11 @@ export const fetchContentByGenre = async (
     if (!filter.include_adult) {
       combined = filterAdultContent(combined);
     }
-    const shuffle = combined.sort(() => Math.random() - 0.5);
-    return { results: shuffle, page, total_pages: totalPages };
+    return {
+      results: combined.sort(() => Math.random() - 0.5),
+      page,
+      total_pages: totalPages,
+    };
   } catch (error) {
     console.error("Error fetching content by genre:", error);
     throw error;
@@ -131,19 +153,17 @@ export const fetchContentByGenre = async (
 // fetch movie details
 export const fetchMovieDetails = async (id: number, type: string) => {
   try {
+    const detailsCfg = getRequestConfig(`${type}/${id}`);
+    const creditsCfg = getRequestConfig(`${type}/${id}/credits`);
+    const similarCfg = getRequestConfig(`${type}/${id}/similar`);
+
     const [details, credits, similarMovies] = await Promise.all([
-      tmdbApi.get("", { params: { endpoint: `${type}/${id}` } }),
-      tmdbApi.get("", { params: { endpoint: `${type}/${id}/credits` } }),
-      tmdbApi.get("", { params: { endpoint: `${type}/${id}/similar` } }),
+      axios.get(detailsCfg.url, { params: detailsCfg.params }),
+      axios.get(creditsCfg.url, { params: creditsCfg.params }),
+      axios.get(similarCfg.url, { params: similarCfg.params }),
     ]);
 
-    type MovieDetailsResponse = {
-      details: ContentDetailsProps;
-      credits: CreditsResponse;
-      similarMovies: MovieProps[];
-    };
-
-    const combinedData: MovieDetailsResponse = {
+    const combinedData = {
       details: details.data,
       credits: credits.data,
       similarMovies: similarMovies.data.results,
@@ -158,9 +178,8 @@ export const fetchMovieDetails = async (id: number, type: string) => {
 // fetch trailer
 export const fetchTrailer = async (id: number, type: string) => {
   try {
-    const response = await tmdbApi.get("", {
-      params: { endpoint: `${type}/${id}/videos` },
-    });
+    const config = getRequestConfig(`${type}/${id}/videos`);
+    const response = await axios.get(config.url, { params: config.params });
     return response.data;
   } catch (error) {
     console.error("Error fetching trailer:", error);
@@ -171,9 +190,8 @@ export const fetchTrailer = async (id: number, type: string) => {
 // search movies
 export const searchMovies = async (query: string) => {
   try {
-    const response = await tmdbApi.get("", {
-      params: { endpoint: "search/multi", query },
-    });
+    const config = getRequestConfig("search/multi", { query });
+    const response = await axios.get(config.url, { params: config.params });
     return response.data.results;
   } catch (error) {
     console.error("Error searching movies:", error);
@@ -187,7 +205,7 @@ export const fetchExploreContent = async (
   page: number = 1,
   filters: ContentFilter,
 ) => {
-  const params: any = {
+  const baseParams: any = {
     page,
     sort_by: filters.sort_by || "popularity.desc",
     include_adult: filters.include_adult || false,
@@ -201,21 +219,24 @@ export const fetchExploreContent = async (
   let type = filters.mediaType === "all" ? "movie" : filters.mediaType;
 
   if (category === "indian") {
-    params.with_original_language = "hi|te|ta|kn|ml";
-    params.region = "IN";
+    baseParams.with_original_language = "hi|te|ta|kn|ml";
+    baseParams.region = "IN";
   } else if (category === "hollywood") {
-    params.with_original_language = "en";
+    baseParams.with_original_language = "en";
   } else if (category === "anime") {
-    params.with_original_language = "ja";
-    params.with_genres = 16;
+    baseParams.with_original_language = "ja";
+    baseParams.with_genres = 16;
     if (filters?.mediaType === "all") type = "tv";
   }
 
   try {
     let combined = [];
+    const movieCfg = getRequestConfig("discover/movie", baseParams);
+    const tvCfg = getRequestConfig("discover/tv", baseParams);
+
     const [movieRes, tvRes] = await Promise.all([
-      tmdbApi.get("", { params: { endpoint: "discover/movie", ...params } }),
-      tmdbApi.get("", { params: { endpoint: "discover/tv", ...params } }),
+      axios.get(movieCfg.url, { params: movieCfg.params }),
+      axios.get(tvCfg.url, { params: tvCfg.params }),
     ]);
 
     const res = type === "movie" ? movieRes : tvRes;
@@ -239,6 +260,7 @@ export const fetchExploreContent = async (
         })),
       );
     }
+
     if (!filters.include_adult) {
       combined = filterAdultContent(combined);
     }
@@ -255,17 +277,16 @@ export const fetchExploreContent = async (
 };
 
 // fetch person details
-export const fetchPersonDetails = async (
-  id: number,
-): Promise<{
-  person: PersonDetails;
-  credits: MovieProps[];
-}> => {
+export const fetchPersonDetails = async (id: number) => {
   try {
+    const pCfg = getRequestConfig(`person/${id}`);
+    const mCfg = getRequestConfig(`person/${id}/movie_credits`);
+    const tCfg = getRequestConfig(`person/${id}/tv_credits`);
+
     const [personRes, movieCreditsRes, tvCreditsRes] = await Promise.all([
-      tmdbApi.get("", { params: { endpoint: `person/${id}` } }),
-      tmdbApi.get("", { params: { endpoint: `person/${id}/movie_credits` } }),
-      tmdbApi.get("", { params: { endpoint: `person/${id}/tv_credits` } }),
+      axios.get(pCfg.url, { params: pCfg.params }),
+      axios.get(mCfg.url, { params: mCfg.params }),
+      axios.get(tCfg.url, { params: tCfg.params }),
     ]);
 
     const combinedCredits = [
@@ -292,30 +313,25 @@ export const fetchPersonDetails = async (
 // fetch trailers data for explore page
 export const fetchTrailerData = async (page: number) => {
   try {
+    const animeCfg = getRequestConfig("discover/movie", {
+      page,
+      with_keywords: "210024|287501",
+      with_original_language: "ja",
+    });
+    const indianCfg = getRequestConfig("discover/movie", {
+      page,
+      region: "IN",
+      with_original_language: "hi",
+    });
+    const hollywoodCfg = getRequestConfig("discover/movie", {
+      page,
+      with_original_language: "en",
+    });
+
     const [animeRes, indianRes, hollywoodRes] = await Promise.all([
-      tmdbApi.get("", {
-        params: {
-          endpoint: "discover/movie",
-          page,
-          with_keywords: "210024|287501",
-          with_original_language: "ja",
-        },
-      }),
-      tmdbApi.get("", {
-        params: {
-          endpoint: "discover/movie",
-          page,
-          region: "IN",
-          with_original_language: "hi",
-        },
-      }),
-      tmdbApi.get("", {
-        params: {
-          endpoint: "discover/movie",
-          page,
-          with_original_language: "en",
-        },
-      }),
+      axios.get(animeCfg.url, { params: animeCfg.params }),
+      axios.get(indianCfg.url, { params: indianCfg.params }),
+      axios.get(hollywoodCfg.url, { params: hollywoodCfg.params }),
     ]);
 
     const combinedResults = [
@@ -333,7 +349,6 @@ export const fetchTrailerData = async (page: number) => {
       })),
     ];
 
-    // Fisher-Yates Shuffle
     for (let i = combinedResults.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [combinedResults[i], combinedResults[j]] = [
@@ -342,25 +357,17 @@ export const fetchTrailerData = async (page: number) => {
       ];
     }
 
-    interface TrailerTypes {
-      key: string;
-      name: string;
-      site: string;
-      type: string;
-    }
-
     const finalizedList = await Promise.all(
       combinedResults.map(async (movie: ContentDetailsProps) => {
         try {
-          const videoRes = await tmdbApi.get("", {
-            params: { endpoint: `movie/${movie.id}/videos` },
-          });
+          const vCfg = getRequestConfig(`movie/${movie.id}/videos`);
+          const videoRes = await axios.get(vCfg.url, { params: vCfg.params });
           const videos = videoRes.data.results || [];
           const trailer =
             videos.find(
-              (v: TrailerTypes) => v.type === "Trailer" && v.site === "YouTube",
+              (v: any) => v.type === "Trailer" && v.site === "YouTube",
             ) ||
-            videos.find((v: TrailerTypes) => v.site === "YouTube") ||
+            videos.find((v: any) => v.site === "YouTube") ||
             null;
 
           return trailer ? { ...movie, youtubeKey: trailer.key } : null;
@@ -378,5 +385,3 @@ export const fetchTrailerData = async (page: number) => {
     throw error;
   }
 };
-
-export default tmdbApi;
