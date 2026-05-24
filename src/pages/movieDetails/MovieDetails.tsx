@@ -10,6 +10,15 @@ import useMetaData from "../../hooks/useMetaData";
 import DetailsSkeleton from "../../components/common/loaders/DetailsSkeleton";
 import type { CastProps, MovieProps, TrailerType } from "../../utils/types/movie.type";
 
+interface Season {
+  air_date: string;
+  episode_count: number;
+  id: number;
+  name: string;
+  overview: string;
+  poster_path: string;
+  season_number: number;
+}
 
 const MovieDetails = () => {
   const { id, type } = useParams();
@@ -123,7 +132,7 @@ const MovieDetails = () => {
                 Seasons
               </h2>
               <div className="flex gap-4 overflow-x-auto pb-4 no-scrollbar">
-                {details.seasons && details.seasons.map((season) => (
+                {details.seasons && details.seasons.map((season : Season) => (
                     <>
                     {season.episode_count ? (
                       <div
