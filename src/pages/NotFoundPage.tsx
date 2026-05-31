@@ -21,7 +21,7 @@ const NotFoundPage = () => {
             <Film size={44} className="animate-spin [animation-duration:10s]" />
           </div>
           <span className="absolute -bottom-2 -right-2 bg-red-500 text-white font-mono font-black text-xs px-2 py-0.5 rounded-md uppercase tracking-wider shadow-md">
-            Cut!
+            Cut!!
           </span>
         </div>
 
