@@ -9,7 +9,10 @@ import { filterAdultContent } from "../utils/functions";
 // 🌟 AUTO DETECT ENVIRONMENT
 const isLocal =
   window.location.hostname === "localhost" ||
-  window.location.hostname === "127.0.0.1";
+  window.location.hostname === "127.0.0.1" ||
+  window.location.hostname.startsWith("192.168.") || // Subnet IPs for standard routers
+  window.location.hostname.startsWith("10.") ||      // Internal private networks
+  window.location.hostname.endsWith(".local");        // mDNS local naming domains
 
 // Base URLs Setup
 const TMDB_LOCAL_BASE = "https://api.themoviedb.org/3";

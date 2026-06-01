@@ -5,7 +5,6 @@ import { searchMovies } from "../../../services/tmdb.service";
 import { filterAdultContent } from "../../../utils/functions";
 import type { SearchResult } from "../../../utils/types/nav.type";
 
-
 const SearchBar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [query, setQuery] = useState("");
@@ -71,20 +70,21 @@ const SearchBar = () => {
   return (
     <>
       {/* HEADER TRIGGER BUTTON: GLOBAL SEARCH */}
-      <button
-        onClick={() => setIsOpen(true)}
-        className="relative -right-10 flex items-center gap-3 bg-zinc-900 border border-zinc-800 rounded-full p-2 hover:border-zinc-700 text-zinc-400  text-sm transition-all  group"
-      >
-        <div className="flex items-center gap-2">
-          <Search
-            size={16}
-            className="text-zinc-500 group-hover:text-vibe-cyan transition-colors"
-          />
-        </div>
-        <kbd className="hidden md:inline-flex items-center bg-zinc-800 text-zinc-500 text-[10px] px-1.5 py-0.5 rounded border border-zinc-700 font-sans font-bold">
-          Ctrl K
-        </kbd>
-      </button>
+        <button
+          type="button"
+          onClick={() => setIsOpen(true)}
+          className="relative -right-10 flex items-center gap-3 bg-zinc-900 border border-zinc-800 rounded-full p-2 hover:border-zinc-700 text-zinc-400  text-sm transition-all  group"
+        >
+          <div className="flex items-center gap-2">
+            <Search
+              size={16}
+              className="text-zinc-500 group-hover:text-vibe-cyan transition-colors"
+            />
+          </div>
+          <kbd className="hidden md:inline-flex items-center bg-zinc-800 text-zinc-500 text-[10px] px-1.5 py-0.5 rounded border border-zinc-700 font-sans font-bold">
+            Ctrl K
+          </kbd>
+        </button>
 
       {/* GLOBAL SEARCH COMMAND PALETTE MODAL */}
       {isOpen && (
