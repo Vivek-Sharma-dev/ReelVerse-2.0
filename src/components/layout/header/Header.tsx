@@ -98,6 +98,26 @@ const Header = () => {
 
     return () => mm.revert();
   });
+  useGSAP(() => {
+    if (isMenuOpen) {
+      gsap.fromTo(
+        ".mobile-nav-links nav ul li",
+        {
+          x: 50,
+          opacity: 0,
+          scale: 0.5,
+        },
+        {
+          x: 0,
+          opacity: 1,
+          scale: 1,
+          duration: 0.5,
+          stagger: 0.3,
+          ease: "power2.out",
+        },
+      );
+    }
+  }, { dependencies: [isMenuOpen] });
 
   return (
     <header className="bg-zinc-900 p-4 border-b border-gray-800 md:mb-0 z-50 md:sticky md:top-0">
@@ -117,11 +137,13 @@ const Header = () => {
         </div>
 
         {/* Mobile Hidden Overlay Menu */}
-        <NavLinks
-          direction="column"
-          isMenuOpen={isMenuOpen}
-          setIsMenuOpen={setIsMenuOpen}
-        />
+        <div className="mobile-nav-links">
+          <NavLinks
+            direction="column"
+            isMenuOpen={isMenuOpen}
+            setIsMenuOpen={setIsMenuOpen}
+          />
+        </div>
 
         <div className="lg:hidden order-1 lg:order-0" ref={hamburgerWrapper}>
           <Hamburger setIsMenuOpen={setIsMenuOpen} />
