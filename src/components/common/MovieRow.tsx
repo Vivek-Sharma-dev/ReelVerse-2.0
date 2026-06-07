@@ -53,7 +53,6 @@ const MovieRow = ({
           Explore All →
         </Link>
       </div>
-      /* Movie Cards Grid */
       <div className="grid  grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
         {movies?.map((movie: MovieProps, idx: number) => (
           <div
