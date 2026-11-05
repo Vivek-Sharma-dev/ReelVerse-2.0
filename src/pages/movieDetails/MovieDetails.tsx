@@ -65,7 +65,7 @@ const MovieDetails = () => {
   const trailer = getBestTrailer(trailerData?.data?.results || []);
   return (
     <>
-      <section id="movie-details">
+      <section id="movie-details" >
         <section id="details-hero">
           <Banner
             details={details}
@@ -74,7 +74,7 @@ const MovieDetails = () => {
             setIsTrailerPlaying={setIsTrailerPlaying}
           />
         </section>
-        <section id="movie-info" className="container mx-auto px-3 lg:px-0">
+        <section id="movie-info" className="mx-auto max-w-340 pt-8 pb-10 px-3 lg:px-0">
           <div className="flex flex-col justify-between gap-5 my-7 relative">
             <div>
               <h2 className="text-2xl font-bold text-vibe-cyan border-l-4 border-vibe-cyan pl-4 mb-8 uppercase tracking-tighter">

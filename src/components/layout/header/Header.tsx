@@ -12,7 +12,7 @@ type IsMenuOpenType = {
 };
 
 const Header = () => {
-  // 🚀 Parent-level clean element containers
+  // Parent-level clean element containers
   const logoWrapper = useRef<HTMLDivElement | null>(null);
   const searchWrapper = useRef<HTMLDivElement | null>(null);
   const hamburgerWrapper = useRef<HTMLDivElement | null>(null);
@@ -123,9 +123,9 @@ const Header = () => {
   }, { dependencies: [isMenuOpen] });
 
   return (
-    <header className="bg-zinc-900 p-4 border-b border-gray-800 md:mb-0 z-50 md:sticky md:top-0">
+    <header className="bg-zinc-900 py-4 sm:px-20 border-b border-gray-800 md:mb-0 z-50 md:sticky md:top-0">
       <nav className="container mx-auto flex justify-between items-center">
-        {/* 🌟 SAFE WRAPPERS: standard react nodes for GSAP targeting */}
+        {/*  SAFE WRAPPERS: standard react nodes for GSAP targeting */}
         <div ref={logoWrapper}>
           <Logo />
         </div>

@@ -1,7 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  // 1. CORS Headers set karo taaki frontend block na ho
+  // 1. set CORS headers
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS');
@@ -11,17 +11,17 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(200).end();
   }
 
-  // 2. Frontend se endpoint aur baaki params nikal lo
+  // 2. get endpoint and other params related
   const { endpoint, ...restParams } = req.query;
 
   if (!endpoint) {
     return res.status(400).json({ error: 'Endpoint parameter is required' });
   }
 
-  // 3. Vercel dashboard se secure TMDB key uthao
+  // 3. get secure TMDB key from vercel deskboard
   const apiKey = process.env.VITE_TMDB_API_KEY; 
 
-  // 4. TMDB ke liye query string taiyar karo
+  // 4. make TMDB String
   const queryString = new URLSearchParams({
     ...restParams as Record<string, string>,
     api_key: apiKey || ''

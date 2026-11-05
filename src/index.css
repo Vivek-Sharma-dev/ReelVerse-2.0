@@ -32,10 +32,22 @@
   }
 }
 
+
+
 @theme {
   --color-main-bg: var(--bg);
   --color-card-bg: var(--card);
   --color-vibe-cyan: var(--primary);
   --color-txt-main: var(--text);
   --color-txt-muted: var(--muted);
+}
+
+.container {
+  max-width: 1280px;
+}
+
+@media (max-width: 768px) {
+  .container {
+    max-width: 100%;
+  }
 }
